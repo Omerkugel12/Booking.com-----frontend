@@ -4,7 +4,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/self-made/card";
 import { Hotel } from "../../models/Hotel.model";
 import { Button } from "../ui/button";
 
@@ -44,7 +44,9 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
             {hotel.title}
           </CardTitle>
           <div className="flex items-center space-x-2 mt-2">
-            <p className="text-sm text-blue-700 font-medium underline">{hotel.city}</p>
+            <p className="text-sm text-blue-700 font-medium underline">
+              {hotel.city}
+            </p>
             <p className="text-sm text-blue-700 font-medium">
               <a href="#" className="underline">
                 Show on map
