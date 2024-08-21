@@ -1,5 +1,8 @@
 import ResultHotelCard from "./components/self-made/ResultHotelCard";
+import { Route, Routes } from "react-router-dom";
 import { Button } from "./components/ui/button";
+import HomePage from "./pages/HomePage";
+import Layout from "./pages/Layout";
 import { Hotel } from "./models/Hotel.model";
 
 function App() {
@@ -21,9 +24,16 @@ function App() {
 
   return (
     <>
-      <p>Hi</p>
-      <Button className="bg-blue-500">Hi</Button>
-      <ResultHotelCard hotel={hotel1} />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <HomePage />
+            </Layout>
+          }
+        />
+      </Routes>
     </>
   );
 }
