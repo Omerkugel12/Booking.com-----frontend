@@ -1,10 +1,21 @@
+import { Route, Routes } from "react-router-dom";
 import { Button } from "./components/ui/button";
+import HomePage from "./pages/HomePage";
+import Layout from "./pages/Layout";
 
 function App() {
   return (
     <>
-      <p>hii</p>
-      <Button className="bg-blue_1">hiii</Button>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <HomePage />
+            </Layout>
+          }
+        />
+      </Routes>
     </>
   );
 }
