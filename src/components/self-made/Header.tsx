@@ -6,6 +6,7 @@ const Navbar = () => {
   const { user } = useContext(AuthContext);
 
   return (
+    
     <div className="bg-[#003580] h-[50px] flex justify-center">
       <div className="w-full max-w-[1024px] text-white flex items-center justify-between">
         <Link to="/" className="text-inherit no-underline">
