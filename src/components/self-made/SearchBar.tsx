@@ -4,54 +4,69 @@ import { Input } from "../ui/input";
 
 function SearchBar() {
   return (
-    <div className="max-h-48 h-full mx-auto p-6 bg-bg_search_bar rounded-lg shadow-md">
-      <form id="search-form" className="flex flex-col md:flex-row gap-4">
-        <div className="flex w-full">
-          <BedSingle strokeWidth={1.75} className="" />
+    <div className=" p-[3px] bg-bg_search_bar rounded-sm">
+      <form
+        id="search-form"
+        className="w-full bg-bg_search_bar flex items-center gap-1 "
+      >
+        {/* Destination Input */}
+
+        <div className="relative flex-1 ring-0 bg-white flex items-center px-4 rounded-sm  hover:ring-1 ring-orange-600">
+          <BedSingle
+            strokeWidth={1.75}
+            className="mr-2 h-7 w-7 text-gray-500 "
+          />
           <Input
             type="text"
             id="destination"
             name="destination"
             placeholder="Where are you going?"
             required
-            className="w-full pl-10 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border-none outline-0 placeholder-gray-500 text-xs font-semibold"
           />
         </div>
-        <div className="relative w-full">
+
+        {/* Date Input */}
+        <div className="relative flex-1 bg-white flex items-center px-4 rounded-sm hover:ring-1 ring-orange-600">
           <CalendarDays
             strokeWidth={1.75}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
+            className="mr-2 h-7 w-7 text-gray-500 "
           />
           <Input
-            type="date"
-            id="checkout-date"
-            name="checkout_date"
+            type="text"
+            id="dates"
+            name="dates"
+            placeholder="Thu 29 Aug — Sat 31 Aug"
             required
-            className="w-full pl-10 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border-none focus:outline-none focus:ring-0 placeholder-gray-500 text-xs font-semibold"
           />
         </div>
-        <div className="relative w-full">
+
+        {/* Guests Input */}
+        <div className="relative flex-1 bg-white flex items-center px-4 rounded-sm hover:ring-1 ring-orange-600">
           <UserRound
             strokeWidth={1.75}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
+            className="mr-2 h-7 w-7 text-gray-500"
           />
           <Input
-            type="number"
+            type="text"
             id="guests"
             name="guests"
-            placeholder="Guests"
-            min="1"
+            placeholder="2 adults · 0 children · 1 room"
             required
-            className="w-full pl-10 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border-none focus:outline-none focus:ring-0 placeholder-gray-500 text-xs font-semibold"
           />
         </div>
-        <Button
-          type="submit"
-          id="search-btn"
-          className="w-full md:w-auto p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Search
-        </Button>
+        <div>
+          {/* Search Button */}
+          <Button
+            type="submit"
+            id="search-btn"
+            className="flex-none px-4 py-4 bg-blue-500 text-white text-md font-semibold rounded-sm hover:bg-blue-700 transition-colors"
+          >
+            Search
+          </Button>
+        </div>
       </form>
     </div>
   );
