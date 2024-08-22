@@ -1,5 +1,5 @@
 import Footer from "@/components/self-made/Footer";
-import Header from "@/components/Header";
+import Header from "@/components/self-made/Header";
 import React from "react";
 
 interface Props {
@@ -8,11 +8,11 @@ interface Props {
 
 function Layout({ children }: Props) {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <div>{children}</div>
+      <div className="flex-1 px-40">{children}</div>
       <Footer />
-    </>
+    </div>
   );
 }
 

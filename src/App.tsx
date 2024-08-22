@@ -4,6 +4,8 @@ import { Button } from "./components/ui/button";
 import HomePage from "./pages/HomePage";
 import Layout from "./pages/Layout";
 import { Hotel } from "./models/Hotel.model";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   const hotel1: Hotel = {
@@ -33,6 +35,24 @@ function App() {
             </Layout>
           }
         />
+        <Route path="/auth">
+          <Route
+            path="login"
+            element={
+              <Layout>
+                <LoginPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="register"
+            element={
+              <Layout>
+                <RegisterPage />
+              </Layout>
+            }
+          />
+        </Route>
       </Routes>
     </>
   );
