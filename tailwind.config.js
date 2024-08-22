@@ -18,7 +18,12 @@ module.exports = {
     },
     extend: {
       colors: {
+        bg_search_bar: "hsl(43, 100%, 50%)",
+        footer: "hsl(0, 0%, 96%)",
+        yellow: "hsl(43, 100%, 50%)",
         blue_1: "hsl(216, 100%, 29%)",
+        blue_2: "hsl(212, 76%, 97%)",
+        hover: "hsl(216, 72%, 36%)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
