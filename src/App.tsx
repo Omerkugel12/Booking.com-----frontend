@@ -27,23 +27,18 @@ function App() {
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <HomePage />
-            </Layout>
-          }
-        />
-        <Route path="/auth">
+        <Route path="/stays">
           <Route
-            path="login"
+            path=""
             element={
               <Layout>
-                <LoginPage />
+                <HomePage />
               </Layout>
             }
           />
+        </Route>
+        <Route path="/auth">
+          <Route path="login" element={<LoginPage />} />
           <Route
             path="register"
             element={
