@@ -1,41 +1,69 @@
 import DropDownSort from "@/components/self-made/DropDownSort";
-import SearchBar from "@/components/self-made/SearchBar"
+import FilterSidebar from "@/components/self-made/Filters";
+import ResultHotelCard from "@/components/self-made/ResultHotelCard";
+import SearchBar from "@/components/self-made/SearchBar";
 import { Button } from "@/components/ui/button";
 import { Hotel } from "@/models/Hotel.model";
 
-
-
 function ResultPage() {
-       const hotel1: Hotel = {
-         _id: "1",
-         name: "Hotel 1",
-         type: "hotel",
-         city: "New York",
-         address: "456 Elm St",
-         distance: "2KM",
-         photos: ["https://example.com/hotel1.jpg"],
-         title: "Hotel 1",
-         desc: "This is a great hotel located in the heart of the city.",
-         rating: 4.8,
-         rooms: ["Room 1", "Room 2", "Room 3"],
-         cheapestPrice: 100,
-         featured: true,
-       };
+  const hotel1: Hotel = {
+    _id: "1",
+    name: "Hotel 1",
+    type: "hotel",
+    city: "New York",
+    address: "456 Elm St",
+    distance: "2KM",
+    photos: ["https://example.com/hotel1.jpg"],
+    title: "Hotel 1",
+    desc: "This is a great hotel located in the heart of the city.",
+    rating: 4.8,
+    rooms: ["Room 1", "Room 2", "Room 3"],
+    cheapestPrice: 100,
+    featured: true,
+  };
 
-    return (
-      < div className=" h-[100vh]">
-        <div className=" absolute top-[107px] left-[110px]">
-          <SearchBar />
+  return (
+    <>
+      <div className=" -mt-6 ">
+        <SearchBar />
+      </div>
+      <div className=" flex mt-10">
+        <div>
+          <div >
+            <img
+              className=" w-80 h-32 rounded-xl"
+              src="src\images\ShowOnMap.webp"
+            />
+            <div>
+              <FilterSidebar/>
+            </div>
+          </div>
         </div>
-        <div className=" mt-24 ml-10 ">
-          <h2 className=" font-bold text-lg">
-            {hotel1?.city ? hotel1.city : ""}: {Response.length || 3} properties
-            found
-                </h2>
-                <DropDownSort/>
+        <div className=" h-[100vh] w-full  ">
+          <div className=" px-10 ">
+            <div className=" flex flex-col gap-2 text-lg ">
+              <h2 className=" font-bold text-xl">
+                {hotel1?.city ? hotel1.city : ""}: {Response.length || 3}{" "}
+                properties found
+              </h2>
+              <DropDownSort />
+              <p className=" border border-blue-200 mt-2 rounded-md p-1 w-fit">
+                Please review any travel advisories provided by your government
+                to make an informed decision about your stay in this area, which
+                may be considered conflict-affected.
+              </p>
+            </div>
+
+            <div className=" flex w-full">
+              <div className=" w-[95%]">
+                <ResultHotelCard key={hotel1._id} hotel={hotel1} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    );
+    </>
+  );
 }
 
-export default ResultPage
+export default ResultPage;
