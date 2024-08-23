@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/stays">
+        <Route path="/">
           <Route
             path=""
             element={
