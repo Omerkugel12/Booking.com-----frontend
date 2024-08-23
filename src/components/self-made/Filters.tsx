@@ -1,10 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Minus } from "lucide-react";
-import { Slider } from "../ui/slider";
+import { Slider } from "@/components/ui/slider";
+
+// Simulated backend function
+const fetchItemCount = (itemLabel) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Simulate some items not having a count
+      if (Math.random() > 0.8) {
+        resolve(null);
+      } else {
+        resolve(Math.floor(Math.random() * 50) + 1);
+      }
+    }, 100); // Simulate network delay
+  });
+};
 
 const FilterSection = ({ title, items, showAll, expanded = false }) => {
   const [isExpanded, setIsExpanded] = useState(expanded);
-  const displayedItems = isExpanded ? items : items.slice(0, 5);
+  const [itemsWithCount, setItemsWithCount] = useState([]);
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      const updatedItems = await Promise.all(
+        items.map(async (item) => {
+          const count = await fetchItemCount(item.label);
+          return { ...item, count: count === null ? "null" : count };
+        })
+      );
+      setItemsWithCount(updatedItems);
+    };
+
+    fetchCounts();
+  }, [items]);
+
+  // Generate dummy items for expansion
+  const generateDummyItems = (count) => {
+    return Array.from({ length: count }, (_, index) => ({
+      label: `Dummy ${title} ${index + 1}`,
+      count: "null",
+    }));
+  };
+
+  const allItems = showAll
+    ? [
+        ...itemsWithCount,
+        ...generateDummyItems(showAll - itemsWithCount.length),
+      ]
+    : itemsWithCount;
+
+  const displayedItems = isExpanded ? allItems : allItems.slice(0, 5);
 
   return (
     <div className="mb-4">
@@ -19,7 +64,7 @@ const FilterSection = ({ title, items, showAll, expanded = false }) => {
           <span className="text-gray-500 text-sm">{item.count}</span>
         </div>
       ))}
-      {showAll && items.length > 5 && (
+      {showAll && allItems.length > 5 && (
         <button
           className="text-blue-600 text-sm font-semibold"
           onClick={() => setIsExpanded(!isExpanded)}
@@ -73,6 +118,122 @@ const BookingSidebarFilter = () => {
         <Slider className="w-full" />
       </div>
 
+      <FilterSection
+        title="Popular filters"
+        items={[
+          { label: "Hotels" },
+          { label: "Very good: 8+" },
+          { label: "Breakfast included" },
+          { label: "Free cancellation" },
+          { label: "Swimming Pool" },
+          { label: "Beachfront" },
+          { label: "Parking" },
+          { label: "No prepayment" },
+        ]}
+      />
+
+      <FilterSection
+        title="Meals"
+        items={[
+          { label: "Self catering" },
+          { label: "Breakfast included" },
+          { label: "All meals included" },
+          { label: "All-inclusive" },
+          { label: "Breakfast & dinner included" },
+        ]}
+      />
+
+      <FilterSection
+        title="Facilities"
+        items={[
+          { label: "Parking" },
+          { label: "Free WiFi" },
+          { label: "Restaurant" },
+          { label: "Pets allowed" },
+          { label: "Room service" },
+        ]}
+        showAll={14}
+      />
+
+      <FilterSection
+        title="Property type"
+        items={[
+          { label: "Entire homes & apartments" },
+          { label: "Apartments" },
+          { label: "Hotels" },
+          { label: "Lodges" },
+          { label: "Guest houses" },
+        ]}
+        showAll={8}
+      />
+
+      <FilterSection
+        title="Guest review score"
+        items={[
+          { label: "Superb: 9+" },
+          { label: "Very good: 8+" },
+          { label: "Good: 7+" },
+          { label: "Pleasant: 6+" },
+        ]}
+      />
+
+      <FilterSection
+        title="Room facilities"
+        items={[
+          { label: "Air conditioning" },
+          { label: "Private bathroom" },
+          { label: "Private pool" },
+          { label: "Sea view" },
+          { label: "Balcony" },
+        ]}
+        showAll={25}
+      />
+
+      <FilterSection
+        title="Property rating"
+        items={[
+          { label: "3 stars" },
+          { label: "4 stars" },
+          { label: "5 stars" },
+        ]}
+      />
+
+      <FilterSection title="Beach access" items={[{ label: "Beachfront" }]} />
+
+      <FilterSection
+        title="Reservation policy"
+        items={[{ label: "Free cancellation" }, { label: "No prepayment" }]}
+      />
+
+      <FilterSection
+        title="Fun things to do"
+        items={[
+          { label: "Beach" },
+          { label: "Massage" },
+          { label: "Hiking" },
+          { label: "Spa and wellness centre" },
+          { label: "Children's playground" },
+        ]}
+        showAll={25}
+      />
+
+      <FilterSection
+        title="Bed preference"
+        items={[{ label: "Twin beds" }, { label: "Double bed" }]}
+      />
+
+      <FilterSection
+        title="City"
+        items={[
+          { label: "Neve Zohar" },
+          { label: "Ein Bokek" },
+          { label: "Ein Gedi" },
+          { label: "Ovnat" },
+          { label: "Ne'ot HaKikar" },
+        ]}
+        showAll={7}
+      />
+
       <div className="mb-4">
         <h3 className="font-bold text-sm mb-2 text-gray-900">
           Bedrooms and bathrooms
@@ -82,168 +243,60 @@ const BookingSidebarFilter = () => {
       </div>
 
       <FilterSection
-        title="Popular filters"
-        items={[
-          { label: "Hotels", count: 11 },
-          { label: "Very good: 8+", count: 30 },
-          { label: "Breakfast included", count: 10 },
-          { label: "Free cancellation", count: 12 },
-          { label: "Swimming Pool", count: 15 },
-          { label: "Beachfront", count: 19 },
-          { label: "Parking", count: 37 },
-          { label: "No prepayment", count: 14 },
-        ]}
-      />
-
-      <FilterSection
         title="Online payment"
-        items={[{ label: "Accepts online payments", count: 23 }]}
+        items={[{ label: "Accepts online payments" }]}
       />
 
       <FilterSection
         title="Brands"
         items={[
-          { label: "Fattal Hotels", count: 3 },
-          { label: "Isrotel Hotels & Resorts", count: 2 },
-          { label: "Prima Hotels Israel", count: 1 },
-          { label: "The Setai, Herbert Samuel & Orchid Hotels", count: 1 },
-          { label: "AFI Hotels", count: 1 },
+          { label: "Fattal Hotels" },
+          { label: "Isrotel Hotels & Resorts" },
+          { label: "Prima Hotels Israel" },
+          { label: "The Setai, Herbert Samuel & Orchid Hotels" },
+          { label: "AFI Hotels" },
         ]}
       />
 
       <FilterSection
         title="Property accessibility"
         items={[
-          { label: "Toilet with grab rails", count: 2 },
-          { label: "Higher level toilet", count: 2 },
-          { label: "Visual aids: Tactile signs", count: 2 },
-          { label: "Auditory guidance", count: 2 },
+          { label: "Toilet with grab rails" },
+          { label: "Higher level toilet" },
+          { label: "Lower bathroom sink" },
+          { label: "Visual aids: Braille" },
+          { label: "Visual aids: Tactile signs" },
+          { label: "Auditory guidance" },
         ]}
       />
 
       <FilterSection
         title="Room accessibility"
         items={[
-          { label: "Entire unit located on ground floor", count: 13 },
-          { label: "Upper floors accessible by elevator", count: 2 },
-          { label: "Entire unit wheelchair accessible", count: 2 },
-          { label: "Toilet with grab rails", count: 1 },
-          { label: "Adapted bath", count: 1 },
-          { label: "Roll-in shower", count: 2 },
-          { label: "Walk-in shower", count: 5 },
-          { label: "Raised toilet", count: 1 },
+          { label: "Entire unit located on ground floor" },
+          { label: "Upper floors accessible by elevator" },
+          { label: "Entire unit wheelchair accessible" },
+          { label: "Toilet with grab rails" },
+          { label: "Adapted bath" },
+          { label: "Roll-in shower" },
+          { label: "Raised toilet" },
         ]}
+        showAll={15}
       />
 
       <FilterSection
-        title="Meals"
+        title="Sustainability initiatives"
         items={[
-          { label: "Self catering", count: 28 },
-          { label: "Breakfast included", count: 10 },
-          { label: "All meals included", count: 2 },
-          { label: "All-inclusive", count: 1 },
-          { label: "Breakfast & dinner included", count: 8 },
+          {
+            label:
+              "Linens, towels and laundry washed in accordance with local guidelines",
+          },
+          { label: "Water cooler/dispenser" },
+          { label: "Food waste policy" },
+          { label: "Recycling policy" },
+          { label: "No plastic" },
         ]}
-      />
-
-      <FilterSection
-        title="Facilities"
-        items={[
-          { label: "Parking", count: 37 },
-          { label: "Free WiFi", count: 37 },
-          { label: "Restaurant", count: 13 },
-          { label: "Pets allowed", count: 9 },
-          { label: "Room service", count: 11 },
-        ]}
-        showAll={14}
-      />
-
-      <FilterSection
-        title="Property type"
-        items={[
-          { label: "Entire homes & apartments", count: 19 },
-          { label: "Apartments", count: 18 },
-          { label: "Hotels", count: 11 },
-          { label: "Lodges", count: 6 },
-          { label: "Guest houses", count: 4 },
-        ]}
-        showAll={8}
-      />
-
-      <FilterSection
-        title="Guest review score"
-        items={[
-          { label: "Superb: 9+", count: 9 },
-          { label: "Very good: 8+", count: 30 },
-          { label: "Good: 7+", count: 36 },
-          { label: "Pleasant: 6+", count: 39 },
-        ]}
-      />
-
-      <FilterSection
-        title="Room facilities"
-        items={[
-          { label: "Air conditioning", count: 38 },
-          { label: "Private bathroom", count: 33 },
-          { label: "Private pool", count: 3 },
-          { label: "Sea view", count: 21 },
-          { label: "Balcony", count: 30 },
-        ]}
-        showAll={25}
-      />
-
-      <FilterSection
-        title="Property rating"
-        items={[
-          { label: "3 stars", count: 21 },
-          { label: "4 stars", count: 1 },
-          { label: "5 stars", count: 1 },
-        ]}
-      />
-
-      <FilterSection
-        title="Beach access"
-        items={[{ label: "Beachfront", count: 19 }]}
-      />
-
-      <FilterSection
-        title="Reservation policy"
-        items={[
-          { label: "Free cancellation", count: 12 },
-          { label: "No prepayment", count: 14 },
-        ]}
-      />
-
-      <FilterSection
-        title="Fun things to do"
-        items={[
-          { label: "Beach", count: 22 },
-          { label: "Massage", count: 18 },
-          { label: "Hiking", count: 13 },
-          { label: "Spa and wellness centre", count: 11 },
-          { label: "Children's playground", count: 11 },
-        ]}
-        showAll={25}
-      />
-
-      <FilterSection
-        title="Bed preference"
-        items={[
-          { label: "Twin beds", count: 16 },
-          { label: "Double bed", count: 38 },
-        ]}
-      />
-
-      <FilterSection
-        title="City"
-        items={[
-          { label: "Neve Zohar", count: 19 },
-          { label: "Ein Bokek", count: 8 },
-          { label: "Ein Gedi", count: 4 },
-          { label: "Ovnat", count: 4 },
-          { label: "Ne'ot HaKikar", count: 2 },
-        ]}
-        showAll={7}
+        showAll={10}
       />
     </div>
   );
