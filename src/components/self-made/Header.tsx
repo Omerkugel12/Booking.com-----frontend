@@ -111,27 +111,29 @@ function Header() {
         </div>
       </div>
       <div className="flex gap-0 mt-4">
-        <Button
-          onClick={() => handleButtonClick("stays")}
-          className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
-            activeButton === "stays"
-              ? "border-[1px] border-white hover:bg-blue-1"
-              : "bg-blue-1  text-white"
-          }`}
-        >
-          <img
-            src={stays}
-            alt="Stays"
-            className="h-5 filter invert-0"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
-          <p>Stays</p>
-        </Button>
+        <Link to={"/"}>
+          <Button
+            onClick={() => handleButtonClick("stays")}
+            className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
+              activeButton === "stays"
+                ? "border-[1px] border-white hover:bg-hover bg-hover"
+                : "bg-blue_1 hover:bg-hover text-white"
+            }`}
+          >
+            <img
+              src={stays}
+              alt="Stays"
+              className="h-5 filter invert-0"
+              style={{ filter: "brightness(0) invert(1)" }}
+            />
+            <p>Stays</p>
+          </Button>
+        </Link>
         <Button
           onClick={() => handleButtonClick("flights")}
           className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
             activeButton === "flights"
-              ? "border-[1px] border-white hover:bg-blue-1"
+              ? "border-[1px] border-white hover:bg-hover bg-hover"
               : "bg-blue-1 hover:bg-hover text-white"
           }`}
         >
@@ -147,7 +149,7 @@ function Header() {
           onClick={() => handleButtonClick("carRentals")}
           className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
             activeButton === "carRentals"
-              ? "border-[1px] border-white hover:bg-blue-1"
+              ? "border-[1px] border-white hover:bg-hover bg-hover"
               : "bg-blue-1 hover:bg-hover text-white"
           }`}
         >
@@ -163,7 +165,7 @@ function Header() {
           onClick={() => handleButtonClick("attractions")}
           className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
             activeButton === "attractions"
-              ? "border-[1px] border-white hover:bg-blue-1"
+              ? "border-[1px] border-white hover:bg-hover bg-hover"
               : "bg-blue-1 hover:bg-hover text-white"
           }`}
         >
@@ -179,7 +181,7 @@ function Header() {
           onClick={() => handleButtonClick("airportTaxis")}
           className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
             activeButton === "airportTaxis"
-              ? "border-[1px] border-white hover:bg-blue-1"
+              ? "border-[1px] border-white hover:bg-hover bg-hover"
               : "bg-blue-1 hover:bg-hover text-white"
           }`}
         >
