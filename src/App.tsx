@@ -28,7 +28,7 @@ function App() {
             element={<AuthPage email={email} setEmail={setEmail} />}
           />
           <Route path="login" element={<LoginPage email={email} />} />
-          <Route path="register" element={<RegisterPage />} />
+          <Route path="register" element={<RegisterPage email={email} />} />
         </Route>
         <Route
           path="/results"
