@@ -30,7 +30,7 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
   }
 
   return (
-    <Card className="flex w-2/3 border border-gray-300 rounded-lg shadow-md">
+    <Card className="flex mt-2 w-full border border-gray-300 rounded-lg shadow-md">
       <CardHeader className="w-1/3">
         <img
           src={hotel.photos[0]}

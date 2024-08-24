@@ -15,16 +15,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 function Header() {
   const { loggedInUser } = useAuth();
   return (
-    // <div className="bg-blue_1">
-    <nav className="bg-blue_1 px-40 pb-4">
+    
+    <nav className="bg-blue_1 px-40 pb-7">
       <div className="flex justify-between items-center">
         <Link to={"/"} className="w-40">
           <img src="/src/images/Booking_Com_Logotype_Aug2020_White_Blue-BG.png" />
         </Link>
-        {/* <Link to={"/"}>
-          <h1 className="text-3xl text-white font-extrabold">Booking.com</h1>
-        </Link> */}
-        <div className="flex flex-row-reverse items-center">
+                <div className="flex flex-row-reverse items-center">
           {!loggedInUser ? (
             <div className="flex flex-row-reverse gap-2">
               <Link

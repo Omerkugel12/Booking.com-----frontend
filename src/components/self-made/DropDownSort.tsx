@@ -30,7 +30,7 @@ function DropDownSort() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="cursor-pointer flex gap-2 rounded-full py-[3px] border border-gray-300  p-2 hover:bg-gray-100">
+      <DropdownMenuTrigger className="cursor-pointer flex gap-2 rounded-full py-[3px] border border-gray-300  p-2 hover:bg-gray-100 w-fit">
         <ArrowDownUp size={20} strokeWidth={1.25} /> Sort by:  {currentSort}{" "}
         <ChevronsUpDown size={20} strokeWidth={1.25} />
       </DropdownMenuTrigger>
