@@ -4,10 +4,10 @@ import { Input } from "../ui/input";
 
 function SearchBar() {
   return (
-    <div className=" w-full p-[3px] bg-bg_search_bar rounded-sm">
+    <div className=" w-full p-[3px]  rounded-sm px-60">
       <form
         id="search-form"
-        className="w-full bg-bg_search_bar flex items-center gap-1 "
+        className="w-full rounded-sm bg-bg_search_bar flex items-center gap-1 p-1 "
       >
         {/* Destination Input */}
 

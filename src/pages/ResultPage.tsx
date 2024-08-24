@@ -13,7 +13,9 @@ function ResultPage() {
     city: "New York",
     address: "456 Elm St",
     distance: "2KM",
-    photos: ["https://example.com/hotel1.jpg"],
+    photos: [
+      "https://cf.bstatic.com/xdata/images/hotel/square240/464042313.webp?k=fa5c892f6a184eb5dc81bd082667f1203dc2138ba4e4429032fe7be1fb1190e6&o=",
+    ],
     title: "Hotel 1",
     desc: "This is a great hotel located in the heart of the city.",
     rating: 4.8,
@@ -29,13 +31,13 @@ function ResultPage() {
       </div>
       <div className=" flex mt-10">
         <div>
-          <div >
+          <div>
             <img
               className=" w-80 h-32 rounded-xl"
               src="src\images\ShowOnMap.webp"
             />
             <div>
-              <FilterSidebar/>
+              <FilterSidebar />
             </div>
           </div>
         </div>
