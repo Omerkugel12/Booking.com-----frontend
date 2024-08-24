@@ -1,27 +1,32 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
-import {
-  BedSingle,
-  Bell,
-  CarFront,
-  CarTaxiFront,
-  FerrisWheel,
-  Plane,
-  ShieldQuestion,
-} from "lucide-react";
+import { Bell, ShieldQuestion } from "lucide-react";
+import stays from "@/images/stays.svg";
+import flights from "@/images/flights.svg";
+import carRental from "@/images/carRental.svg";
+import attractions from "@/images/arrtactions.svg";
+import airportTaxies from "@/images/airportTaxies.svg";
+
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import bookingLogo from "@/images/bookingLogo.svg";
+import { SetStateAction, useState } from "react";
 
 function Header() {
   const { loggedInUser } = useAuth();
+  const [activeButton, setActiveButton] = useState("stays");
+
+  const handleButtonClick = (button: string) => {
+    setActiveButton(button);
+  };
+
   return (
-    
-    <nav className="bg-blue_1 px-40 pb-7">
+    <nav className="bg-blue_1 px-60 py-4">
       <div className="flex justify-between items-center">
-        <Link to={"/"} className="w-40">
-          <img src="/src/images/Booking_Com_Logotype_Aug2020_White_Blue-BG.png" />
+        <Link to={"/"} className="w-36">
+          <img src={bookingLogo} alt="Booking Logo" />
         </Link>
-                <div className="flex flex-row-reverse items-center">
+        <div className="flex flex-row-reverse items-center">
           {!loggedInUser ? (
             <div className="flex flex-row-reverse gap-2">
               <Link
@@ -68,7 +73,7 @@ function Header() {
               </div>
             </Button>
             <Button className="bg-blue_1 rounded-sm hover:bg-hover">
-              <div className=" flex justify-center size-6 rounded-full overflow-hidden ">
+              <div className="flex justify-center size-6 rounded-full overflow-hidden">
                 <img src="/src/images/US.png" alt="" />
               </div>
             </Button>
@@ -78,40 +83,89 @@ function Header() {
           </div>
         </div>
       </div>
-      <div className="flex gap-0">
-        <Button className="bg-blue-1 rounded-l-full rounded-r-full hover:bg-hover p-4 text-base flex gap-1 font-thin">
-          <p>
-            <BedSingle strokeWidth={1.75} />
-          </p>
-          <p>stays</p>
+      <div className="flex gap-0 mt-4">
+        <Button
+          onClick={() => handleButtonClick("stays")}
+          className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
+            activeButton === "stays"
+              ? "border-[1px] border-white hover:bg-blue-1"
+              : "bg-blue-1  text-white"
+          }`}
+        >
+          <img
+            src={stays}
+            alt="Stays"
+            className="h-5 filter invert-0"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+          <p>Stays</p>
         </Button>
-        <Button className="bg-blue-1 rounded-l-full rounded-r-full hover:bg-hover p-4 text-base flex gap-1 font-thin">
-          <p>
-            <Plane strokeWidth={1.75} />
-          </p>
+        <Button
+          onClick={() => handleButtonClick("flights")}
+          className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
+            activeButton === "flights"
+              ? "border-[1px] border-white hover:bg-blue-1"
+              : "bg-blue-1 hover:bg-hover text-white"
+          }`}
+        >
+          <img
+            src={flights}
+            alt="Flights"
+            className="h-5 filter invert-0"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
           <p>Flights</p>
         </Button>
-        <Button className="bg-blue-1 rounded-l-full rounded-r-full hover:bg-hover p-4 text-base flex gap-1 font-thin">
-          <p>
-            <CarFront strokeWidth={1.75} />
-          </p>
-          <p>Car rentals</p>
+        <Button
+          onClick={() => handleButtonClick("carRentals")}
+          className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
+            activeButton === "carRentals"
+              ? "border-[1px] border-white hover:bg-blue-1"
+              : "bg-blue-1 hover:bg-hover text-white"
+          }`}
+        >
+          <img
+            src={carRental}
+            alt="Car Rentals"
+            className="h-5 filter invert-0"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+          <p>Car Rentals</p>
         </Button>
-        <Button className="bg-blue-1 rounded-l-full rounded-r-full hover:bg-hover p-4 text-base flex gap-1 font-thin">
-          <p>
-            <FerrisWheel strokeWidth={1.75} />
-          </p>
+        <Button
+          onClick={() => handleButtonClick("attractions")}
+          className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
+            activeButton === "attractions"
+              ? "border-[1px] border-white hover:bg-blue-1"
+              : "bg-blue-1 hover:bg-hover text-white"
+          }`}
+        >
+          <img
+            src={attractions}
+            alt="Attractions"
+            className="h-5 filter invert-0"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
           <p>Attractions</p>
         </Button>
-        <Button className="bg-blue-1 rounded-l-full rounded-r-full hover:bg-hover p-4 text-base flex gap-1 font-thin">
-          <p>
-            <CarTaxiFront strokeWidth={1.75} />
-          </p>
-          <p>Airport taxis</p>
+        <Button
+          onClick={() => handleButtonClick("airportTaxis")}
+          className={`bg-blue-1 rounded-l-full rounded-r-full p-4 flex items-center gap-2 text-base font-thin ${
+            activeButton === "airportTaxis"
+              ? "border-[1px] border-white hover:bg-blue-1"
+              : "bg-blue-1 hover:bg-hover text-white"
+          }`}
+        >
+          <img
+            src={airportTaxies}
+            alt="Airport Taxis"
+            className="h-5 filter invert-0"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+          <p>Airport Taxis</p>
         </Button>
       </div>
     </nav>
-    // </div>
   );
 }
 
