@@ -9,9 +9,14 @@ import attractions from "@/images/arrtactions.svg";
 import airportTaxies from "@/images/airportTaxies.svg";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-<<<<<<< HEAD
 import bookingLogo from "@/images/bookingLogo.svg";
 import { SetStateAction, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
 
 function Header() {
   const { loggedInUser } = useAuth();
@@ -21,23 +26,14 @@ function Header() {
     setActiveButton(button);
   };
 
+  // Use React.MouseEvent for the event type
+  function logout(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+    console.log("Logging out...");
+    // Add your logout functionality here
+  }
+
   return (
     <nav className="bg-blue_1 px-60 py-4">
-=======
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-function Header() {
-  const { loggedInUser, logout } = useAuth();
-  return (
-    <nav className="bg-blue_1 px-40 pb-7">
->>>>>>> 29942d570bcc292044f6904572779abfda08c28c
       <div className="flex justify-between items-center">
         <Link to={"/"} className="w-36">
           <img src={bookingLogo} alt="Booking Logo" />
