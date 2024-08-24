@@ -11,17 +11,24 @@ import {
   ShieldQuestion,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function Header() {
-  const { loggedInUser } = useAuth();
+  const { loggedInUser, logout } = useAuth();
   return (
-    
     <nav className="bg-blue_1 px-40 pb-7">
       <div className="flex justify-between items-center">
         <Link to={"/"} className="w-40">
           <img src="/src/images/Booking_Com_Logotype_Aug2020_White_Blue-BG.png" />
         </Link>
-                <div className="flex flex-row-reverse items-center">
+        <div className="flex flex-row-reverse items-center">
           {!loggedInUser ? (
             <div className="flex flex-row-reverse gap-2">
               <Link
@@ -31,25 +38,40 @@ function Header() {
                 Sign in
               </Link>
               <Link
-                to="/auth/register"
+                to="/auth"
                 className="text-nav_btn_text bg-blue_2 rounded-[3px] px-4 py-2 text-sm font-semibold border border-nav_btn_text"
               >
                 Register
               </Link>
             </div>
           ) : (
-            <div className="flex gap-2 items-center">
-              <Avatar>
-                <AvatarImage src="" />
-                <AvatarFallback className="bg-yellow font-bold">
-                  {loggedInUser.username.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-white font-bold">{loggedInUser.username}</p>
-                <p className="text-yellow">Genius Level 1</p>
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="flex gap-2 items-center">
+                  <Avatar>
+                    <AvatarImage src="" />
+                    <AvatarFallback className="bg-yellow font-bold">
+                      {loggedInUser.email.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-white font-bold">
+                      {loggedInUser.username}
+                    </p>
+                    <p className="text-yellow">Genius Level 1</p>
+                  </div>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Manage account</DropdownMenuItem>
+                <DropdownMenuItem>Bookings & Trips</DropdownMenuItem>
+                <DropdownMenuItem>Genius loyalty program</DropdownMenuItem>
+                <DropdownMenuItem>Rewards & Wallet</DropdownMenuItem>
+                <DropdownMenuItem>Reviews</DropdownMenuItem>
+                <DropdownMenuItem>Saved</DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>Sign out</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
           <div className="flex flex-row-reverse gap-3">
             <Button className="bg-blue_1 rounded-sm hover:bg-hover font-semibold text-md">

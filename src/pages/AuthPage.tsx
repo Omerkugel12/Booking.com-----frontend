@@ -38,7 +38,10 @@ function AuthPage({
     try {
       setEmail(values.email);
       const res = await api.post("auth/check-email", values);
-      res.data === true ? navigate("/auth/login") : navigate("/auth/register");
+
+      res.data.exists === true
+        ? navigate("/auth/login")
+        : navigate("/auth/register");
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +50,7 @@ function AuthPage({
   return (
     <>
       <nav className="flex justify-between items-center bg-blue_1 px-40 ">
-        <Link to={"/stays"} className="w-40">
+        <Link to={"/"} className="w-40">
           <img src="/src/images/Booking_Com_Logotype_Aug2020_White_Blue-BG.png" />
         </Link>
         <div className="flex flex-row-reverse items-center">
@@ -85,6 +88,7 @@ function AuthPage({
                     <FormLabel>Email address</FormLabel>
                     <FormControl>
                       <Input
+                        className="focus:border-2 focus:border-nav_btn_text"
                         placeholder="Enter your email address"
                         {...field}
                       />

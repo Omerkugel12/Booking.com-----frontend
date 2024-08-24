@@ -15,14 +15,8 @@ export interface User {
 }
 
 export interface UserToRegister {
-  username: FormDataEntryValue | null;
   email: FormDataEntryValue | null;
   password: FormDataEntryValue | null;
-  firstName: FormDataEntryValue | null;
-  lastName: FormDataEntryValue | null;
-  phone: FormDataEntryValue | null;
-  city: FormDataEntryValue | null;
-  country: FormDataEntryValue | null;
 }
 
 export interface UserCradantial {
@@ -60,7 +54,7 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
 
     async function fetchUser() {
       try {
-        const response = await api.get("/users");
+        const response = await api.get("/auth/me");
         setLoggedInUser(response.data);
       } catch (error: any) {
         if (error.response?.status === 401) {
@@ -81,13 +75,12 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
   function logout() {
     setToken(null);
     setLoggedInUser(null);
-    navigate("/auth/login");
+    // navigate("/auth/login");
   }
 
   async function login(userData: UserCradantial) {
     try {
       const response = await api.post("/auth/login", userData);
-      console.log(response.data);
 
       setToken(response.data.token);
       navigate("/");
@@ -99,6 +92,7 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
   async function register(userData: UserToRegister) {
     try {
       await api.post("/auth/register", userData);
+      navigate("/auth/login");
     } catch (error) {
       console.error("Error registering:", error);
     }
