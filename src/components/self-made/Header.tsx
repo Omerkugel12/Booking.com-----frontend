@@ -18,7 +18,7 @@ function Header() {
     // <div className="bg-blue_1">
     <nav className="bg-blue_1 px-40 pb-4">
       <div className="flex justify-between items-center">
-        <Link to={"/stays"} className="w-40">
+        <Link to={"/"} className="w-40">
           <img src="/src/images/Booking_Com_Logotype_Aug2020_White_Blue-BG.png" />
         </Link>
         {/* <Link to={"/"}>
@@ -28,7 +28,7 @@ function Header() {
           {!loggedInUser ? (
             <div className="flex flex-row-reverse gap-2">
               <Link
-                to={"/auth/login"}
+                to={"/auth"}
                 className="text-nav_btn_text bg-blue_2 rounded-[3px] px-2 py-2 text-sm font-semibold border border-nav_btn_text"
               >
                 Sign in

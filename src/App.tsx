@@ -1,17 +1,18 @@
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Layout from "./pages/Layout";
-import { Hotel } from "./models/Hotel.model";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ResultPage from "./pages/ResultPage";
+import AuthPage from "./pages/AuthPage";
+import { useState } from "react";
 
 function App() {
-
+  const [email, setEmail] = useState<string>("");
   return (
     <>
       <Routes>
-        <Route path="/stays">
+        <Route path="/">
           <Route
             path=""
             element={
@@ -22,15 +23,12 @@ function App() {
           />
         </Route>
         <Route path="/auth">
-          <Route path="login" element={<LoginPage />} />
           <Route
-            path="register"
-            element={
-              <Layout>
-                <RegisterPage />
-              </Layout>
-            }
+            index
+            element={<AuthPage email={email} setEmail={setEmail} />}
           />
+          <Route path="login" element={<LoginPage email={email} />} />
+          <Route path="register" element={<RegisterPage />} />
         </Route>
         <Route
           path="/results"

@@ -84,7 +84,7 @@ function Footer() {
           <div className="flex items-center gap-2">
             <Button className="bg-footer rounded-sm">
               <div className=" flex justify-center size-7 rounded-full overflow-hidden ">
-                <img src="/src/US.png" alt="" />
+                <img src="/src/images/US.png" alt="" />
               </div>
             </Button>
             <Button className="bg-footer rounded-sm text-black">ILS</Button>

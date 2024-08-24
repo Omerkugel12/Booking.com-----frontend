@@ -26,7 +26,7 @@ export interface UserToRegister {
 }
 
 export interface UserCradantial {
-  username: FormDataEntryValue | null;
+  email: FormDataEntryValue | null;
   password: FormDataEntryValue | null;
 }
 
@@ -87,6 +87,8 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
   async function login(userData: UserCradantial) {
     try {
       const response = await api.post("/auth/login", userData);
+      console.log(response.data);
+
       setToken(response.data.token);
       navigate("/");
     } catch (error) {
