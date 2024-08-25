@@ -26,10 +26,10 @@ function ResultPage() {
 
   return (
     <>
-      <div className=" -mt-6 ">
+      <div className="">
         <SearchBar />
       </div>
-      <div className=" flex mt-10">
+      <div className="flex mt-10">
         <div>
           <div>
             <img

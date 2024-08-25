@@ -1,15 +1,34 @@
-import { BedSingle, CalendarDays, UserRound } from "lucide-react";
+import { BedSingle, UserRound } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
 import { DatePickerWithRange } from "./DateRangePicker";
+import React from "react";
+import { DateRange } from "react-day-picker";
+import { addDays } from "date-fns";
 
 function SearchBar() {
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 5),
+  });
+
+  function handleSearchSubmit(ev: React.FormEvent<HTMLFormElement>) {
+    ev.preventDefault();
+
+    const formData = new FormData(ev.currentTarget);
+    const destination = formData.get("destination");
+
+    const data = { destination: destination, date: date };
+    console.log(data);
+  }
+
   return (
-    <div className="-mt-6 p-[3px] rounded-sm px-60 h-[4rem]  z-30">
+    <div className="-mt-8 p-[3px] rounded-sm  h-[4rem]  z-30">
       {" "}
       {/* Updated height */}
       <form
+        onSubmit={handleSearchSubmit}
         id="search-form"
         className="rounded-sm bg-bg_search_bar flex items-center gap-1 p-1 h-full"
       >
@@ -30,7 +49,7 @@ function SearchBar() {
         </div>
 
         {/* Date Input */}
-        <DatePickerWithRange />
+        <DatePickerWithRange date={date} setDate={setDate} />
 
         {/* Guests Input */}
         <div className="relative h-full flex-1 bg-white flex items-center px-4 rounded-sm hover:ring-1 ring-orange-600">
@@ -43,7 +62,6 @@ function SearchBar() {
             id="guests"
             name="guests"
             placeholder="2 adults · 0 children · 1 room"
-            required
             className="w-full border-none focus:outline-none focus:ring-0 placeholder-gray-500 text-xs font-semibold"
           />
         </div>
@@ -52,7 +70,7 @@ function SearchBar() {
           <Button
             type="submit"
             id="search-btn"
-            className="flex-none w-24 px-4 py-3 h-full  bg-blue-500 text-white text-xl font-semibold rounded-sm hover:bg-blue-700 transition-colors"
+            className="flex-none w-24 px-4 py-3 h-full  bg-nav_btn_text text-white text-xl font-semibold rounded-sm hover:bg-blue-700 transition-colors"
           >
             Search
           </Button>

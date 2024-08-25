@@ -11,17 +11,17 @@ import { HomePageCarousels } from "@/components/self-made/HomePageCarousels";
 const HomePage = () => {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <HeroSection />
       <SearchBar />
-      <div className="px-64 mt-10 space-y-10">
+      <div className="mt-10 space-y-10">
         <RecentSearches />
         <InterestedProperties />
         <OffersSection />
         <PropertyTypes />
         <HomePageCarousels />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
