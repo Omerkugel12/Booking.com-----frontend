@@ -4,8 +4,12 @@ import InterestedProperties from "@/components/self-made/InterestedProperties";
 import OffersSection from "@/components/self-made/OffersSection";
 import PropertyTypes from "@/components/self-made/PropertyTypes";
 import SearchBar from "@/components/self-made/SearchBar";
+import BrowseByPropertyTypeCarucel from "@/components/self-made/BrowseByPropertyTypeCarucel";
+
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
+import { HomePageCarousels } from "@/components/self-made/HomePageCarousels";
+import Banner from "@/components/self-made/HomePageBanner";
 
 const HomePage = () => {
   return (
@@ -18,6 +22,9 @@ const HomePage = () => {
         <InterestedProperties />
         <OffersSection />
         <PropertyTypes />
+        <HomePageCarousels />
+        <BrowseByPropertyTypeCarucel />
+        <Banner />
       </div>
       {/* <Footer /> */}
     </div>
