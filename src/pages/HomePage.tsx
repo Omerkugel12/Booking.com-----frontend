@@ -6,6 +6,7 @@ import PropertyTypes from "@/components/self-made/PropertyTypes";
 import SearchBar from "@/components/self-made/SearchBar";
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
+import { HomePageCarousels } from "@/components/self-made/HomePageCarousels";
 
 const HomePage = () => {
   return (
@@ -18,6 +19,7 @@ const HomePage = () => {
         <InterestedProperties />
         <OffersSection />
         <PropertyTypes />
+        <HomePageCarousels />
       </div>
       <Footer />
     </div>
