@@ -13,7 +13,7 @@ const HomePage = () => {
       <Header />
       <HeroSection />
       <SearchBar />
-      <div className="px-64 mt-10 space-y-10">
+      <div className="px-52 mt-10 space-y-10">
         <RecentSearches />
         <InterestedProperties />
         <OffersSection />

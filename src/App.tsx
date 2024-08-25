@@ -6,6 +6,10 @@ import RegisterPage from "./pages/RegisterPage";
 import ResultPage from "./pages/ResultPage";
 import AuthPage from "./pages/AuthPage";
 import { useState } from "react";
+import FlightsPage from "./pages/FlightsPage";
+import CarRentalsPage from "./pages/CarRentalsPage";
+import AttractionsPage from "./pages/AttractionsPage";
+import TaxiPage from "./pages/TaxiPage";
 
 function App() {
   const [email, setEmail] = useState<string>("");
@@ -32,7 +36,38 @@ function App() {
           <Route path="login" element={<LoginPage email={email} />} />
           <Route path="register" element={<RegisterPage email={email} />} />
         </Route>
-        ;{" "}
+        <Route
+          path="flights"
+          element={
+            <Layout>
+              <FlightsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="car_rentals"
+          element={
+            <Layout>
+              <CarRentalsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="attractions"
+          element={
+            <Layout>
+              <AttractionsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="taxi"
+          element={
+            <Layout>
+              <TaxiPage />
+            </Layout>
+          }
+        />
       </Routes>
     </>
   );
