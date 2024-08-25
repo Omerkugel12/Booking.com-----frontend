@@ -24,9 +24,7 @@ function SearchBar() {
   }
 
   return (
-    <div className="-mt-8 p-[3px] rounded-sm  h-[4rem]  z-30">
-      {" "}
-      {/* Updated height */}
+    <div className="-mt-8 p-[3px] rounded-sm h-[4rem] z-30">
       <form
         onSubmit={handleSearchSubmit}
         id="search-form"

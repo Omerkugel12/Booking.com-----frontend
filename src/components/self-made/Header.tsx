@@ -28,7 +28,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import bookingLogo from "@/images/bookingLogo.svg";
 import { useState } from "react";
 
-function Header() {
+interface PropType {
+  type: "results" | "default";
+}
+
+function Header({ type }: PropType) {
   const { loggedInUser, logout } = useAuth();
   const [activeButton, setActiveButton] = useState("stays");
 
@@ -37,7 +41,14 @@ function Header() {
   };
 
   return (
-    <nav className="bg-blue_1 px-52 py-4">
+    <nav
+      className={
+        type !== "results"
+          ? "bg-blue_1 px-52 py-4"
+          : "bg-blue_1 px-52 py-4 pb-10"
+      }
+    >
+      {/* <nav className="bg-blue_1 px-52 py-4 pb-10"> */}
       <div className="flex justify-between items-center">
         <Link to={"/"} className="w-36">
           <img src={bookingLogo} alt="Booking Logo" />
