@@ -28,9 +28,9 @@ function App() {
           <Route
             path="results"
             element={
-              <Layout>
-                <ResultPage />
-              </Layout>
+              // <Layout>
+              <ResultPage />
+              // {/* </Layout> */}
             }
           />
           <Route path="stays" />
