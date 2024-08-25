@@ -4,7 +4,6 @@ import Footer from "@/components/self-made/Footer";
 import Header from "@/components/self-made/Header";
 import ResultHotelCard from "@/components/self-made/ResultHotelCard";
 import SearchBar from "@/components/self-made/SearchBar";
-import { Button } from "@/components/ui/button";
 import { Hotel } from "@/models/Hotel.model";
 
 function ResultPage() {
