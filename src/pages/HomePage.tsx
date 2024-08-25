@@ -10,16 +10,16 @@ import Footer from "@/components/self-made/Footer";
 const HomePage = () => {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <HeroSection />
       <SearchBar />
-      <div className="px-64 mt-10 space-y-10">
+      <div className="mt-10 space-y-10">
         <RecentSearches />
         <InterestedProperties />
         <OffersSection />
         <PropertyTypes />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
