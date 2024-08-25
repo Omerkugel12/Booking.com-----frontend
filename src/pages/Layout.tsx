@@ -10,7 +10,7 @@ function Layout({ children }: Props) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex-1 ">{children}</div>
+      <div className="flex-1 px-56">{children}</div>
       <Footer />
     </div>
   );

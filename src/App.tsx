@@ -13,14 +13,16 @@ function App() {
     <>
       <Routes>
         <Route path="/">
+          <Route path="" element={<HomePage />} />
           <Route
-            path=""
+            path="results"
             element={
               <Layout>
-                <HomePage />
+                <ResultPage />
               </Layout>
             }
           />
+          <Route path="stays" />
         </Route>
         <Route path="/auth">
           <Route
@@ -30,14 +32,6 @@ function App() {
           <Route path="login" element={<LoginPage email={email} />} />
           <Route path="register" element={<RegisterPage email={email} />} />
         </Route>
-        <Route
-          path="/results"
-          element={
-            <Layout>
-              <ResultPage />
-            </Layout>
-          }
-        />
         ;{" "}
       </Routes>
     </>
