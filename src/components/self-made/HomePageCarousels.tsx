@@ -12,7 +12,6 @@ import car from "@/images/carRental.svg";
 import breakfasts from "@/images/breakfasts.svg";
 import bad from "@/images/bad.svg";
 import prioritySupport from "@/images/prioritySupport.svg";
-import Banner from "@/components/self-made/HomePageBanner";
 
 export function HomePageCarousels() {
   return (
@@ -154,75 +153,6 @@ export function HomePageCarousels() {
           <CarouselNext />
         </Carousel>
       </div>
-      {/* Second Carousel - Browse by Property Type in Eilat */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-semibold">
-          Browse by property type in Eilat
-        </h2>
-        <Carousel className="w-full max-w-full">
-          <CarouselContent className="-ml-4">
-            <CarouselItem className="pl-4 md:basis-1/3 lg:basis-1/4">
-              <Card className="p-4">
-                <CardContent>
-                  <img
-                    src="https://example.com/hotels.jpg"
-                    alt="Hotels"
-                    className="rounded-lg mb-4 object-cover w-full h-32"
-                  />
-                  <h3 className="font-semibold">Hotels</h3>
-                  <p className="text-sm text-gray-500">Sep 1-Sep 6, 2 adults</p>
-                  <p className="text-sm">50 available</p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-            <CarouselItem className="pl-4 md:basis-1/3 lg:basis-1/4">
-              <Card className="p-4">
-                <CardContent>
-                  <img
-                    src="https://example.com/apartments.jpg"
-                    alt="Apartments"
-                    className="rounded-lg mb-4 object-cover w-full h-32"
-                  />
-                  <h3 className="font-semibold">Apartments</h3>
-                  <p className="text-sm text-gray-500">Sep 1-Sep 6, 2 adults</p>
-                  <p className="text-sm">316 available</p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-            <CarouselItem className="pl-4 md:basis-1/3 lg:basis-1/4">
-              <Card className="p-4">
-                <CardContent>
-                  <img
-                    src="https://example.com/villas.jpg"
-                    alt="Villas"
-                    className="rounded-lg mb-4 object-cover w-full h-32"
-                  />
-                  <h3 className="font-semibold">Villas</h3>
-                  <p className="text-sm text-gray-500">Sep 1-Sep 6, 2 adults</p>
-                  <p className="text-sm">14 available</p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-            <CarouselItem className="pl-4 md:basis-1/3 lg:basis-1/4">
-              <Card className="p-4">
-                <CardContent>
-                  <img
-                    src="https://example.com/vacationhomes.jpg"
-                    alt="Vacation Homes"
-                    className="rounded-lg mb-4 object-cover w-full h-32"
-                  />
-                  <h3 className="font-semibold">Vacation Homes</h3>
-                  <p className="text-sm text-gray-500">Sep 1-Sep 6, 2 adults</p>
-                  <p className="text-sm">13 available</p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
-      <Banner />
     </div>
   );
 }
