@@ -7,16 +7,40 @@ import flights from "@/images/flights.svg";
 import carRental from "@/images/carRental.svg";
 import attractions from "@/images/arrtactions.svg";
 import airportTaxies from "@/images/airportTaxies.svg";
+import {
+  Cloud,
+  CreditCard,
+  Github,
+  Keyboard,
+  LifeBuoy,
+  LogOut,
+  Mail,
+  MessageSquare,
+  Plus,
+  PlusCircle,
+  Settings,
+  User,
+  UserPlus,
+  Users,
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import bookingLogo from "@/images/bookingLogo.svg";
 import { SetStateAction, useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
 
 function Header() {
   const { loggedInUser } = useAuth();
@@ -56,32 +80,117 @@ function Header() {
             </div>
           ) : (
             <DropdownMenu>
-              <DropdownMenuTrigger>
-                <div className="flex gap-2 items-center">
-                  <Avatar>
-                    <AvatarImage src="" />
-                    <AvatarFallback className="bg-yellow font-bold">
-                      {loggedInUser.email.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-white font-bold">
-                      {loggedInUser.username}
-                    </p>
-                    <p className="text-yellow">Genius Level 1</p>
+              <DropdownMenuTrigger asChild>
+                <Button className="bg-inherit">
+                  <div className="flex gap-2 items-center">
+                    <Avatar>
+                      <AvatarImage src="" />
+                      <AvatarFallback className="bg-yellow font-bold">
+                        {loggedInUser.email.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-white font-bold">
+                        {loggedInUser.username}
+                      </p>
+                      <p className="text-yellow">Genius Level 1</p>
+                    </div>
                   </div>
-                </div>
+                </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>Manage account</DropdownMenuItem>
-                <DropdownMenuItem>Bookings & Trips</DropdownMenuItem>
-                <DropdownMenuItem>Genius loyalty program</DropdownMenuItem>
-                <DropdownMenuItem>Rewards & Wallet</DropdownMenuItem>
-                <DropdownMenuItem>Reviews</DropdownMenuItem>
-                <DropdownMenuItem>Saved</DropdownMenuItem>
-                <DropdownMenuItem onClick={logout}>Sign out</DropdownMenuItem>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                    <DropdownMenuShortcut></DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    <span>Billing</span>
+                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Keyboard className="mr-2 h-4 w-4" />
+                    <span>Keyboard shortcuts</span>
+                    <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <Users className="mr-2 h-4 w-4" />
+                    <span>Team</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <UserPlus className="mr-2 h-4 w-4" />
+                      <span>Invite users</span>
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem>
+                          <Mail className="mr-2 h-4 w-4" />
+                          <span>Email</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <MessageSquare className="mr-2 h-4 w-4" />
+                          <span>Message</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <PlusCircle className="mr-2 h-4 w-4" />
+                          <span>More...</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                  <DropdownMenuItem>
+                    <Plus className="mr-2 h-4 w-4" />
+                    <span>New Team</span>
+                    <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Github className="mr-2 h-4 w-4" />
+                  <span>GitHub</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <LifeBuoy className="mr-2 h-4 w-4" />
+                  <span>Support</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  <Cloud className="mr-2 h-4 w-4" />
+                  <span>API</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                  <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            // <DropdownMenu>
+            //   <DropdownMenuTrigger>
+
+            //   </DropdownMenuTrigger>
+            //   <DropdownMenuContent>
+            //     <DropdownMenuItem>Manage account</DropdownMenuItem>
+            //     <DropdownMenuItem>Bookings & Trips</DropdownMenuItem>
+            //     <DropdownMenuItem>Genius loyalty program</DropdownMenuItem>
+            //     <DropdownMenuItem>Rewards & Wallet</DropdownMenuItem>
+            //     <DropdownMenuItem>Reviews</DropdownMenuItem>
+            //     <DropdownMenuItem>Saved</DropdownMenuItem>
+            //     <DropdownMenuItem onClick={logout}>Sign out</DropdownMenuItem>
+            //   </DropdownMenuContent>
+            // </DropdownMenu>
           )}
           <div className="flex flex-row-reverse gap-3">
             <Button className="bg-blue_1 rounded-sm hover:bg-hover font-semibold text-md">
