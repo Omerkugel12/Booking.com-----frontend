@@ -24,7 +24,7 @@ function SearchBar() {
   }
 
   return (
-    <div className="-mt-6 p-[3px] rounded-sm px-52 h-[4rem]  z-30">
+    <div className="-mt-8 p-[3px] rounded-sm  h-[4rem]  z-30">
       {" "}
       {/* Updated height */}
       <form
@@ -70,7 +70,7 @@ function SearchBar() {
           <Button
             type="submit"
             id="search-btn"
-            className="flex-none w-24 px-4 py-3 h-full  bg-blue-500 text-white text-xl font-semibold rounded-sm hover:bg-blue-700 transition-colors"
+            className="flex-none w-24 px-4 py-3 h-full  bg-nav_btn_text text-white text-xl font-semibold rounded-sm hover:bg-blue-700 transition-colors"
           >
             Search
           </Button>

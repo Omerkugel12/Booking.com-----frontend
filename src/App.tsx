@@ -17,7 +17,14 @@ function App() {
     <>
       <Routes>
         <Route path="/">
-          <Route path="" element={<HomePage />} />
+          <Route
+            path=""
+            element={
+              <Layout>
+                <HomePage />
+              </Layout>
+            }
+          />
           <Route
             path="results"
             element={
