@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/services/api.service";
+import Header from "@/components/self-made/Header";
 
 function AuthPage({
   setEmail,
@@ -49,27 +50,7 @@ function AuthPage({
 
   return (
     <>
-      <nav className="flex justify-between items-center bg-blue_1 px-40 ">
-        <Link to={"/"} className="w-40">
-          <img src="/src/images/Booking_Com_Logotype_Aug2020_White_Blue-BG.png" />
-        </Link>
-        <div className="flex flex-row-reverse items-center">
-          <div className="flex flex-row-reverse gap-3">
-            <Button className="bg-blue_1 rounded-sm hover:bg-hover">
-              <div className="absolute">
-                <p className="">
-                  <ShieldQuestion strokeWidth={1.3} />
-                </p>
-              </div>
-            </Button>
-            <Button className="bg-blue_1 rounded-sm hover:bg-hover">
-              <div className=" flex justify-center size-6 rounded-full overflow-hidden ">
-                <img src="/src/images/US.png" alt="" />
-              </div>
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <Header type="auth" />
       <main className="flex justify-center pt-2">
         <div className="max-w-96 w-full flex flex-col">
           <h1 className="text-xl font-extrabold mb-10">
