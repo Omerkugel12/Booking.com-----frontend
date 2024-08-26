@@ -3,6 +3,7 @@ import api from "./api.service";
 
 // Interface for the hotel details (You can extend or modify this based on your data model)
 interface HotelDetails {
+  data(data: any): unknown;
   id: string;
   name: string;
   location: string;
