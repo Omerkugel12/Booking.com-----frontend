@@ -1,8 +1,9 @@
 import DropDownSort from "@/components/self-made/DropDownSort";
 import FilterSidebar from "@/components/self-made/Filters";
+import Footer from "@/components/self-made/Footer";
+import Header from "@/components/self-made/Header";
 import ResultHotelCard from "@/components/self-made/ResultHotelCard";
 import SearchBar from "@/components/self-made/SearchBar";
-import { Button } from "@/components/ui/button";
 import { Hotel } from "@/models/Hotel.model";
 
 function ResultPage() {
@@ -26,10 +27,11 @@ function ResultPage() {
 
   return (
     <>
-      <div className="">
+      <Header type="results" />
+      <div className="px-52">
         <SearchBar />
       </div>
-      <div className="flex mt-10">
+      <div className="flex mt-10 px-52">
         <div>
           <div>
             <img
@@ -64,6 +66,7 @@ function ResultPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
