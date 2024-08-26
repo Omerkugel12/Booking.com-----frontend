@@ -1,12 +1,14 @@
-import { BedSingle, Minus, Plus, UserRound } from "lucide-react";
+import { BedSingle, Dessert, Minus, Plus, UserRound } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { DatePickerWithRange } from "./DateRangePicker";
 import React, { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { addDays } from "date-fns";
+import { addDays, parseISO } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Switch } from "../ui/switch";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { format } from "date-fns";
 
 interface Options {
   adults: number;
@@ -15,9 +17,24 @@ interface Options {
 }
 
 function SearchBar() {
+  // const [destination, setDestination] = useState<string | "">();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialStartDate = searchParams.get("startDate");
+  const initialEndDate = searchParams.get("endDate");
+
+  // Convert parsed dates to Date objects if they exist
+  const parsedStartDate = initialStartDate
+    ? parseISO(initialStartDate)
+    : new Date();
+  const parsedEndDate = initialEndDate
+    ? parseISO(initialEndDate)
+    : addDays(new Date(), 5);
+
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 5),
+    from: parsedStartDate,
+    to: parsedEndDate,
   });
 
   const [options, setOptions] = useState<Options>({
@@ -27,6 +44,12 @@ function SearchBar() {
   });
 
   const handleOption = (name: keyof Options, operation: string) => {
+    if (operation === "i") {
+      searchParams.set(name, (options[name] + 1).toString());
+    } else {
+      searchParams.set(name, (options[name] - 1).toString());
+    }
+    setSearchParams(searchParams);
     setOptions((prev) => {
       return {
         ...prev,
@@ -39,18 +62,37 @@ function SearchBar() {
     ev.preventDefault();
 
     const formData = new FormData(ev.currentTarget);
-    const destination = formData.get("destination");
+    const destination = formData.get("destination") as string;
 
     const data = {
       destination: destination,
-      date: date,
+      startDate: date?.from ? format(date.from, "yyyy-MM-dd") : undefined, // Format date to YYYY-MM-DD
+      endDate: date?.to ? format(date.to, "yyyy-MM-dd") : undefined,
       guests: {
         adults: options.adults,
         children: options.children,
         rooms: options.rooms,
       },
     };
+
     console.log(data);
+
+    if (destination) searchParams.set("destination", destination as string);
+    if (data.startDate) searchParams.set("startDate", data.startDate);
+    if (data.endDate) searchParams.set("endDate", data.endDate);
+    searchParams.set("adults", options.adults.toString());
+    searchParams.set("children", options.children.toString());
+    searchParams.set("rooms", options.rooms.toString());
+
+    setSearchParams(searchParams);
+
+    navigate(`/results?${searchParams}`);
+    console.log(data);
+  }
+
+  function handleDestinationChange(ev: React.ChangeEvent<HTMLInputElement>) {
+    searchParams.set("destination", ev.target.value);
+    setSearchParams(searchParams);
   }
 
   return (
@@ -70,6 +112,8 @@ function SearchBar() {
             type="text"
             id="destination"
             name="destination"
+            value={searchParams.get("destination") || ""}
+            onChange={(ev) => handleDestinationChange(ev)}
             placeholder="Where are you going?"
             required
             className="w-full border-none outline-0 placeholder-gray-500 text-xs font-semibold"
@@ -77,7 +121,11 @@ function SearchBar() {
         </div>
 
         {/* Date Input */}
-        <DatePickerWithRange date={date} setDate={setDate} />
+        <DatePickerWithRange
+          date={date}
+          setDate={setDate}
+          searchParams={searchParams}
+        />
 
         {/* Guests Input */}
 
@@ -91,7 +139,19 @@ function SearchBar() {
               <span
                 id="guests"
                 className="w-full border-none focus:outline-none focus:ring-0 placeholder-gray-500 text-xs font-semibold"
-              >{`${options.adults} adult ~ ${options.children} children ~ ${options.rooms} rooms`}</span>
+              >{`${
+                searchParams.get("adults")
+                  ? searchParams.get("adults")
+                  : options.adults
+              } adult ~ ${
+                searchParams.get("children")
+                  ? searchParams.get("children")
+                  : options.children
+              } children ~ ${
+                searchParams.get("rooms")
+                  ? searchParams.get("rooms")
+                  : options.rooms
+              } rooms`}</span>
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-80">
@@ -100,10 +160,17 @@ function SearchBar() {
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Adults</span>
                   <div className="border border-black rounded-sm p-2 flex gap-6">
-                    <button onClick={() => handleOption("adults", "d")}>
+                    <button
+                      disabled={options.adults <= 1}
+                      onClick={() => handleOption("adults", "d")}
+                    >
                       <Minus className="w-4 text-nav_btn_text" />
                     </button>
-                    <span className="text-kg">{options.adults}</span>
+                    <span className="text-kg">
+                      {searchParams.get("adults")
+                        ? searchParams.get("adults")
+                        : options.adults}
+                    </span>
                     <button onClick={() => handleOption("adults", "i")}>
                       <Plus className="w-4 text-nav_btn_text" />
                     </button>
@@ -112,10 +179,17 @@ function SearchBar() {
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Children</span>
                   <div className="border border-black rounded-sm p-2 flex gap-6">
-                    <button onClick={() => handleOption("children", "d")}>
+                    <button
+                      disabled={options.children <= 0}
+                      onClick={() => handleOption("children", "d")}
+                    >
                       <Minus className="w-4 text-nav_btn_text" />
                     </button>
-                    <span className="text-kg">{options.children}</span>
+                    <span className="text-kg">
+                      {searchParams.get("children")
+                        ? searchParams.get("children")
+                        : options.children}
+                    </span>
                     <button onClick={() => handleOption("children", "i")}>
                       <Plus className="w-4 text-nav_btn_text" />
                     </button>
@@ -124,10 +198,17 @@ function SearchBar() {
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Rooms</span>
                   <div className="border border-black rounded-sm p-2 flex gap-6">
-                    <button onClick={() => handleOption("rooms", "d")}>
+                    <button
+                      disabled={options.rooms <= 1}
+                      onClick={() => handleOption("rooms", "d")}
+                    >
                       <Minus className="w-4 text-nav_btn_text" />
                     </button>
-                    <span className="text-kg">{options.rooms}</span>
+                    <span className="text-kg">
+                      {searchParams.get("rooms")
+                        ? searchParams.get("rooms")
+                        : options.rooms}
+                    </span>
                     <button onClick={() => handleOption("rooms", "i")}>
                       <Plus className="w-4 text-nav_btn_text" />
                     </button>

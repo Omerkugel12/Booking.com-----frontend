@@ -15,6 +15,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import Header from "@/components/self-made/Header";
+import Footer from "@/components/self-made/Footer";
 
 const formSchema = z
   .object({
@@ -50,32 +52,14 @@ function RegisterPage({ email }: { email: string }) {
 
   function handleRegisterSubmit(values: z.infer<typeof formSchema>) {
     const data = { email, password: values.password };
+    console.log(data);
+
     register(data);
   }
 
   return (
     <>
-      <nav className="flex justify-between items-center bg-blue_1 px-40 ">
-        <Link to={"/"} className="w-40">
-          <img src="/src/images/Booking_Com_Logotype_Aug2020_White_Blue-BG.png" />
-        </Link>
-        <div className="flex flex-row-reverse items-center">
-          <div className="flex flex-row-reverse gap-3">
-            <Button className="bg-blue_1 rounded-sm hover:bg-hover">
-              <div className="absolute">
-                <p className="">
-                  <ShieldQuestion strokeWidth={1.3} />
-                </p>
-              </div>
-            </Button>
-            <Button className="bg-blue_1 rounded-sm hover:bg-hover">
-              <div className=" flex justify-center size-6 rounded-full overflow-hidden ">
-                <img src="/src/images/US.png" alt="" />
-              </div>
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <Header type="auth" />
       <main className="flex justify-center pt-2">
         <div className="max-w-[375px] w-full flex flex-col space-y-5 mt-14">
           <h1 className="text-xl font-extrabold">Create password</h1>
