@@ -5,25 +5,28 @@ import Header from "@/components/self-made/Header";
 import ResultHotelCard from "@/components/self-made/ResultHotelCard";
 import SearchBar from "@/components/self-made/SearchBar";
 import { Hotel } from "@/models/Hotel.model";
+import { useLocation, useSearchParams } from "react-router-dom";
+
+const hotel1: Hotel = {
+  _id: "1",
+  name: "Hotel 1",
+  type: "hotel",
+  city: "New York",
+  address: "456 Elm St",
+  distance: "2KM",
+  photos: [
+    "https://cf.bstatic.com/xdata/images/hotel/square240/464042313.webp?k=fa5c892f6a184eb5dc81bd082667f1203dc2138ba4e4429032fe7be1fb1190e6&o=",
+  ],
+  title: "Hotel 1",
+  desc: "This is a great hotel located in the heart of the city.",
+  rating: 4.8,
+  rooms: ["Room 1", "Room 2", "Room 3"],
+  cheapestPrice: 100,
+  featured: true,
+};
 
 function ResultPage() {
-  const hotel1: Hotel = {
-    _id: "1",
-    name: "Hotel 1",
-    type: "hotel",
-    city: "New York",
-    address: "456 Elm St",
-    distance: "2KM",
-    photos: [
-      "https://cf.bstatic.com/xdata/images/hotel/square240/464042313.webp?k=fa5c892f6a184eb5dc81bd082667f1203dc2138ba4e4429032fe7be1fb1190e6&o=",
-    ],
-    title: "Hotel 1",
-    desc: "This is a great hotel located in the heart of the city.",
-    rating: 4.8,
-    rooms: ["Room 1", "Room 2", "Room 3"],
-    cheapestPrice: 100,
-    featured: true,
-  };
+  // const [searchParams, setSearchParams] = useSearchParams();
 
   return (
     <>
