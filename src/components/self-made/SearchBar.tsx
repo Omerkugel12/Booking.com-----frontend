@@ -87,7 +87,7 @@ function SearchBar() {
     setSearchParams(searchParams);
 
     navigate(`/results?${searchParams}`);
-    console.log(data);
+    // console.log(data);
   }
 
   function handleDestinationChange(ev: React.ChangeEvent<HTMLInputElement>) {
