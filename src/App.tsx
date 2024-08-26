@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ResultPage from "./pages/ResultPage";
 import AuthPage from "./pages/AuthPage";
-import { useState } from "react";
 import FlightsPage from "./pages/FlightsPage";
 import CarRentalsPage from "./pages/CarRentalsPage";
 import AttractionsPage from "./pages/AttractionsPage";
@@ -13,7 +12,6 @@ import TaxiPage from "./pages/TaxiPage";
 import { useSessionStorage } from "@uidotdev/usehooks";
 
 function App() {
-  // const [email, setEmail] = useState<string>("");
   const [email, setEmail] = useSessionStorage("auth_email", "");
   return (
     <>

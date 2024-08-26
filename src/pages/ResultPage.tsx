@@ -4,8 +4,9 @@ import Footer from "@/components/self-made/Footer";
 import Header from "@/components/self-made/Header";
 import ResultHotelCard from "@/components/self-made/ResultHotelCard";
 import SearchBar from "@/components/self-made/SearchBar";
+import { useSearch } from "@/context/SearchContext";
 import { Hotel } from "@/models/Hotel.model";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const hotel1: Hotel = {
   _id: "1",
@@ -26,20 +27,30 @@ const hotel1: Hotel = {
 };
 
 function ResultPage() {
-  // const [searchParams, setSearchParams] = useSearchParams();
+  // Get the current search parameters
+  const [searchParams] = useSearchParams();
+
+  // Extract specific query parameters
+  const destination = searchParams.get("destination");
+  const startDate = searchParams.get("startDate");
+  const endDate = searchParams.get("endDate");
+  const adults = searchParams.get("adults");
+  const children = searchParams.get("children");
+  const rooms = searchParams.get("rooms");
 
   return (
     <>
       <Header type="results" />
-      <div className="px-52">
+      <div className="px-44">
         <SearchBar />
       </div>
-      <div className="flex mt-10 px-52">
+      <div className="flex mt-10 px-44">
         <div>
           <div>
             <img
               className=" w-80 h-32 rounded-xl"
               src="src\images\ShowOnMap.webp"
+              alt="Map"
             />
             <div>
               <FilterSidebar />
@@ -50,9 +61,14 @@ function ResultPage() {
           <div className=" px-10 ">
             <div className=" flex flex-col gap-2 text-lg ">
               <h2 className=" font-bold text-xl">
-                {hotel1?.city ? hotel1.city : ""}: {Response.length || 3}{" "}
-                properties found
+                {destination}: {3} properties found
               </h2>
+              <p className="text-sm">
+                Dates: {startDate} to {endDate}
+              </p>
+              <p className="text-sm">
+                Guests: {adults} adults, {children} children, {rooms} rooms
+              </p>
               <DropDownSort />
               <p className=" border border-blue-200 mt-2 rounded-md p-1 w-fit">
                 Please review any travel advisories provided by your government

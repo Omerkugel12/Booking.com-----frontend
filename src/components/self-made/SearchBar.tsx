@@ -1,4 +1,4 @@
-import { BedSingle, Dessert, Minus, Plus, UserRound } from "lucide-react";
+import { BedSingle, Minus, Plus, UserRound } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { DatePickerWithRange } from "./DateRangePicker";
@@ -9,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Switch } from "../ui/switch";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
+import { useSearch } from "@/context/SearchContext";
 
 interface Options {
   adults: number;
@@ -16,8 +17,9 @@ interface Options {
   rooms: number;
 }
 
+// function SearchBar({ searchParams, setSearchParams }: PropTypes) {
 function SearchBar() {
-  // const [destination, setDestination] = useState<string | "">();
+  const { setDestination1, setDate1, setOptions1 } = useSearch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -63,6 +65,7 @@ function SearchBar() {
 
     const formData = new FormData(ev.currentTarget);
     const destination = formData.get("destination") as string;
+    setDestination1(destination);
 
     const data = {
       destination: destination,
@@ -75,8 +78,6 @@ function SearchBar() {
       },
     };
 
-    console.log(data);
-
     if (destination) searchParams.set("destination", destination as string);
     if (data.startDate) searchParams.set("startDate", data.startDate);
     if (data.endDate) searchParams.set("endDate", data.endDate);
@@ -85,6 +86,8 @@ function SearchBar() {
     searchParams.set("rooms", options.rooms.toString());
 
     setSearchParams(searchParams);
+    setDate1(date);
+    setOptions1(options);
 
     navigate(`/results?${searchParams}`);
     // console.log(data);
@@ -96,7 +99,7 @@ function SearchBar() {
   }
 
   return (
-    <div className="-mt-8 p-[3px] rounded-sm h-[4rem] z-30">
+    <div className="-mt-8 p-[3px] rounded-sm h-[70px] z-30">
       <form
         onSubmit={handleSearchSubmit}
         id="search-form"
