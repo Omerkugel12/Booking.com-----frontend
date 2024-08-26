@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Minus } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
+import BudgetSlider from "../ui/budgetSlider";
 
 // Simulated backend function
 const fetchItemCount = (itemLabel) => {
@@ -115,7 +116,7 @@ const BookingSidebarFilter = () => {
           <span className="text-sm text-gray-700">₪ 150</span>
           <span className="text-sm text-gray-700">₪ 2,000+</span>
         </div>
-        <Slider className="w-full" />
+        <BudgetSlider />
       </div>
 
       <FilterSection

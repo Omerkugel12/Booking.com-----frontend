@@ -54,10 +54,10 @@ function ResultPage() {
                 properties found
               </h2>
               <DropDownSort />
-              <p className=" border border-blue-200 mt-2 rounded-md p-1 w-fit">
-                Please review any travel advisories provided by your government
-                to make an informed decision about your stay in this area, which
-                may be considered conflict-affected.
+              <p className=" border text-sm border-gray-200-200 mt-2 rounded-md p-2 w-fit">
+                Review any travel advisories provided by your government to make
+                an informed decision about your stay in this area, which may be
+                considered conflict-affected.
               </p>
             </div>
 

@@ -9,6 +9,7 @@ import { useState } from "react";
 import FlightsPage from "./pages/FlightsPage";
 import CarRentalsPage from "./pages/CarRentalsPage";
 import AttractionsPage from "./pages/AttractionsPage";
+import HotelDetailsPage from "./pages/HotelDetailsPage";
 import TaxiPage from "./pages/TaxiPage";
 import { useSessionStorage } from "@uidotdev/usehooks";
 
@@ -33,6 +34,14 @@ function App() {
               // <Layout>
               <ResultPage />
               // {/* </Layout> */}
+            }
+          />
+          <Route
+            path="hotel/:hotelId"
+            element={
+              <Layout>
+                <HotelDetailsPage />
+              </Layout>
             }
           />
           <Route path="stays" />
