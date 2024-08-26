@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, SetURLSearchParams } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { Bell, ShieldQuestion } from "lucide-react";
@@ -29,7 +29,7 @@ import bookingLogo from "@/images/bookingLogo.svg";
 import { useState } from "react";
 
 interface PropType {
-  type: "results" | "auth";
+  type: "results" | "auth" | "deafult";
 }
 
 function Header({ type }: PropType) {
@@ -43,9 +43,7 @@ function Header({ type }: PropType) {
   return (
     <nav
       className={
-        type !== "results"
-          ? "bg-blue_1 px-52 py-4"
-          : "bg-blue_1 px-52 py-4 pb-10"
+        type !== "results" ? "bg-blue_1 px-44 p-4" : "bg-blue_1 px-44 p-4 pb-10"
       }
     >
       <div className="flex justify-between items-center">
