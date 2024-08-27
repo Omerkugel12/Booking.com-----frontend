@@ -142,10 +142,10 @@ const HotelDetailsPage: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <div>
               <div className="flex items-center mb-2">
-                <span className="bg-yellow-400 text-white font-bold px-2 py-1 rounded-sm mr-2">
+                <span className="bg-yellow text-white font-bold px-2 py-1 rounded-sm mr-2">
                   ★★★
                 </span>
-                <span className="bg-yellow-400 text-white font-bold px-2 py-1 rounded-sm">
+                <span className="bg-yellow text-white font-bold px-2 py-1 rounded-sm">
                   Travel Proud
                 </span>
               </div>
@@ -202,14 +202,15 @@ const HotelDetailsPage: React.FC = () => {
             </div>
             <div className=" w-1/5 bg-white p-4 rounded-lg shadow-lg">
               {/* Rating Section */}
-              <div className="flex flex-col items-center border-b pb-4 mb-4">
-                <div className="flex items-center">
-                  <span className="bg-blue-600 text-white text-lg font-bold px-3 py-1 rounded-md">
-                    8.2
-                  </span>
+              <div className="flex items-center justify-end gap-2 border-b pb-4 mb-4">
+                <div className="flex flex-col items-center">
                   <span className="ml-2 text-lg font-semibold">Very Good</span>
+                  <p className="text-sm text-gray-600">272 reviews</p>
                 </div>
-                <p className="text-sm text-gray-600">272 reviews</p>
+
+                <span className="bg-blue-900 text-white text-lg font-bold px-3 py-1 rounded-md">
+                  8.2
+                </span>
               </div>
 
               {/* Review Highlights */}
@@ -268,7 +269,7 @@ const HotelDetailsPage: React.FC = () => {
             </div>
           </div>
           {/* Key Features */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-4 gap-4 mb-6">
             <FeatureItem
               icon={<BedSingle className="w-5 h-5 text-gray-700" />}
               label="Apartments"
@@ -293,7 +294,14 @@ const HotelDetailsPage: React.FC = () => {
               icon={<CheckCircle className="w-5 h-5 text-gray-700" />}
               label="Family Rooms"
             />
-            {/* Add more features as needed */}
+            <FeatureItem
+              icon={<BedSingle className="w-5 h-5 text-gray-700" />}
+              label="Apartments"
+            />{" "}
+            <FeatureItem
+              icon={<BedSingle className="w-5 h-5 text-gray-700" />}
+              label="Apartments"
+            />{" "}
           </div>
 
           {/* Hotel Description */}
