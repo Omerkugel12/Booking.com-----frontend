@@ -1,5 +1,6 @@
 import Footer from "@/components/self-made/Footer";
 import Header from "@/components/self-made/Header";
+import ReservationSideBar from "@/components/self-made/ReservationSideBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,6 +22,7 @@ import { format, subDays } from "date-fns";
 import {
   Building2,
   Check,
+  ChevronRight,
   CigaretteOff,
   CircleCheck,
   Coffee,
@@ -30,34 +32,31 @@ import {
   ShowerHead,
   Snowflake,
   Sparkles,
+  Tag,
   UserRound,
   Users,
   Utensils,
   Volume,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function BookingPage() {
   const { loggedInUser } = useAuth();
   const { date1, options1 } = useSearch();
   const dateSevenDaysBefore = date1?.from ? subDays(date1.from, 7) : null;
+  const { hotelId } = useParams();
 
   return (
     <div className="flex flex-col min-h-screen">
       <Header type="bookingPage" />
-      <main className="flex-1 px-44">
+      <main className="flex-1 px-44 pb-32">
         <div className="h-6 bg-black my-8"></div> {/* time line */}
         <section className="grid grid-cols-[1fr_2fr] gap-8">
-          <div className="">
-            {/*hotel*/}
-            <div className="border-[1px] rounded-md">ferc</div>
-            {/*Your booking details*/}
-            <div className="border-[1px] rounded-md">ferc</div>
-            {/*Your price summary*/}
-            <div className="border-[1px] rounded-md">ferc</div>
-            {/*How much will it cost to cancel?*/}
-            <div className="border-[1px] rounded-md">ferc</div>
-          </div>
+          <ReservationSideBar
+            type="bookingPage"
+            hotelId={hotelId}
+            dateSevenDaysBefore={dateSevenDaysBefore}
+          />
 
           <div className="flex flex-col gap-4">
             {/* Sign-in validation */}
@@ -305,14 +304,32 @@ function BookingPage() {
               </div>
             </div>
             {/* button */}
-            <div className="">
-              <Button
-                type="submit"
-                className="bg-nav_btn_text rounded-[5px] text-[16px] py-6 hover:bg-blue_1"
-              >
-                Next: Final details
-              </Button>
+            <div className="flex justify-end">
+              <div className="flex flex-row-reverse gap-4 items-center mt-3">
+                <Link to={`/hotel/${hotelId}/payment`}>
+                  <Button
+                    type="submit"
+                    className="bg-nav_btn_text rounded-[5px] text-[16px] py-6 hover:bg-blue_1"
+                  >
+                    Next: Final details
+                    <ChevronRight />
+                  </Button>
+                </Link>
+                <div className="flex gap-2 items-center">
+                  <Tag
+                    className="text-nav_btn_text"
+                    size={"16px"}
+                    strokeWidth={1.5}
+                  />
+                  <p className="text-nav_btn_text text-sm font-semibold">
+                    We Price Match
+                  </p>
+                </div>
+              </div>
             </div>
+            <p className="text-end mt-4 text-sm font-bold underline">
+              What are my booking conditions?
+            </p>
           </div>
         </section>
       </main>

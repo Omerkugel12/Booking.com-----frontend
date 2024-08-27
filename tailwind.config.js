@@ -18,6 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        purple: "hsl(216, 100%, 96%)",
         green: "hsl(144, 100%, 25%)",
         nav_btn_text: "hsl(212, 100%, 45%)",
         bg_search_bar: "hsl(43, 100%, 50%)",

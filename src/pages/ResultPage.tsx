@@ -29,6 +29,8 @@ const hotel1: Hotel = {
 function ResultPage() {
   // Get the current search parameters
   const [searchParams] = useSearchParams();
+  const { date1 } = useSearch();
+  console.log(date1);
 
   // Extract specific query parameters
   const destination = searchParams.get("destination");
