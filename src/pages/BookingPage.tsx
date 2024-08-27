@@ -1,13 +1,22 @@
 import Footer from "@/components/self-made/Footer";
 import Header from "@/components/self-made/Header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { useSearch } from "@/context/SearchContext";
 import airportTaxies from "@/images/airportTaxies.svg";
 import carRental from "@/images/carRental.svg";
+import { Label } from "@radix-ui/react-dropdown-menu";
 import { format, subDays } from "date-fns";
 import {
   Building2,
@@ -256,7 +265,11 @@ function BookingPage() {
             <div className="border-[1px] rounded-md flex flex-col p-3 gap-4">
               <h2 className="font-bold text-xl">Your arrival time</h2>
               <div className="flex gap-2 items-center">
-                <CircleCheck className="text-green" strokeWidth={1.5} />
+                <CircleCheck
+                  className="text-green"
+                  strokeWidth={1.5}
+                  size={"32px"}
+                />
                 <p className="text-sm">
                   Your room will be ready for check-in at 3:00 PM
                 </p>
@@ -265,15 +278,41 @@ function BookingPage() {
                 <ConciergeBell
                   color="#227733"
                   strokeWidth={1.5}
-                  size={"20px"}
+                  size={"32px"}
                 />
                 <p className="text-sm">
                   24-hour front desk – help whenever you need it!
                 </p>
               </div>
+              <div className="flex flex-col gap-1">
+                <Label className="text-sm font-bold">
+                  Add your estimated arrival time{" "}
+                  <span className="text-rose-700">*</span>
+                </Label>
+                <Select>
+                  <SelectTrigger className="w-1/2">
+                    <SelectValue placeholder="Please select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="light">Please select</SelectItem>
+                    <SelectItem value="dark">Dark</SelectItem>
+                    <SelectItem value="system">System</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-sm text-gray-600">
+                  Time is for Tel Aviv time zone
+                </p>
+              </div>
             </div>
             {/* button */}
-            <div className="">ferc</div>
+            <div className="">
+              <Button
+                type="submit"
+                className="bg-nav_btn_text rounded-[5px] text-[16px] py-6 hover:bg-blue_1"
+              >
+                Next: Final details
+              </Button>
+            </div>
           </div>
         </section>
       </main>
