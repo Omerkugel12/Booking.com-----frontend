@@ -29,7 +29,7 @@ import bookingLogo from "@/images/bookingLogo.svg";
 import { useState } from "react";
 
 interface PropType {
-  type: "results" | "auth" | "deafult";
+  type: "results" | "auth" | "deafult" | "bookingPage";
 }
 
 function Header({ type }: PropType) {
@@ -74,7 +74,7 @@ function Header({ type }: PropType) {
                     <div className="flex gap-1 items-center">
                       <Avatar className="w-8 h-8">
                         <AvatarImage src="" />
-                        <AvatarFallback className="bg-green-700 text-lg font-bold border-2 border-yellow">
+                        <AvatarFallback className="bg-green text-lg font-bold border-2 border-yellow">
                           {loggedInUser.email.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
@@ -168,7 +168,7 @@ function Header({ type }: PropType) {
         )}
       </div>
 
-      {type !== "auth" && (
+      {type !== "auth" && type !== "bookingPage" && (
         <div className="flex gap-0 mt-4">
           <Link to={"/"}>
             <Button
