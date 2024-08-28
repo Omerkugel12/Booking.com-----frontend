@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getHotelDetails } from "../services/hotels.service";
+import { getHotelDetailsWithAvailableRooms } from "../services/hotels.service";
 import { Button } from "@/components/ui/button";
 import {
   MapPin,
@@ -55,9 +55,8 @@ const HotelDetailsPage: React.FC = () => {
   useEffect(() => {
     const fetchHotelDetails = async () => {
       try {
-        const response = await getHotelDetails(hotelId);
+        const response = await getHotelDetailsWithAvailableRooms(hotelId);
         console.log(response);
-
         setHotel(response);
       } catch (error) {
         console.error("Error fetching hotel details:", error);
