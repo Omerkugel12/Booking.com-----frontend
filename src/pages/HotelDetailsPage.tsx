@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { getHotelDetailsWithAvailableRooms } from "../services/hotels.service";
+import goldLike from "@/images/goldLike.svg";
+import map from "@/images/ShowOnMap.webp";
+import { HotelDetails } from "../models/Hotel.model";
 import { Button } from "@/components/ui/button";
 import {
   MapPin,
@@ -12,36 +15,22 @@ import {
   Tv,
   Coffee,
   BedSingle,
+  Bath,
+  Users,
+  CigaretteOff,
 } from "lucide-react";
 import SearchBar from "@/components/self-made/SearchBar";
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
-interface HotelDetails {
-  avgRating: any;
-  valueForMoney: any;
-  location: any;
-  freeWifi: any;
-  comfort: any;
-  cleanliness: any;
-  id: number;
-  name: string;
-  city: string;
-  price: number;
-  description: string;
-  distance: number;
-  freeCancellation: number;
-  prepayment: number;
-  scoreLetter: string;
-  reviews: { text: string; userId: string }[];
-  hotelLink: string;
-  image: string;
-  facilities: { id: string; category: string; name: string }[];
-}
 
 const HotelDetailsPage: React.FC = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
+  const [searchParams] = useSearchParams();
   const [hotel, setHotel] = useState<HotelDetails | null>(null);
   const [activeTab, setActiveTab] = useState("Overview");
+
+  const startDate = searchParams.get("startDate");
+  const endDate = searchParams.get("endDate");
 
   const tabs = [
     "Overview",
@@ -55,8 +44,11 @@ const HotelDetailsPage: React.FC = () => {
   useEffect(() => {
     const fetchHotelDetails = async () => {
       try {
-        const response = await getHotelDetailsWithAvailableRooms(hotelId);
-        console.log(response);
+        const response = await getHotelDetailsWithAvailableRooms(
+          hotelId!,
+          startDate!,
+          endDate!
+        );
         setHotel(response);
       } catch (error) {
         console.error("Error fetching hotel details:", error);
@@ -64,7 +56,7 @@ const HotelDetailsPage: React.FC = () => {
     };
 
     fetchHotelDetails();
-  }, [hotelId]);
+  }, [hotelId, startDate, endDate]);
 
   if (!hotel) {
     return <p>Loading...</p>;
@@ -83,28 +75,32 @@ const HotelDetailsPage: React.FC = () => {
     // Add more mappings as needed based on your facility names
   };
 
-  const MostPopularFacilities = () => {
-    const popularFacilities = [
-      "Non-smoking rooms",
-      "Free Wifi",
-      "Family rooms",
-      "Heating",
-      "Designated smoking area",
-    ]; // Adjust this list as per your business logic
+  const renderFacilities = () => {
+    // Group facilities by category
+    const groupedFacilities = hotel.facilities.reduce((acc, facility) => {
+      if (!acc[facility.category]) {
+        acc[facility.category] = [];
+      }
+      acc[facility.category].push(...facility.name.split("\n"));
+      return acc;
+    }, {} as Record<string, string[]>);
 
     return (
-      <div className="mb-6">
-        <h3 className="font-semibold text-lg mb-4">Most popular facilities</h3>
-        <div className="flex flex-wrap gap-6">
-          {popularFacilities.map((facility, index) => (
-            <div key={index} className="flex items-center space-x-2">
-              {facilitiesIcons[facility] || (
-                <CheckCircle className="w-5 h-5 text-green-600" />
-              )}
-              <span className="text-gray-700">{facility}</span>
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-3 gap-6 mt-8">
+        {Object.keys(groupedFacilities).map((category) => (
+          <div key={category}>
+            <h3 className="font-bold text-lg mb-2">{category}</h3>
+            <ul className="list-none">
+              {groupedFacilities[category].map((item, index) => (
+                <li key={index} className="flex items-center mb-2">
+                  <span className="mr-2">✓</span>{" "}
+                  {/* This can be replaced with an icon if needed */}
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     );
   };
@@ -116,12 +112,22 @@ const HotelDetailsPage: React.FC = () => {
         <SearchBar />
       </div>
       <div className="px-44 py-8">
-        {/* Breadcrumbs */}
-        <nav className="text-sm text-gray-600 mb-4">
-          Home &gt; Hotels &gt; {hotel.city} &gt; {hotel.name}
+        <nav className="flex gap-2 text-sm text-gray-600 mb-4">
+          <a href="" className="text-blue-500 hover:underline">
+            Home
+          </a>
+          &gt;
+          <a href="" className="text-blue-500 hover:underline">
+            Hotels
+          </a>
+          &gt;
+          <a href="" className="text-blue-500 hover:underline">
+            {hotel.city}
+          </a>
+          &gt;
+          <a href="">{hotel.name}</a>
         </nav>
 
-        {/* Tabs Section */}
         <div className="border-b border-gray-300 mb-4">
           <ul className="flex justify-between space-x-8">
             {tabs.map((tab) => (
@@ -141,19 +147,15 @@ const HotelDetailsPage: React.FC = () => {
           </ul>
         </div>
 
-        {/* Main Hotel Details Section */}
         <div className="flex gap-8">
           <div className="flex-1">
-            {/* Hotel Info Section */}
             <div className="flex justify-between items-center mb-6">
               <div>
                 <div className="flex items-center mb-2">
-                  <span className="bg-yellow text-white font-bold px-2 py-1 rounded-sm mr-2">
+                  <span className="bg-white text-yellow font-bold px-2 py-1 rounded-sm mr-2">
                     ★★★
                   </span>
-                  <span className="bg-yellow text-white font-bold px-2 py-1 rounded-sm">
-                    Travel Proud
-                  </span>
+                  <img src={goldLike} alt="Booking Logo" className="h-6" />
                 </div>
                 <h1 className="text-2xl font-bold mb-2">{hotel.name}</h1>
                 <div className="flex items-center text-sm text-gray-600">
@@ -166,7 +168,7 @@ const HotelDetailsPage: React.FC = () => {
                   <span className="ml-2">– Subway Access</span>
                 </div>
               </div>
-              {/* Action Buttons Section */}
+
               <div className="flex flex-col gap-2 items-center space-x-4">
                 <div className="flex gap-4 items-center">
                   <Heart className="text-blue-600 cursor-pointer" />
@@ -185,7 +187,6 @@ const HotelDetailsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Image Gallery */}
             <div className="flex">
               <div className="grid grid-cols-3 gap-2 mb-6 w-4/5">
                 <img
@@ -206,8 +207,7 @@ const HotelDetailsPage: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className=" w-1/5 bg-white p-4 rounded-lg shadow-lg">
-                {/* Rating Section */}
+              <div className="w-1/5 bg-white p-4 rounded-lg shadow-lg">
                 <div className="flex items-center justify-end gap-2 border-b pb-4 mb-4">
                   <div className="flex flex-col items-center">
                     <span className="ml-2 text-lg font-semibold">
@@ -215,13 +215,11 @@ const HotelDetailsPage: React.FC = () => {
                     </span>
                     <p className="text-sm text-gray-600">272 reviews</p>
                   </div>
-
                   <span className="bg-blue-900 text-white text-lg font-bold px-3 py-1 rounded-md">
                     8.2
                   </span>
                 </div>
 
-                {/* Review Highlights */}
                 <div className="mb-6">
                   <p className="text-gray-800 font-semibold mb-2">
                     Guests who stayed here loved:
@@ -241,21 +239,15 @@ const HotelDetailsPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Location Section */}
                 <div className="border-b pb-4 mb-4 flex justify-between">
                   <p className="text-lg font-bold">Excellent location!</p>
                   <p className="text-blue-600 font-bold text-xl">
-                    {hotel.location}
+                    {hotel.location.toFixed(1)}
                   </p>
                 </div>
 
-                {/* Map Section */}
                 <div className="mb-4">
-                  <img
-                    src="https://via.placeholder.com/200x150.png" // Replace with actual map image URL or embed a map.
-                    alt="Location map"
-                    className="w-full rounded-lg shadow-lg mb-2"
-                  />
+                  <img className=" w-80 h-32 rounded-xl" src={map} alt="Map" />
                   <Button
                     variant="outline"
                     className="w-full flex items-center justify-center gap-2"
@@ -265,7 +257,6 @@ const HotelDetailsPage: React.FC = () => {
                   </Button>
                 </div>
 
-                {/* Reservation Button */}
                 <div className="flex flex-col items-center gap-2">
                   <Button className="w-full bg-blue-600 text-white">
                     Reserve
@@ -276,47 +267,46 @@ const HotelDetailsPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            {/* Key Features */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
+
+            <div className="grid grid-cols-4 gap-4 mb-6">
               <FeatureItem
-                icon={<BedSingle className="w-5 h-5 text-gray-700" />}
+                icon={<BedSingle className="w-6 h-6 text-gray-700" />}
                 label="Apartments"
               />
               <FeatureItem
-                icon={<Wifi className="w-5 h-5 text-gray-700" />}
+                icon={<Wifi className="w-6 h-6 text-gray-700" />}
                 label="Free Wifi"
               />
               <FeatureItem
-                icon={<Coffee className="w-5 h-5 text-gray-700" />}
+                icon={<Coffee className="w-6 h-6 text-gray-700" />}
                 label="Kitchen"
               />
               <FeatureItem
-                icon={<CheckCircle className="w-5 h-5 text-gray-700" />}
+                icon={<Bath className="w-6 h-6 text-gray-700" />}
                 label="Private Bathroom"
               />
               <FeatureItem
-                icon={<Tv className="w-5 h-5 text-gray-700" />}
+                icon={<Tv className="w-6 h-6 text-gray-700" />}
                 label="Flat-screen TV"
               />
               <FeatureItem
-                icon={<CheckCircle className="w-5 h-5 text-gray-700" />}
+                icon={<Users className="w-6 h-6 text-gray-700" />}
                 label="Family Rooms"
               />
-              {/* Add more features as needed */}
+              <FeatureItem
+                icon={<CheckCircle className="w-6 h-6 text-gray-700" />}
+                label="Key card access"
+              />
+              <FeatureItem
+                icon={<CigaretteOff className="w-6 h-6 text-gray-700" />}
+                label="Non-smoking rooms"
+              />
             </div>
 
-            {/* Hotel Description */}
             <div className="flex gap-8 pt-4">
-              <div>
-                <div className="mb-6 w-2/3">
-                  <p className="text-gray-800">
-                    Notting Hill House provides accommodation within 2.7 miles
-                    of the center of London, with free WiFi and a kitchen with a
-                    microwave, a fridge, and a stovetop. The property is around
-                    a 10-minute walk from Portobello Road Market, 1.3 miles from
-                    Paddington Station, and 1.4 miles from Royal Albert Hall.
-                    Guests can enjoy city views.
-                  </p>
+              <div className="mb-6 w-3/4">
+                <div>
+                  <p className="text-gray-800">{hotel.description}</p>
                   <p className="mt-4 text-gray-800">
                     Couples in particular like the location — they rated it 9.6
                     for a two-person trip.
@@ -327,10 +317,9 @@ const HotelDetailsPage: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Most Popular Facilities */}
-                <MostPopularFacilities />
+                {/* <MostPopularFacilities /> */}
               </div>
-              <div className="">
+              <div className="w-1/4">
                 <div className="bg-white rounded-lg shadow-lg mb-4">
                   <h4 className="text-lg font-semibold mb-2">
                     Property highlights
@@ -359,23 +348,10 @@ const HotelDetailsPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            {/* Facilities Section */}
-            {/* <div className="mt-6 text-lg">
-            <p className="font-semibold">Facilities</p>
-            <ul className="list-disc ml-6 mt-2 text-gray-700">
-              {hotel.facilities.length > 0 ? (
-                hotel.facilities.map((facility, index) => (
-                  <li key={index}>
-                    <strong>{facility.category}:</strong> {facility.name}
-                  </li>
-                ))
-              ) : (
-                <li>No facilities available</li>
-              )}
-            </ul>
-          </div> */}
           </div>
         </div>
+
+        {renderFacilities()}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h3 className="text-2xl font-semibold mb-4">Guest reviews</h3>
 
@@ -392,7 +368,6 @@ const HotelDetailsPage: React.FC = () => {
             </a>
           </div>
 
-          {/* Categories */}
           <div className="grid grid-cols-3 gap-4 mb-4">
             <div>
               <div className="flex justify-between pb-2">
@@ -485,7 +460,6 @@ const HotelDetailsPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Select Topics */}
           <div>
             <h1 className="font-bold text-[16px] pt-4">
               Select topics to read reviews:
