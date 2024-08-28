@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { DateRange } from "react-day-picker";
 
-interface Options {
+export interface Options {
   adults: number;
   children: number;
   rooms: number;
