@@ -18,7 +18,7 @@ interface PropTypes {
   className?: React.HTMLAttributes<HTMLDivElement>;
   date: DateRange | undefined;
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
-  searchParams: URLSearchParams;
+  // searchParams: URLSearchParams;
 }
 
 export function DatePickerWithRange({ className, date, setDate }: PropTypes) {
