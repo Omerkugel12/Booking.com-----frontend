@@ -9,9 +9,9 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 
 interface PropsTypes {
   hotelId: string | undefined;
@@ -24,15 +24,15 @@ function ReservationSideBar({
   dateSevenDaysBefore,
   type,
 }: PropsTypes) {
+  const [promoCode, setPromoCode] = useState("");
   const [detailsShow, setDetailsShow] = useState<boolean>(false);
   const { date1, options1 } = useSearch();
 
   function handleCodeSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    const formData = new FormData(ev.currentTarget);
-    const promoCode = formData.get("promoCode");
 
     console.log(promoCode);
+    setPromoCode("");
   }
 
   return (
@@ -240,7 +240,12 @@ function ReservationSideBar({
           <h2 className="text-md font-bold">Do you have a promo code?</h2>
           <div>
             <Label>Enter your promo code</Label>
-            <Input name="promoCode" className="border-black" />
+            <Input
+              name="promoCode"
+              className="border-black"
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value)}
+            />
           </div>
           <div>
             <Button

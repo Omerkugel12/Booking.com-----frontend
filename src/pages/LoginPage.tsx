@@ -8,10 +8,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, ShieldQuestion } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useForm, FormProvider } from "react-hook-form"; // Import FormProvider
 import { z } from "zod";
-import { Form, Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import Header from "@/components/self-made/Header";
