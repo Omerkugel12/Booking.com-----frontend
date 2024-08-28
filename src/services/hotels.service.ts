@@ -1,35 +1,13 @@
 // services/hotelService.ts
 import api from "./api.service";
+import { HotelDetails, HotelResult } from "@/models/Hotel.model";
 
-// Interface for the hotel details (You can extend or modify this based on your data model)
-interface HotelDetails {
-  data(data: any): unknown;
-  id: string;
-  name: string;
-  location: string;
-  rating: number;
-  reviews: number;
-  loved: string[];
-  facilities: string[];
-  images: string[];
-  mapLink: string;
-}
-
-// Fetch a single hotel's details by ID
-export async function getHotelDetails(hotelId: string): Promise<HotelDetails> {
+// Fetch a list of hotels with filtering and pagination
+export async function getHotels(
+  params: Record<string, any>
+): Promise<HotelResult[]> {
   try {
-    const response = await api.get(`/hotels/${hotelId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching hotel details:", error);
-    throw error;
-  }
-}
-
-// Fetch a list of hotels (this could be useful for displaying all hotels)
-export async function getHotels(): Promise<HotelDetails[]> {
-  try {
-    const response = await api.get("/hotels");
+    const response = await api.get("/hotels", { params });
     return response.data;
   } catch (error) {
     console.error("Error fetching hotels:", error);
@@ -37,13 +15,19 @@ export async function getHotels(): Promise<HotelDetails[]> {
   }
 }
 
-// Create a new hotel (Example)
-export async function createHotel(hotelData: Partial<HotelDetails>) {
+// Fetch detailed hotel information along with available rooms
+export async function getHotelDetailsWithAvailableRooms(
+  hotelId: string,
+  startDate: string,
+  endDate: string
+): Promise<HotelDetails> {
   try {
-    const response = await api.post("/hotels", hotelData);
+    const response = await api.get(`/hotels/${hotelId}`, {
+      params: { startDate, endDate },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error creating hotel:", error);
+    console.error("Error fetching hotel details with available rooms:", error);
     throw error;
   }
 }
