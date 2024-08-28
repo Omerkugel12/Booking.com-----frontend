@@ -50,6 +50,8 @@ export interface HotelDetails {
 
 // Model for the results view of a hotel
 export interface HotelResult {
+  location: any;
+  reviews: number;
   id: number;
   name: string;
   city: string;
