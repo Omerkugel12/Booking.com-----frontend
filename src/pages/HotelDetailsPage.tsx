@@ -1,9 +1,12 @@
+
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+
 import { getHotelDetailsWithAvailableRooms } from "../services/hotels.service";
+import RoomTableDemo from "../components/self-made/ReservationsTable";
 import goldLike from "@/images/goldLike.svg";
 import map from "@/images/ShowOnMap.webp";
-import { HotelDetails } from "../models/Hotel.model";
+import { HotelDetails, AvailableRoom } from "../models/Hotel.model";
 import { Button } from "@/components/ui/button";
 import {
   MapPin,
@@ -27,10 +30,24 @@ const HotelDetailsPage: React.FC = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
   const [searchParams] = useSearchParams();
   const [hotel, setHotel] = useState<HotelDetails | null>(null);
+  const [rooms, setRooms] = useState<AvailableRoom | null>(null);
   const [activeTab, setActiveTab] = useState("Overview");
+  const myDivRef = useRef(null);
 
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
+  let numberOfNights;
+  if (startDate && endDate) {
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+    const difference = endDateObj.getTime() - startDateObj.getTime();
+
+    // Calculate the number of nights
+    numberOfNights = difference / (1000 * 60 * 60 * 24);
+    console.log(numberOfNights);
+  } else {
+    console.error("Invalid date parameters");
+  }
 
   const tabs = [
     "Overview",
@@ -50,6 +67,8 @@ const HotelDetailsPage: React.FC = () => {
           endDate!
         );
         setHotel(response);
+        setRooms(response.availableRooms);
+        console.log(response.availableRooms);
       } catch (error) {
         console.error("Error fetching hotel details:", error);
       }
@@ -62,17 +81,10 @@ const HotelDetailsPage: React.FC = () => {
     return <p>Loading...</p>;
   }
 
-  const facilitiesIcons: { [key: string]: React.ReactNode } = {
-    Wifi: <Wifi className="w-5 h-5 text-green-600" />,
-    "Flat-screen TV": <Tv className="w-5 h-5 text-green-600" />,
-    Kitchen: <Coffee className="w-5 h-5 text-green-600" />,
-    "Non-smoking rooms": <BedSingle className="w-5 h-5 text-green-600" />,
-    "Family rooms": <BedSingle className="w-5 h-5 text-green-600" />,
-    Heating: <CheckCircle className="w-5 h-5 text-green-600" />,
-    "Designated smoking area": (
-      <CheckCircle className="w-5 h-5 text-green-600" />
-    ),
-    // Add more mappings as needed based on your facility names
+  const scrollToMyDiv = () => {
+    if (myDivRef.current) {
+      myDivRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   const renderFacilities = () => {
@@ -173,7 +185,12 @@ const HotelDetailsPage: React.FC = () => {
                 <div className="flex gap-4 items-center">
                   <Heart className="text-blue-600 cursor-pointer" />
                   <Share className="text-blue-600 cursor-pointer" />
-                  <Button className="bg-blue-600 text-white">Reserve</Button>
+                  <Button
+                    className="bg-blue-600 text-white"
+                    onClick={scrollToMyDiv}
+                  >
+                    Reserve
+                  </Button>
                 </div>
                 <div>
                   <a
@@ -258,11 +275,13 @@ const HotelDetailsPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col items-center gap-2">
+
                   <Link to={`/hotel/${hotelId}/booking`}>
                     <Button className="w-full bg-blue-600 text-white">
                       Reserve
                     </Button>
                   </Link>
+
                   <Button variant="outline" className="w-full">
                     Save the property
                   </Button>
@@ -331,7 +350,10 @@ const HotelDetailsPage: React.FC = () => {
                     Top Location: Highly rated by recent guests (9.6)
                   </p>
                   <div className="mt-4">
-                    <Button className="w-full bg-blue-600 text-white">
+                    <Button
+                      className="w-full bg-blue-600 text-white"
+                      onClick={scrollToMyDiv}
+                    >
                       Reserve
                     </Button>
                     <Button
@@ -479,6 +501,9 @@ const HotelDetailsPage: React.FC = () => {
               )}
             </div>
           </div>
+        </div>
+        <div ref={myDivRef}>
+          <RoomTableDemo availableRooms={rooms} nights={numberOfNights} />
         </div>
       </div>
       <Footer />
