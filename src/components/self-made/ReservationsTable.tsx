@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 
 interface RoomTableProps {
   availableRooms: AvailableRoom[];
+  nights: number;
 }
 
-const RoomTable: React.FC<RoomTableProps> = ({ availableRooms }) => {
+const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
   const [selectedRoom, setSelectedRoom] = useState<AvailableRoom | null>(null);
   const [quantity, setQuantity] = useState<number>(0);
 
@@ -30,7 +31,7 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms }) => {
                 Number of Guests
               </th>
               <th className="p-4 border text-white bg-[#003B95]">
-                Price for 5 Nights
+                Price for {nights} Nights
               </th>
               <th className="p-4 border text-white bg-[#4C76B2]">
                 Your Choices
@@ -53,7 +54,7 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms }) => {
                   ))}
                 </td>
                 <td className="p-4 border text-center">
-                  ₪{room.price * 5}
+                  ${room.price * nights}
                   <p className="text-gray-500 text-sm">
                     Includes taxes and fees
                   </p>
@@ -103,12 +104,12 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms }) => {
           {selectedRoom && quantity > 0 ? (
             <>
               <p>{quantity} room(s) for</p>
-              <p className="text-red-500 line-through">{`₪${
-                selectedRoom.price * 5 * quantity
+              <p className="text-red-500 line-through">{`$${
+                selectedRoom.price * nights * quantity
               }`}</p>
-              <p className="text-gray-900 text-xl font-bold">{`₪${(
+              <p className="text-gray-900 text-xl font-bold">{`$${(
                 selectedRoom.price *
-                5 *
+                nights *
                 quantity *
                 0.9
               ).toFixed(0)}`}</p>
@@ -118,7 +119,12 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms }) => {
             <p>Please select a room.</p>
           )}
         </div>
-        <Link to={`booking`}>
+        <Link
+          to={{
+            pathname: "booking",
+            state: { selectedRoom, quantity },
+          }}
+        >
           <button
             className={`w-full py-2 rounded mb-4 ${
               selectedRoom && quantity > 0
