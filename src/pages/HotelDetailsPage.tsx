@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import { getHotelDetailsWithAvailableRooms } from "../services/hotels.service";
@@ -275,7 +274,6 @@ const HotelDetailsPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col items-center gap-2">
-
                   <Link to={`/hotel/${hotelId}/booking`}>
                     <Button className="w-full bg-blue-600 text-white">
                       Reserve

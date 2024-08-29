@@ -12,7 +12,7 @@ interface Facility {
 }
 
 // Interface for available rooms associated with the hotel
-interface AvailableRoom {
+export interface AvailableRoom {
   id: string;
   type: string;
   description: string;
