@@ -55,7 +55,7 @@ function ResultPage() {
     fetchHotels();
   }, [destination, startDate, endDate, adults, children, rooms]);
 
-  if (loading) return <p>Loading hotels...</p>;
+  // if (loading) return <p>Loading hotels...</p>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -79,6 +79,7 @@ function ResultPage() {
         </div>
         <div className="h-[100vh] w-full">
           <div className="px-10">
+            {loading && <p>Loading hotels...</p>}
             <div className="flex flex-col gap-2 text-lg">
               <h2 className="font-bold text-xl pb-4">
                 {destination}: {hotels.length} properties found
