@@ -42,7 +42,9 @@ function BookingPage() {
       <Header type="bookingPage" />
       <main className="flex-1 px-44 pb-32">
         {/* time line */}
-        <div className="h-6 bg-black my-8"></div>
+        <div className="h-6  my-8">
+          <div></div>
+        </div>
         <Button onClick={() => setNextStep(false)} className="">
           back
         </Button>
