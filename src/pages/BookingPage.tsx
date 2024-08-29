@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { HotelDetails } from "@/models/Hotel.model";
 import api from "@/services/api.service";
 import PaymentContent from "@/components/self-made/BookingComps/PaymentContent/PaymentContent";
+import { Button } from "@/components/ui/button";
 
 function BookingPage() {
   const { loggedInUser } = useAuth();
@@ -41,6 +42,9 @@ function BookingPage() {
       <Header type="bookingPage" />
       <main className="flex-1 px-44 pb-32">
         <div className="h-6 bg-black my-8"></div> {/* time line */}
+        <Button onClick={() => setNextStep(false)} className="">
+          back
+        </Button>
         <section className="grid grid-cols-[1fr_2fr] gap-8">
           {!nextStep ? (
             <ReservationSideBar
@@ -66,7 +70,7 @@ function BookingPage() {
               setNextStep={setNextStep}
             />
           ) : (
-            <PaymentContent setNextStep={setNextStep} />
+            <PaymentContent />
           )}
         </section>
       </main>
