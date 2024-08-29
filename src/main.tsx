@@ -5,15 +5,18 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { SearchProvider } from "./context/SearchContext.tsx";
+import { ReservationProvider } from "./context/ReservationContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <SearchProvider>
-          <App />
-        </SearchProvider>
-      </AuthProvider>
+      <ReservationProvider>
+        <AuthProvider>
+          <SearchProvider>
+            <App />
+          </SearchProvider>
+        </AuthProvider>
+      </ReservationProvider>
     </BrowserRouter>
   </StrictMode>
 );

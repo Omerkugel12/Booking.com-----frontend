@@ -372,7 +372,9 @@ const HotelDetailsPage: React.FC = () => {
             </div>
           </div>
         </div>
-
+        <div ref={myDivRef}>
+          <RoomTableDemo availableRooms={rooms} nights={numberOfNights} />
+        </div>
         {renderFacilities()}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h3 className="text-2xl font-semibold mb-4">Guest reviews</h3>
@@ -499,9 +501,6 @@ const HotelDetailsPage: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
-        <div ref={myDivRef}>
-          <RoomTableDemo availableRooms={rooms} nights={numberOfNights} />
         </div>
       </div>
       <Footer />

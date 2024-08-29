@@ -10,7 +10,11 @@ import { useParams } from "react-router-dom";
 import { HotelDetails } from "@/models/Hotel.model";
 import api from "@/services/api.service";
 import PaymentContent from "@/components/self-made/BookingComps/PaymentContent/PaymentContent";
+
+import { useReservation } from "@/context/ReservationContext";
+
 import { Button } from "@/components/ui/button";
+
 
 function BookingPage() {
   const { loggedInUser } = useAuth();
@@ -19,6 +23,13 @@ function BookingPage() {
   const { hotelId } = useParams();
   const [nextStep, setNextStep] = useState<boolean>(false);
   const [hotel, setHotel] = useState<HotelDetails | null>(null);
+
+  const { roomSelections, totalPrice } = useReservation();
+
+  useEffect(() => {
+    console.log("Room Selections:", roomSelections);
+    console.log("Total Price:", totalPrice);
+  }, [roomSelections, totalPrice]);
 
   useEffect(() => {
     async function fetchHotelById(hotelId: string) {
