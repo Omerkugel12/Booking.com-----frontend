@@ -1,5 +1,5 @@
 import { ChevronRight, Tag } from "lucide-react";
-import { Button } from "../../ui/button";
+import { Button } from "../../../ui/button";
 import { User } from "@/context/AuthContext";
 import { Options } from "@/context/SearchContext";
 import { z } from "zod";

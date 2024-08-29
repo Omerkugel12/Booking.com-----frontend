@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { getHotelDetailsWithAvailableRooms } from "../services/hotels.service";
 import goldLike from "@/images/goldLike.svg";
 import map from "@/images/ShowOnMap.webp";
@@ -258,9 +258,11 @@ const HotelDetailsPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col items-center gap-2">
-                  <Button className="w-full bg-blue-600 text-white">
-                    Reserve
-                  </Button>
+                  <Link to={`/hotel/${hotelId}/booking`}>
+                    <Button className="w-full bg-blue-600 text-white">
+                      Reserve
+                    </Button>
+                  </Link>
                   <Button variant="outline" className="w-full">
                     Save the property
                   </Button>

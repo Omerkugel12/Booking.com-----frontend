@@ -1,13 +1,15 @@
-import BookingContent from "@/components/self-made/BookingComps/BookingContent";
+import BookingContent from "@/components/self-made/BookingComps/BookingContent/BookingContent";
 import Footer from "@/components/self-made/Footer";
 import Header from "@/components/self-made/Header";
 import ReservationSideBar from "@/components/self-made/BookingComps/ReservationSideBar";
 import { useAuth } from "@/context/AuthContext";
 import { useSearch } from "@/context/SearchContext";
-import { subDays } from "date-fns";
-import { useState } from "react";
+import { format, subDays } from "date-fns";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { HotelDetails } from "@/models/Hotel.model";
+import api from "@/services/api.service";
+import PaymentContent from "@/components/self-made/BookingComps/PaymentContent/PaymentContent";
 
 function BookingPage() {
   const { loggedInUser } = useAuth();
@@ -15,6 +17,24 @@ function BookingPage() {
   const dateSevenDaysBefore = date1?.from ? subDays(date1.from, 7) : null;
   const { hotelId } = useParams();
   const [nextStep, setNextStep] = useState<boolean>(false);
+  const [hotel, setHotel] = useState<HotelDetails | null>(null);
+
+  useEffect(() => {
+    async function fetchHotelById(hotelId: string) {
+      try {
+        const startDate = date1?.from ? format(date1.from, "yyyy-MM-dd") : "";
+        const endDate = date1?.to ? format(date1.to, "yyyy-MM-dd") : "";
+        const { data } = await api.get(
+          `/hotels/${hotelId}?startDate=${startDate}&endDate=${endDate}`
+        );
+        setHotel(data);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchHotelById(hotelId as string);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -22,11 +42,21 @@ function BookingPage() {
       <main className="flex-1 px-44 pb-32">
         <div className="h-6 bg-black my-8"></div> {/* time line */}
         <section className="grid grid-cols-[1fr_2fr] gap-8">
-          <ReservationSideBar
-            type="bookingPage"
-            hotelId={hotelId}
-            dateSevenDaysBefore={dateSevenDaysBefore}
-          />
+          {!nextStep ? (
+            <ReservationSideBar
+              hotel={hotel}
+              type="bookingPage"
+              hotelId={hotelId}
+              dateSevenDaysBefore={dateSevenDaysBefore}
+            />
+          ) : (
+            <ReservationSideBar
+              hotel={hotel}
+              type="paymentPage"
+              hotelId={hotelId}
+              dateSevenDaysBefore={dateSevenDaysBefore}
+            />
+          )}
 
           {!nextStep ? (
             <BookingContent
@@ -36,12 +66,7 @@ function BookingPage() {
               setNextStep={setNextStep}
             />
           ) : (
-            <>
-              <div>
-                <p>hii</p>
-                <Button onClick={() => setNextStep(false)}>back</Button>
-              </div>
-            </>
+            <PaymentContent setNextStep={setNextStep} />
           )}
         </section>
       </main>
