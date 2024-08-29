@@ -12,17 +12,20 @@ import { Link } from "react-router-dom";
 import { Label } from "../../ui/label";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
+import { HotelDetails } from "@/models/Hotel.model";
 
 interface PropsTypes {
   hotelId: string | undefined;
   dateSevenDaysBefore: Date | null;
   type: "bookingPage" | "paymentPage";
+  hotel: HotelDetails | null;
 }
 
 function ReservationSideBar({
   hotelId,
   dateSevenDaysBefore,
   type,
+  hotel,
 }: PropsTypes) {
   const [promoCode, setPromoCode] = useState("");
   const [detailsShow, setDetailsShow] = useState<boolean>(false);
@@ -30,10 +33,20 @@ function ReservationSideBar({
 
   function handleCodeSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-
-    console.log(promoCode);
     setPromoCode("");
   }
+
+  const hasParking = hotel?.facilities.some((facility) => {
+    return facility.category === "Parking";
+  });
+
+  const totalDays =
+    date1?.to && date1?.from && differenceInDays(date1.to, date1.from);
+
+  const price = 718;
+  const priceWithoutTaxes = totalDays && totalDays * price * options1.rooms;
+  const totalPrice = totalDays && totalDays * price * 1.17 * options1.rooms;
+  const tax = totalPrice && priceWithoutTaxes && totalPrice - priceWithoutTaxes;
 
   return (
     <div className="flex flex-col gap-4">
@@ -43,30 +56,40 @@ function ReservationSideBar({
           <div>
             <p className="text-[0.7rem] font-normal">Hotel</p>
           </div>
-          <p className="text-md font-bold">
-            Crowne Plaza Tel Aviv City Center, an IHG Hotel
-          </p>
+          <p className="text-md font-bold">{hotel?.name}</p>
           <div className="flex flex-col gap-1 mt-1">
-            <p className="text-sm">
-              136 Menachem Begin Road, Tel Aviv, 67011, Israel
+            <p className="text-sm">{hotel?.city}</p>
+            <p className="text-[0.7rem] text-green">
+              Excellent Location — {hotel?.location.toFixed(1)}
             </p>
-            <p className="text-[0.7rem] text-green">Excellent Location — 9.0</p>
           </div>
           <div className="flex gap-2 items-center">
             <div className="bg-blue_1 p-1 rounded-tl-md rounded-tr-md rounded-br-md">
-              <p className="text-[0.8rem] text-white">8.6</p>
+              <p className="text-[0.8rem] text-white">
+                {hotel?.avgRating.toFixed(1)}
+              </p>
             </div>
-            <p className="text-[0.7rem]">Excellent · 3,233 reviews</p>
+            <p className="text-[0.7rem]">
+              {hotel?.scoreLetter} · {hotel?.reviews.length} reviews
+            </p>
           </div>
           <div className="flex gap-1 flex-wrap mt-2">
-            <span className="flex items-center rounded-sm px-1 gap-1">
-              <Wifi color="#000000" strokeWidth={1.5} size={"16px"} />
-              <p className="text-[0.75rem]">Free Wifi</p>
-            </span>
-            <span className="flex items-center rounded-sm px-1 gap-1">
-              <CircleParking color="#000000" strokeWidth={1.5} size={"16px"} />
-              <p className="text-[0.75rem]">Parking</p>
-            </span>
+            {hotel?.freeWifi && (
+              <span className="flex items-center rounded-sm px-1 gap-1">
+                <Wifi color="#000000" strokeWidth={1.5} size={"16px"} />
+                <p className="text-[0.75rem]">Free Wifi</p>
+              </span>
+            )}
+            {hasParking && (
+              <span className="flex items-center rounded-sm px-1 gap-1">
+                <CircleParking
+                  color="#000000"
+                  strokeWidth={1.5}
+                  size={"16px"}
+                />
+                <p className="text-[0.75rem]">Parking</p>
+              </span>
+            )}
             <span className="flex items-center rounded-sm px-1 gap-1">
               <Waves color="#000000" strokeWidth={1.5} size={"16px"} />
               <p className="text-[0.75rem]">Swimming pool</p>
@@ -103,12 +126,7 @@ function ReservationSideBar({
             </section>
             <div className="flex flex-col gap-1">
               <p className="text-sm font-semibold">Total length of stay:</p>
-              <p className="text-sm font-bold">
-                {date1?.to &&
-                  date1?.from &&
-                  differenceInDays(date1.to, date1.from)}{" "}
-                night
-              </p>
+              <p className="text-sm font-bold">{`${totalDays} night`}</p>
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -138,7 +156,7 @@ function ReservationSideBar({
           <div className="bg-purple flex flex-col p-3">
             <div className="flex justify-between items-center">
               <p className="text-2xl font-bold">Price</p>
-              <p className="text-2xl font-bold">₪ 840.06</p>
+              <p className="text-2xl font-bold">{`₪ ${totalPrice}`}</p>
             </div>
             <p className="text-sm text-end text-gray-600">
               Additional charges may apply
@@ -149,11 +167,15 @@ function ReservationSideBar({
             <div className="flex gap-3">
               <Banknote size={"20px"} />
               <div className="flex flex-col gap-2">
-                <p className="text-sm ">Includes ₪ 122.06 in taxes and fees</p>
+                <p className="text-sm ">{`Includes ₪ ${tax?.toFixed(
+                  2
+                )} in taxes and fees`}</p>
                 {detailsShow && (
                   <div className="flex justify-between">
                     <p className="text-sm text-gray-600">17 % VAT</p>
-                    <p className="text-sm text-gray-600">₪ 122.06</p>
+                    <p className="text-sm text-gray-600">{`₪ ${tax?.toFixed(
+                      2
+                    )}`}</p>
                   </div>
                 )}
               </div>
@@ -194,7 +216,7 @@ function ReservationSideBar({
                   ? format(dateSevenDaysBefore, "MMM d") // This will format as "Sep 15"
                   : "N/A"
               }`}</p>
-              <p className="text-sm">₪ 718</p>
+              <p className="text-sm">{`₪ ${priceWithoutTaxes?.toFixed(2)}`}</p>
             </div>
           </div>
         </div>

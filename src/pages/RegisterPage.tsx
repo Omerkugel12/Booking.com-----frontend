@@ -16,7 +16,6 @@ import { z } from "zod";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/self-made/Header";
-import Footer from "@/components/self-made/Footer";
 
 const formSchema = z
   .object({
