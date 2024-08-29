@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import { getHotelDetailsWithAvailableRooms } from "../services/hotels.service";
@@ -275,7 +274,6 @@ const HotelDetailsPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col items-center gap-2">
-
                   <Link to={`/hotel/${hotelId}/booking`}>
                     <Button className="w-full bg-blue-600 text-white">
                       Reserve
@@ -374,7 +372,9 @@ const HotelDetailsPage: React.FC = () => {
             </div>
           </div>
         </div>
-
+        <div ref={myDivRef}>
+          <RoomTableDemo availableRooms={rooms} nights={numberOfNights} />
+        </div>
         {renderFacilities()}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h3 className="text-2xl font-semibold mb-4">Guest reviews</h3>
@@ -501,9 +501,6 @@ const HotelDetailsPage: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
-        <div ref={myDivRef}>
-          <RoomTableDemo availableRooms={rooms} nights={numberOfNights} />
         </div>
       </div>
       <Footer />
