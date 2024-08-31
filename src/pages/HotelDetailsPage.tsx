@@ -43,7 +43,7 @@ const HotelDetailsPage: React.FC = () => {
 
     // Calculate the number of nights
     numberOfNights = difference / (1000 * 60 * 60 * 24);
-    console.log(numberOfNights);
+    // console.log(numberOfNights);
   } else {
     console.error("Invalid date parameters");
   }
@@ -67,7 +67,7 @@ const HotelDetailsPage: React.FC = () => {
         );
         setHotel(response);
         setRooms(response.availableRooms);
-        console.log(response.availableRooms);
+        // console.log(response.availableRooms);
       } catch (error) {
         console.error("Error fetching hotel details:", error);
       }

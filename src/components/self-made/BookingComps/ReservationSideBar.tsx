@@ -1,5 +1,5 @@
 import { useSearch } from "@/context/SearchContext";
-import { differenceInDays, format } from "date-fns";
+import { format } from "date-fns";
 import {
   Banknote,
   CircleParking,
@@ -19,6 +19,10 @@ interface PropsTypes {
   dateSevenDaysBefore: Date | null;
   type: "bookingPage" | "paymentPage";
   hotel: HotelDetails | null;
+  totalRooms: number;
+  totalGuests: number;
+  totalPrice1: number;
+  totalDays: number | undefined;
 }
 
 function ReservationSideBar({
@@ -26,27 +30,26 @@ function ReservationSideBar({
   dateSevenDaysBefore,
   type,
   hotel,
+  totalRooms,
+  totalGuests,
+  totalPrice1,
+  totalDays,
 }: PropsTypes) {
   const [promoCode, setPromoCode] = useState("");
   const [detailsShow, setDetailsShow] = useState<boolean>(false);
-  const { date1, options1 } = useSearch();
+  const { date1 } = useSearch();
 
   function handleCodeSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
     setPromoCode("");
   }
 
+  const priceWithoutTaxes = totalPrice1 - 0.17 * totalPrice1;
+  const tax = totalPrice1 - priceWithoutTaxes;
+
   const hasParking = hotel?.facilities.some((facility) => {
     return facility.category === "Parking";
   });
-
-  const totalDays =
-    date1?.to && date1?.from && differenceInDays(date1.to, date1.from);
-
-  const price = 718;
-  const priceWithoutTaxes = totalDays && totalDays * price * options1.rooms;
-  const totalPrice = totalDays && totalDays * price * 1.17 * options1.rooms;
-  const tax = totalPrice && priceWithoutTaxes && totalPrice - priceWithoutTaxes;
 
   return (
     <div className="flex flex-col gap-4">
@@ -133,9 +136,7 @@ function ReservationSideBar({
             <div className="pt-4">
               <p className="text-sm font-semibold">You selected</p>
               <p className="text-md font-bold">
-                {`${options1 && options1.rooms} room for ${
-                  options1 && options1.adults
-                } adult`}
+                {`${totalRooms} room for ${totalGuests} adult`}
               </p>
             </div>
             <Link
@@ -156,7 +157,9 @@ function ReservationSideBar({
           <div className="bg-purple flex flex-col p-3">
             <div className="flex justify-between items-center">
               <p className="text-2xl font-bold">Price</p>
-              <p className="text-2xl font-bold">{`₪ ${totalPrice}`}</p>
+              <p className="text-2xl font-bold">{`₪ ${totalPrice1.toFixed(
+                2
+              )}`}</p>
             </div>
             <p className="text-sm text-end text-gray-600">
               Additional charges may apply
@@ -249,7 +252,7 @@ function ReservationSideBar({
           <h2 className="text-md font-bold">Your payment details</h2>
           <div className="flex justify-between">
             <p className="text-sm">The property will charge you</p>
-            <p className="text-sm">₪ 840.06</p>
+            <p className="text-sm">₪ {priceWithoutTaxes}</p>
           </div>
         </div>
       )}

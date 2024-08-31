@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { SearchProvider } from "./context/SearchContext.tsx";
 import { ReservationProvider } from "./context/ReservationContext.tsx";
+import { Toaster } from "./components/ui/toaster.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
         <AuthProvider>
           <SearchProvider>
             <App />
+            <Toaster />
           </SearchProvider>
         </AuthProvider>
       </ReservationProvider>
