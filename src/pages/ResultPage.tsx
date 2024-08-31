@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import DropDownSort from "@/components/self-made/DropDownSort";
 import FilterSidebar from "@/components/self-made/Filters";
 import Footer from "@/components/self-made/Footer";
@@ -5,26 +6,10 @@ import Header from "@/components/self-made/Header";
 import ResultHotelCard from "@/components/self-made/ResultHotelCard";
 import SearchBar from "@/components/self-made/SearchBar";
 import { useSearch } from "@/context/SearchContext";
-import { Hotel } from "@/models/Hotel.model";
+import { HotelResult } from "@/models/Hotel.model";
 import { useSearchParams } from "react-router-dom";
-
-const hotel1: Hotel = {
-  _id: "1",
-  name: "Hotel 1",
-  type: "hotel",
-  city: "New York",
-  address: "456 Elm St",
-  distance: "2KM",
-  photos: [
-    "https://cf.bstatic.com/xdata/images/hotel/square240/464042313.webp?k=fa5c892f6a184eb5dc81bd082667f1203dc2138ba4e4429032fe7be1fb1190e6&o=",
-  ],
-  title: "Hotel 1",
-  desc: "This is a great hotel located in the heart of the city.",
-  rating: 4.8,
-  rooms: ["Room 1", "Room 2", "Room 3"],
-  cheapestPrice: 100,
-  featured: true,
-};
+import { getHotels } from "@/services/hotels.service";
+import Map from "@/components/self-made/Map";
 
 function ResultPage() {
   // Get the current search parameters
@@ -38,6 +23,42 @@ function ResultPage() {
   const children = searchParams.get("children");
   const rooms = searchParams.get("rooms");
 
+  // State to store fetched hotels
+  const [hotels, setHotels] = useState<HotelResult[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Function to fetch hotels based on search parameters
+    const fetchHotels = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const filters = {
+          name: destination || undefined,
+          startDate: startDate || undefined,
+          endDate: endDate || undefined,
+          numOfPeople: adults ? parseInt(adults) : undefined,
+          numOfRooms: rooms ? parseInt(rooms) : undefined,
+        };
+        const response = await getHotels(filters);
+        console.log(response.data);
+
+        setHotels(response.data); // Directly set the response since it's already the hotel data
+      } catch (err) {
+        setError("Error fetching hotels. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHotels();
+  }, [destination, startDate, endDate, adults, children, rooms]);
+
+  // if (loading) return <p>Loading hotels...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <>
       <Header type="results" />
@@ -49,37 +70,41 @@ function ResultPage() {
           <div>
             <img
               className=" w-80 h-32 rounded-xl"
-              src="src\images\ShowOnMap.webp"
+              src="src/images/ShowOnMap.webp"
               alt="Map"
             />
+            <Map hotels={hotels} />
             <div>
               <FilterSidebar />
             </div>
           </div>
         </div>
-        <div className=" h-[100vh] w-full  ">
-          <div className=" px-10 ">
-            <div className=" flex flex-col gap-2 text-lg ">
-              <h2 className=" font-bold text-xl">
-                {destination}: {3} properties found
+        <div className="h-[100vh] w-full">
+          <div className="px-10">
+            {loading && <p>Loading hotels...</p>}
+            <div className="flex flex-col gap-2 text-lg">
+              <h2 className="font-bold text-xl pb-4">
+                {destination}: {hotels.length} properties found
               </h2>
-              <p className="text-sm">
+              {/*  <p className="text-sm">
                 Dates: {startDate} to {endDate}
               </p>
               <p className="text-sm">
                 Guests: {adults} adults, {children} children, {rooms} rooms
-              </p>
+              </p> */}
               <DropDownSort />
-              <p className=" border text-sm border-gray-200-200 mt-2 rounded-md p-2 w-fit">
+              {/* <p className="border text-sm border-gray-200-200 mt-2 rounded-md p-2 w-fit">
                 Review any travel advisories provided by your government to make
                 an informed decision about your stay in this area, which may be
                 considered conflict-affected.
-              </p>
+              </p> */}
             </div>
 
-            <div className=" flex w-full">
-              <div className=" w-[95%]">
-                <ResultHotelCard key={hotel1._id} hotel={hotel1} />
+            <div className="flex w-full">
+              <div className="w-[95%]">
+                {hotels.map((hotel) => (
+                  <ResultHotelCard key={hotel.id} hotel={hotel} />
+                ))}
               </div>
             </div>
           </div>

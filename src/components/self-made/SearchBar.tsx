@@ -17,7 +17,6 @@ interface Options {
   rooms: number;
 }
 
-// function SearchBar({ searchParams, setSearchParams }: PropTypes) {
 function SearchBar() {
   const { setDestination1, setDate1, setOptions1 } = useSearch();
   const navigate = useNavigate();
@@ -39,23 +38,23 @@ function SearchBar() {
     to: parsedEndDate,
   });
 
+  const [destination, setDestination] = useState(
+    searchParams.get("destination") || ""
+  );
+
   const [options, setOptions] = useState<Options>({
-    adults: 1,
-    children: 0,
-    rooms: 1,
+    adults: Number(searchParams.get("adults")) || 1,
+    children: Number(searchParams.get("children")) || 0,
+    rooms: Number(searchParams.get("rooms")) || 1,
   });
 
   const handleOption = (name: keyof Options, operation: string) => {
-    if (operation === "i") {
-      searchParams.set(name, (options[name] + 1).toString());
-    } else {
-      searchParams.set(name, (options[name] - 1).toString());
-    }
-    setSearchParams(searchParams);
     setOptions((prev) => {
+      const newValue =
+        operation === "i" ? options[name] + 1 : options[name] - 1;
       return {
         ...prev,
-        [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
+        [name]: newValue,
       };
     });
   };
@@ -78,24 +77,23 @@ function SearchBar() {
       },
     };
 
-    if (destination) searchParams.set("destination", destination as string);
-    if (data.startDate) searchParams.set("startDate", data.startDate);
-    if (data.endDate) searchParams.set("endDate", data.endDate);
-    searchParams.set("adults", options.adults.toString());
-    searchParams.set("children", options.children.toString());
-    searchParams.set("rooms", options.rooms.toString());
+    const updatedSearchParams = new URLSearchParams(searchParams.toString());
+    if (destination) updatedSearchParams.set("destination", destination);
+    if (data.startDate) updatedSearchParams.set("startDate", data.startDate);
+    if (data.endDate) updatedSearchParams.set("endDate", data.endDate);
+    updatedSearchParams.set("adults", options.adults.toString());
+    updatedSearchParams.set("children", options.children.toString());
+    updatedSearchParams.set("rooms", options.rooms.toString());
 
-    setSearchParams(searchParams);
+    setSearchParams(updatedSearchParams);
     setDate1(date);
     setOptions1(options);
 
-    navigate(`/results?${searchParams}`);
-    // console.log(data);
+    navigate(`/results?${updatedSearchParams}`);
   }
 
   function handleDestinationChange(ev: React.ChangeEvent<HTMLInputElement>) {
-    searchParams.set("destination", ev.target.value);
-    setSearchParams(searchParams);
+    setDestination(ev.target.value);
   }
 
   return (
@@ -115,8 +113,8 @@ function SearchBar() {
             type="text"
             id="destination"
             name="destination"
-            value={searchParams.get("destination") || ""}
-            onChange={(ev) => handleDestinationChange(ev)}
+            value={destination}
+            onChange={handleDestinationChange}
             placeholder="Where are you going?"
             required
             className="w-full border-none outline-0 placeholder-gray-500 text-xs font-semibold"
@@ -124,14 +122,9 @@ function SearchBar() {
         </div>
 
         {/* Date Input */}
-        <DatePickerWithRange
-          date={date}
-          setDate={setDate}
-          searchParams={searchParams}
-        />
+        <DatePickerWithRange date={date} setDate={setDate} />
 
         {/* Guests Input */}
-
         <Popover>
           <PopoverTrigger className="h-full w-[30%]">
             <div className="relative h-full flex-1 bg-white flex justify-start items-center px-4 rounded-sm hover:ring-1 ring-orange-600">
@@ -142,19 +135,9 @@ function SearchBar() {
               <span
                 id="guests"
                 className="w-full border-none focus:outline-none focus:ring-0 placeholder-gray-500 text-xs font-semibold"
-              >{`${
-                searchParams.get("adults")
-                  ? searchParams.get("adults")
-                  : options.adults
-              } adult ~ ${
-                searchParams.get("children")
-                  ? searchParams.get("children")
-                  : options.children
-              } children ~ ${
-                searchParams.get("rooms")
-                  ? searchParams.get("rooms")
-                  : options.rooms
-              } rooms`}</span>
+              >
+                {`${options.adults} adult ~ ${options.children} children ~ ${options.rooms} rooms`}
+              </span>
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-80">
@@ -164,17 +147,17 @@ function SearchBar() {
                   <span className="text-sm">Adults</span>
                   <div className="border border-black rounded-sm p-2 flex gap-6">
                     <button
+                      type="button"
                       disabled={options.adults <= 1}
                       onClick={() => handleOption("adults", "d")}
                     >
                       <Minus className="w-4 text-nav_btn_text" />
                     </button>
-                    <span className="text-kg">
-                      {searchParams.get("adults")
-                        ? searchParams.get("adults")
-                        : options.adults}
-                    </span>
-                    <button onClick={() => handleOption("adults", "i")}>
+                    <span className="text-kg">{options.adults}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleOption("adults", "i")}
+                    >
                       <Plus className="w-4 text-nav_btn_text" />
                     </button>
                   </div>
@@ -183,17 +166,17 @@ function SearchBar() {
                   <span className="text-sm">Children</span>
                   <div className="border border-black rounded-sm p-2 flex gap-6">
                     <button
+                      type="button"
                       disabled={options.children <= 0}
                       onClick={() => handleOption("children", "d")}
                     >
                       <Minus className="w-4 text-nav_btn_text" />
                     </button>
-                    <span className="text-kg">
-                      {searchParams.get("children")
-                        ? searchParams.get("children")
-                        : options.children}
-                    </span>
-                    <button onClick={() => handleOption("children", "i")}>
+                    <span className="text-kg">{options.children}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleOption("children", "i")}
+                    >
                       <Plus className="w-4 text-nav_btn_text" />
                     </button>
                   </div>
@@ -202,17 +185,17 @@ function SearchBar() {
                   <span className="text-sm">Rooms</span>
                   <div className="border border-black rounded-sm p-2 flex gap-6">
                     <button
+                      type="button"
                       disabled={options.rooms <= 1}
                       onClick={() => handleOption("rooms", "d")}
                     >
                       <Minus className="w-4 text-nav_btn_text" />
                     </button>
-                    <span className="text-kg">
-                      {searchParams.get("rooms")
-                        ? searchParams.get("rooms")
-                        : options.rooms}
-                    </span>
-                    <button onClick={() => handleOption("rooms", "i")}>
+                    <span className="text-kg">{options.rooms}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleOption("rooms", "i")}
+                    >
                       <Plus className="w-4 text-nav_btn_text" />
                     </button>
                   </div>
@@ -231,16 +214,15 @@ function SearchBar() {
             </Button>
           </PopoverContent>
         </Popover>
-        <div>
-          {/* Search Button */}
-          <Button
-            type="submit"
-            id="search-btn"
-            className="flex-none w-24 px-4 py-3 h-full  bg-nav_btn_text text-white text-xl font-semibold rounded-sm hover:bg-blue-700 transition-colors"
-          >
-            Search
-          </Button>
-        </div>
+
+        {/* Search Button */}
+        <Button
+          type="submit"
+          id="search-btn"
+          className="flex-none w-24 px-4 py-3 h-full bg-nav_btn_text text-white text-xl font-semibold rounded-sm hover:bg-blue-700 transition-colors"
+        >
+          Search
+        </Button>
       </form>
     </div>
   );

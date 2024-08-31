@@ -1,8 +1,9 @@
 // src/contexts/SearchContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useSessionStorage } from "@uidotdev/usehooks";
+import React, { createContext, useContext, ReactNode } from "react";
 import { DateRange } from "react-day-picker";
 
-interface Options {
+export interface Options {
   adults: number;
   children: number;
   rooms: number;
@@ -20,12 +21,15 @@ interface SearchContextType {
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
-  const [destination1, setDestination1] = useState("");
-  const [date1, setDate1] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
-  });
-  const [options1, setOptions1] = useState<Options>({
+  const [destination1, setDestination1] = useSessionStorage(
+    "destination_context",
+    ""
+  );
+  const [date1, setDate1] = useSessionStorage<DateRange | undefined>(
+    "date_context",
+    { from: new Date(), to: new Date() }
+  );
+  const [options1, setOptions1] = useSessionStorage<Options>("auth_email", {
     adults: 1,
     children: 0,
     rooms: 1,
