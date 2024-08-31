@@ -3,7 +3,6 @@ import { CheckCircle, UserRound } from "lucide-react";
 import { AvailableRoom } from "@/models/Hotel.model";
 import { useReservation } from "@/context/ReservationContext";
 import { useNavigate } from "react-router-dom";
-import { log } from "console";
 
 interface RoomTableProps {
   availableRooms: AvailableRoom[];
@@ -63,7 +62,7 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
   );
 
   const handleReserve = () => {
-    console.log(localSelections); // This should output the correct selections
+    // console.log(localSelections); // This should output the correct selections
 
     localSelections.forEach((selection) => {
       addRoom(selection.roomId, selection.quantity, selection.price);

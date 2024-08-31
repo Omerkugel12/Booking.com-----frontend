@@ -25,10 +25,12 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     "destination_context",
     ""
   );
+
   const [date1, setDate1] = useSessionStorage<DateRange | undefined>(
     "date_context",
     { from: new Date(), to: new Date() }
   );
+
   const [options1, setOptions1] = useSessionStorage<Options>("auth_email", {
     adults: 1,
     children: 0,

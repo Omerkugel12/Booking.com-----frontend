@@ -4,7 +4,6 @@ import { Input } from "../ui/input";
 import { DatePickerWithRange } from "./DateRangePicker";
 import React, { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { addDays, parseISO } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Switch } from "../ui/switch";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -18,34 +17,28 @@ interface Options {
 }
 
 function SearchBar() {
-  const { setDestination1, setDate1, setOptions1 } = useSearch();
+  const {
+    destination1,
+    setDestination1,
+    date1,
+    setDate1,
+    options1,
+    setOptions1,
+  } = useSearch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const initialStartDate = searchParams.get("startDate");
-  const initialEndDate = searchParams.get("endDate");
-
-  // Convert parsed dates to Date objects if they exist
-  const parsedStartDate = initialStartDate
-    ? parseISO(initialStartDate)
-    : new Date();
-  const parsedEndDate = initialEndDate
-    ? parseISO(initialEndDate)
-    : addDays(new Date(), 5);
-
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: parsedStartDate,
-    to: parsedEndDate,
+    from: date1?.from,
+    to: date1?.to,
   });
 
-  const [destination, setDestination] = useState(
-    searchParams.get("destination") || ""
-  );
+  const [destination, setDestination] = useState(destination1 || "");
 
   const [options, setOptions] = useState<Options>({
-    adults: Number(searchParams.get("adults")) || 1,
-    children: Number(searchParams.get("children")) || 0,
-    rooms: Number(searchParams.get("rooms")) || 1,
+    adults: options1.adults || 1,
+    children: options1.children || 0,
+    rooms: options1.rooms || 1,
   });
 
   const handleOption = (name: keyof Options, operation: string) => {
