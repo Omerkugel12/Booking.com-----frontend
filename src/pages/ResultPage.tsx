@@ -35,8 +35,26 @@ function ResultPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const saveRecentSearch = (imageUrl: string) => {
+    const recentSearch = {
+      destination: destination || "",
+      startDate: startDate || "",
+      endDate: endDate || "",
+      guests: {
+        adults: adults ? parseInt(adults) : 1,
+        children: children ? parseInt(children) : 0,
+        rooms: rooms ? parseInt(rooms) : 1,
+      },
+      imageUrl: imageUrl || "https://source.unsplash.com/random?city", // Fallback image if none is available
+    };
+
+    const existingSearches = JSON.parse(
+      localStorage.getItem("recentSearches") || "[]"
+    );
+    const updatedSearches = [recentSearch, ...existingSearches];
+    localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
+  };
   useEffect(() => {
-    // Function to fetch hotels based on search parameters
     const fetchHotels = async () => {
       setLoading(true);
       setError(null);
@@ -63,7 +81,12 @@ function ResultPage() {
         const response = await getHotels(filters);
         console.log(response.data);
 
-        setHotels(response.data); // Directly set the response since it's already the hotel data
+        setHotels(response.data);
+
+        if (response.data.length > 0) {
+          const firstImageUrl = response.data[0].image || "";
+          saveRecentSearch(firstImageUrl);
+        }
       } catch (err) {
         setError("Error fetching hotels. Please try again later.");
       } finally {
@@ -74,7 +97,6 @@ function ResultPage() {
     fetchHotels();
   }, [destination, startDate, endDate, adults, children, rooms,searchParams]);
 
-  // if (loading) return <p>Loading hotels...</p>;
   if (error) return <p>{error}</p>;
 
   return (
