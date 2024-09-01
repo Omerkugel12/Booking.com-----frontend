@@ -90,13 +90,13 @@ function BookingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header type="bookingPage" />
-      <main className="flex-1 px-44 pb-32">
+      <main className="flex-1 px-0 lg:px-96 pb-32">
         {/* Pogress-bar */}
         <ProgressStepsBar nextStep={nextStep} />
         {/* <Button onClick={() => setNextStep(false)} className="">
           back
         </Button> */}
-        <section className="grid grid-cols-[1fr_2fr] gap-8">
+        <section className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8">
           {!nextStep ? (
             <ReservationSideBar
               hotel={hotel}
