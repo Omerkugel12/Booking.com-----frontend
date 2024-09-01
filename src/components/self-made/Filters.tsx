@@ -16,13 +16,18 @@ const fetchItemCount = (itemLabel) => {
     }, 100); // Simulate network delay
   });
 };
-interface Filters{
+interface Filters {
   title: string;
-  items: [],
-  showAll?: number,
+  items: [];
+  showAll?: number;
   expanded?: boolean;
 }
-const FilterSection = ({ title, items, showAll, expanded = false }:Filters) => {
+const FilterSection = ({
+  title,
+  items,
+  showAll,
+  expanded = false,
+}: Filters) => {
   const [isExpanded, setIsExpanded] = useState(expanded);
   const [itemsWithCount, setItemsWithCount] = useState([]);
 
@@ -41,7 +46,7 @@ const FilterSection = ({ title, items, showAll, expanded = false }:Filters) => {
   }, [items]);
 
   // Generate dummy items for expansion
-  const generateDummyItems = (count:number) => {
+  const generateDummyItems = (count: number) => {
     return Array.from({ length: count }, (_, index) => ({
       label: `Dummy ${title} ${index + 1}`,
       count: "null",
