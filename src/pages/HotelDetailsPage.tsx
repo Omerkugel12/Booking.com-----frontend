@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import { getHotelDetailsWithAvailableRooms } from "../services/hotels.service";
 import RoomTableDemo from "../components/self-made/ReservationsTable";
+import HotelImageGrid from "../components/self-made/detailsPageImages";
 import goldLike from "@/images/goldLike.svg";
 import map from "@/images/ShowOnMap.webp";
 import { HotelDetails, AvailableRoom } from "../models/Hotel.model";
@@ -24,6 +25,7 @@ import {
 import SearchBar from "@/components/self-made/SearchBar";
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
+import ReviewsCarousel from "@/components/self-made/ReviewsCarousel";
 
 const HotelDetailsPage: React.FC = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
@@ -43,7 +45,7 @@ const HotelDetailsPage: React.FC = () => {
 
     // Calculate the number of nights
     numberOfNights = difference / (1000 * 60 * 60 * 24);
-    // console.log(numberOfNights);
+
   } else {
     console.error("Invalid date parameters");
   }
@@ -67,7 +69,6 @@ const HotelDetailsPage: React.FC = () => {
         );
         setHotel(response);
         setRooms(response.availableRooms);
-        // console.log(response.availableRooms);
       } catch (error) {
         console.error("Error fetching hotel details:", error);
       }
@@ -171,12 +172,12 @@ const HotelDetailsPage: React.FC = () => {
                 <h1 className="text-2xl font-bold mb-2">{hotel.name}</h1>
                 <div className="flex items-center text-sm text-gray-600">
                   <MapPin className="w-4 h-4 text-blue-600 mr-1" />
-                  <span>{hotel.city}</span>
+                  <span>{hotel.address}</span>
                   <span className="mx-2">–</span>
                   <a href={hotel.hotelLink} className="text-blue-600 font-bold">
                     Excellent location – show map
                   </a>
-                  <span className="ml-2">– Subway Access</span>
+                  {/* <span className="ml-2">– Subway Access</span> */}
                 </div>
               </div>
 
@@ -204,25 +205,12 @@ const HotelDetailsPage: React.FC = () => {
             </div>
 
             <div className="flex">
-              <div className="grid grid-cols-3 gap-2 mb-6 w-4/5">
-                <img
-                  src={hotel.image}
-                  alt={hotel.name}
-                  className="w-full h-full object-cover rounded-lg shadow-lg col-span-2"
-                />
-                <div className="grid grid-rows-2 gap-2">
-                  <img
-                    src={hotel.image}
-                    alt="Additional view"
-                    className="w-full h-full object-cover rounded-lg shadow-lg"
-                  />
-                  <img
-                    src={hotel.image}
-                    alt="Additional view"
-                    className="w-full h-full object-cover rounded-lg shadow-lg"
-                  />
-                </div>
-              </div>
+              <HotelImageGrid
+                imageURLs={hotel.imageURLs}
+                // hotelName={hotel.name}
+                // rating={hotel.avgRating}
+                // reviews={hotel.reviews}
+              />
               <div className="w-1/5 bg-white p-4 rounded-lg shadow-lg">
                 <div className="flex items-center justify-end gap-2 border-b pb-4 mb-4">
                   <div className="flex flex-col items-center">
@@ -483,7 +471,7 @@ const HotelDetailsPage: React.FC = () => {
               </div>
             </div>
           </div>
-
+          <ReviewsCarousel reviews={hotel.reviews} />
           <div>
             <h1 className="font-bold text-[16px] pt-4">
               Select topics to read reviews:
