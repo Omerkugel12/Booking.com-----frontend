@@ -69,6 +69,8 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
   );
 
   const handleReserve = () => {
+    // console.log(localSelections); // This should output the correct selections
+
     localSelections.forEach((selection) => {
       addRoom(
         selection.roomId,

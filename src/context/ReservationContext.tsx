@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-interface RoomSelection {
+export interface RoomSelection {
   roomId: string;
   roomType: string; // Added roomType here
   quantity: number;
   price: number | null; // Make sure price is nullable if needed
 }
 
-interface ReservationContextProps {
+export interface ReservationContextProps {
   roomSelections: RoomSelection[];
   totalPrice: number;
   addRoom: (

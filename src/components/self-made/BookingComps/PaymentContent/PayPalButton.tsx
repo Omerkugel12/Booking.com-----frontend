@@ -1,5 +1,5 @@
 interface PayPalButtonProps {
-  totalAmount: string;
+  totalAmount: number;
   currency: string;
   onPaymentSuccess: (data: any) => void;
   onPaymentError: (error: any) => void;
@@ -41,15 +41,10 @@ function PayPalButton({
 
   return (
     <button
-      className="flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 transition-colors duration-300"
+      className="flex items-center justify-center bg-yellow text-white font-semibold rounded-md shadow-md hover:bg-blue-700 transition-colors duration-300 overflow-hidden"
       onClick={handlePayment}
     >
-      <img
-        src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
-        alt="PayPal"
-        className="w-6 h-6 mr-2"
-      />
-      Pay with PayPal
+      <img src="/src/images/PayPal-Logo.png" alt="PayPal" className="w-28" />
     </button>
   );
 }
