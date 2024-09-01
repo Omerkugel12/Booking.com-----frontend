@@ -1,4 +1,4 @@
-import { Link, SetURLSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { Bell, ShieldQuestion } from "lucide-react";
