@@ -9,6 +9,7 @@ import { useSearch } from "@/context/SearchContext";
 import { HotelResult } from "@/models/Hotel.model";
 import { useSearchParams } from "react-router-dom";
 import { getHotels } from "@/services/hotels.service";
+import Map from "@/components/self-made/Map";
 
 function ResultPage() {
   // Get the current search parameters
@@ -72,6 +73,7 @@ function ResultPage() {
               src="src/images/ShowOnMap.webp"
               alt="Map"
             />
+            <Map hotels={hotels} />
             <div>
               <FilterSidebar />
             </div>
