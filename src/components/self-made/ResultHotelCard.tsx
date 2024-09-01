@@ -12,7 +12,6 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
   const [searchParams] = useSearchParams();
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
-
   // Function to handle navigation to the hotel details page
   const handleNavigation = () => {
     navigate(`/hotel/${hotel.id}?startDate=${startDate}&endDate=${endDate}`); // Assuming the URL pattern is /hotels/:id
@@ -33,6 +32,7 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
       return "Very Poor";
     }
   }
+console.log(hotel);
 
   return (
     <Card className="flex mt-2 w-full border border-gray-300 rounded-lg shadow-md">

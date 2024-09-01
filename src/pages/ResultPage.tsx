@@ -22,6 +22,13 @@ function ResultPage() {
   const adults = searchParams.get("adults");
   const children = searchParams.get("children");
   const rooms = searchParams.get("rooms");
+  const minPrice = searchParams.get("priceMin");
+  const maxPrice = searchParams.get("priceMax");
+  const freeCancelation = searchParams.get("Freecancellation");
+  const noPrepayment = searchParams.get("Noprepayment");
+  const starRating = searchParams.get("starRating");
+  const meals = searchParams.get("meals")
+  const sortBy = searchParams.get("sortBy");
 
   // State to store fetched hotels
   const [hotels, setHotels] = useState<HotelResult[]>([]);
@@ -41,6 +48,17 @@ function ResultPage() {
           endDate: endDate || undefined,
           numOfPeople: adults ? parseInt(adults) : undefined,
           numOfRooms: rooms ? parseInt(rooms) : undefined,
+          priceMin: minPrice ? parseFloat(minPrice) : undefined,
+          priceMax: maxPrice ? parseFloat(maxPrice) : undefined,
+          freeCancellation: freeCancelation
+            ? freeCancelation === "true"
+            : undefined,
+          prepayment: noPrepayment
+            ? noPrepayment === "true"
+            : noPrepayment === "false",
+          starsRating: starRating ? starRating : undefined,
+          meals: meals ? meals : undefined,
+          sortBy: sortBy,
         };
         const response = await getHotels(filters);
         console.log(response.data);
@@ -54,7 +72,7 @@ function ResultPage() {
     };
 
     fetchHotels();
-  }, [destination, startDate, endDate, adults, children, rooms]);
+  }, [destination, startDate, endDate, adults, children, rooms,searchParams]);
 
   // if (loading) return <p>Loading hotels...</p>;
   if (error) return <p>{error}</p>;
@@ -73,7 +91,7 @@ function ResultPage() {
               src="src/images/ShowOnMap.webp"
               alt="Map"
             />
-            <Map hotels={hotels} />
+            {/* <Map hotels={hotels} /> */}
             <div>
               <FilterSidebar />
             </div>
