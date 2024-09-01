@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 
-const HotelImageGrid: React.FC = ({ imageURLs }) => {
+interface HotelImageGridProps {
+  imageURLs: string[]; // Define the type of imageURLs as an array of strings
+}
+
+const HotelImageGrid: React.FC<HotelImageGridProps> = ({ imageURLs }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
