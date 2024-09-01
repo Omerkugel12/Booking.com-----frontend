@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -26,10 +26,12 @@ interface RecentSearch {
 
 const RecentSearches: React.FC = () => {
   const navigate = useNavigate();
-  const recentSearches: RecentSearch[] = JSON.parse(
-    localStorage.getItem("recentSearches") || "[]"
-  );
   const { setDestination1, setDate1, setOptions1 } = useSearch(); // Destructure context setters
+
+  // Get recent searches from localStorage and filter unique ones
+  const [recentSearches, setRecentSearches] = useState<RecentSearch[]>(
+    JSON.parse(localStorage.getItem("recentSearches") || "[]")
+  );
 
   const uniqueRecentSearches = recentSearches.filter(
     (search, index, self) =>
@@ -68,10 +70,9 @@ const RecentSearches: React.FC = () => {
   };
 
   const handleRemoveSearch = (index: number) => {
-    const updatedSearches = [...uniqueRecentSearches];
-    updatedSearches.splice(index, 1);
+    const updatedSearches = uniqueRecentSearches.filter((_, i) => i !== index);
+    setRecentSearches(updatedSearches);
     localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
-    window.location.reload();
   };
 
   const formatDateRange = (startDate: string, endDate: string): string => {
@@ -80,9 +81,14 @@ const RecentSearches: React.FC = () => {
     return `${start}-${end}`;
   };
 
+  // Render nothing if no recent searches exist
+  if (uniqueRecentSearches.length === 0) {
+    return null;
+  }
+
   return (
     <div className="my-8">
-      <h2 className="text-2xl font-bold mb-4">Your recent searches</h2>
+      <h2 className="text-2xl font-bold mb-4 pt-4">Your recent searches</h2>
       {uniqueRecentSearches.length > 0 && (
         <Carousel>
           <div className="relative">
