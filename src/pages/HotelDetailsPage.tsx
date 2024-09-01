@@ -24,6 +24,7 @@ import {
 import SearchBar from "@/components/self-made/SearchBar";
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
+import GuestRevies from "@/components/self-made/DetailsPage/GuestRevies";
 
 const HotelDetailsPage: React.FC = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
@@ -97,7 +98,7 @@ const HotelDetailsPage: React.FC = () => {
     }, {} as Record<string, string[]>);
 
     return (
-      <div className="grid grid-cols-3 gap-6 mt-8">
+      <div id="faciliteis" className="grid grid-cols-3 gap-6 mt-8">
         {Object.keys(groupedFacilities).map((category) => (
           <div key={category}>
             <h3 className="font-bold text-lg mb-2">{category}</h3>
@@ -119,12 +120,12 @@ const HotelDetailsPage: React.FC = () => {
   return (
     <>
       <Header type="results" />
-
       <div className="lg:px-72">
         <SearchBar />
       </div>
-      <div className="lg:px-72 py-8">
-        <nav className="flex gap-2 text-sm text-gray-600 mb-4">
+      <main className="lg:px-72 py-8">
+        {/*Breadcrumb*/}
+        <div className="flex gap-2 text-sm text-gray-600 mb-4">
           <a href="" className="text-blue-500 hover:underline">
             Home
           </a>
@@ -138,28 +139,46 @@ const HotelDetailsPage: React.FC = () => {
           </a>
           &gt;
           <a href="">{hotel.name}</a>
-        </nav>
-
-        <div className="border-b border-gray-300 mb-4">
-          <ul className="flex justify-between space-x-8">
-            {tabs.map((tab) => (
-              <li
-                key={tab}
-                className={`cursor-pointer p-4 text-sm text-center font-semibold text-gray-600 hover:bg-gray-200 ${
-                  activeTab === tab ? "text-blue-600 border-blue-600" : ""
-                }`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-                {activeTab === tab && (
-                  <div className="mt-1 h-[2px] bg-blue-900 w-full"></div>
-                )}
-              </li>
-            ))}
-          </ul>
         </div>
 
-        <div className="flex gap-8">
+        {/*navbar*/}
+        <nav className="border-b border-gray-300 mb-4">
+          <ul className="flex justify-between space-x-8">
+            {/* <li
+              key={tab}
+              className={`cursor-pointer p-4 text-sm text-center font-semibold text-gray-600 hover:bg-gray-200 ${
+                activeTab === tab ? "text-blue-600 border-blue-600" : ""
+              }`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+              {activeTab === tab && (
+                <div className="mt-1 h-[2px] bg-blue-900 w-full"></div>
+              )}
+            </li> */}
+            <li>
+              <a href="#overview">Overview</a>
+            </li>
+            <li>
+              <a href="#info&prices">Info & prices</a>
+            </li>
+            <li>
+              <a href="#faciliteis">Facilities</a>
+            </li>
+            <li>
+              <a href="#houseRules">House rules</a>
+            </li>
+            <li>
+              <a href="#theFinePrint">The fine print</a>
+            </li>
+            <li>
+              <a>Guest reviews ({hotel.reviews.length})</a>
+            </li>
+          </ul>
+        </nav>
+
+        {/*overview*/}
+        <div className="flex gap-8" id="overview">
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
               <div>
@@ -373,137 +392,18 @@ const HotelDetailsPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <div ref={myDivRef}>
+
+        {/*info & prices*/}
+        <div ref={myDivRef} id="info&prices">
           <RoomTableDemo availableRooms={rooms} nights={numberOfNights} />
         </div>
+
+        {/*Facilities*/}
         {renderFacilities()}
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-semibold mb-4">Guest reviews</h3>
 
-          <div className="flex items-center gap-2 mb-4">
-            <span className="bg-blue-900 text-white font-bold px-2 py-1 rounded-sm text-lg">
-              {hotel.avgRating.toFixed(1)}
-            </span>
-            <span className="text-lg font-semibold text-gray-600">
-              <span className="text-black">Very Good </span>·{" "}
-              {hotel.reviews.length} reviews
-            </span>
-            <a href="#" className="text-blue-600 underline ml-4">
-              Read all reviews
-            </a>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            <div>
-              <div className="flex justify-between pb-2">
-                <p className="font-semibold">Staff</p>{" "}
-                <p className="text-sm text-gray-500 mt-1">
-                  {hotel.cleanliness.toFixed(1)}
-                </p>
-              </div>
-              <div className="relative h-2 bg-gray-200 rounded-full">
-                <div
-                  className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-                  style={{ width: `${hotel.cleanliness * 10}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between pb-2">
-                <p className="font-semibold">Cleanliness</p>{" "}
-                <p className="text-sm text-gray-500 mt-1">
-                  {hotel.cleanliness.toFixed(1)}
-                </p>
-              </div>
-              <div className="relative h-2 bg-gray-200 rounded-full">
-                <div
-                  className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-                  style={{ width: `${hotel.cleanliness * 10}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between pb-2">
-                <p className="font-semibold">Comfort</p>
-                <p className="text-sm text-gray-500 mt-1">
-                  {hotel.comfort.toFixed(1)}
-                </p>
-              </div>
-              <div className="relative h-2 bg-gray-200 rounded-full">
-                <div
-                  className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-                  style={{ width: `${hotel.comfort * 10}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between pb-2">
-                <p className="font-semibold">Free Wifi</p>
-                <p className="text-sm text-gray-500 mt-1">
-                  {hotel.freeWifi.toFixed(1)}
-                </p>
-              </div>
-              <div className="relative h-2 bg-gray-200 rounded-full">
-                <div
-                  className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-                  style={{ width: `${hotel.freeWifi * 10}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between pb-2">
-                <p className="font-semibold">Location</p>{" "}
-                <p className="text-sm text-gray-500 mt-1">
-                  {hotel.location.toFixed(1)}
-                </p>
-              </div>
-              <div className="relative h-2 bg-gray-200 rounded-full">
-                <div
-                  className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-                  style={{ width: `${hotel.location * 10}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between pb-2">
-                <p className="font-semibold">Value for money</p>
-                <p className="text-sm text-gray-500 mt-1">
-                  {hotel.valueForMoney.toFixed(1)}
-                </p>
-              </div>
-              <div className="relative h-2 bg-gray-200 rounded-full">
-                <div
-                  className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-                  style={{ width: `${hotel.valueForMoney * 10}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h1 className="font-bold text-[16px] pt-4">
-              Select topics to read reviews:
-            </h1>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {["Location", "Room", "Clean", "Kitchen", "Bed"].map(
-                (topic, index) => (
-                  <button
-                    key={index}
-                    className="border border-gray-300 rounded-full px-3 py-2 text-sm text-gray-800 hover:bg-gray-200"
-                  >
-                    + {topic}
-                  </button>
-                )
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+        {/*Guest reviews*/}
+        <GuestRevies hotel={hotel} />
+      </main>
       <Footer />
     </>
   );
