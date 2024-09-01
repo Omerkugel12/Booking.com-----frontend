@@ -1,14 +1,14 @@
+import React, { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { format } from "date-fns";
+import { useSearch } from "@/context/SearchContext";
 import { BedSingle, Minus, Plus, UserRound } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { DatePickerWithRange } from "./DateRangePicker";
-import React, { useState } from "react";
-import { DateRange } from "react-day-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Switch } from "../ui/switch";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { format } from "date-fns";
-import { useSearch } from "@/context/SearchContext";
+import { DateRange } from "react-day-picker";
 
 interface Options {
   adults: number;
@@ -24,6 +24,7 @@ function SearchBar() {
     setDate1,
     options1,
     setOptions1,
+    saveRecentSearch,
   } = useSearch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -77,6 +78,14 @@ function SearchBar() {
     updatedSearchParams.set("adults", options.adults.toString());
     updatedSearchParams.set("children", options.children.toString());
     updatedSearchParams.set("rooms", options.rooms.toString());
+
+    // Call the saveRecentSearch method
+    saveRecentSearch(
+      data.destination,
+      data.startDate,
+      data.endDate,
+      data.guests
+    );
 
     setSearchParams(updatedSearchParams);
     setDate1(date);
