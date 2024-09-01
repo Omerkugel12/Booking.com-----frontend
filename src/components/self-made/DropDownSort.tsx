@@ -2,18 +2,15 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowDownUp, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function DropDownSort() {
   const [currentSort, setCurrentSort] = useState("Our top picks");
-
-  function sortUi(value: string) {
-    setCurrentSort(value);
-  }
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const sortOptions = [
     "Our top picks",
@@ -26,11 +23,48 @@ function DropDownSort() {
     "Property rating and price",
     "Top reviewed",
     "Genius discounts first",
+    "Distance (low to high)",
+    "Distance (high to low)",
   ];
+
+  const handleSortChange = (option) => {
+    let paramValue = "";
+    switch (option) {
+      case "Price (lowest first)":
+        paramValue = "price";
+        break;
+      case "Price (highest first)":
+        paramValue = "price_desc";
+        break;
+      case "Property rating (high to low)":
+        paramValue = "rating";
+        break;
+      case "Property rating (low to high)":
+        paramValue = "rating_desc";
+        break;
+      case "Distance (low to high)":
+        paramValue = "distance";
+        break;
+      case "Distance (high to low)":
+        paramValue = "distance_desc";
+        break;
+      default:
+        paramValue = option;
+        break;
+    }
+    const newParams = new URLSearchParams(searchParams.toString());
+    if (paramValue) {
+      newParams.set("sortBy", paramValue);
+    } else {
+      newParams.delete("sortBy");
+    }
+    setSearchParams(newParams);
+    setCurrentSort(option);
+  };
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="cursor-pointer text-sm font-medium flex items-center gap-2 rounded-full py-[7px] border border-gray-400  px-3 hover:bg-gray-100 w-fit">
+      <DropdownMenuTrigger className="cursor-pointer text-sm font-medium flex items-center gap-2 rounded-full py-[7px] border border-gray-400 px-3 hover:bg-gray-100 w-fit">
         <ArrowDownUp size={20} strokeWidth={1.25} /> Sort by: {currentSort}{" "}
         <ChevronsUpDown size={20} strokeWidth={1.25} />
       </DropdownMenuTrigger>
@@ -38,9 +72,7 @@ function DropDownSort() {
         {sortOptions.map((option, index) => (
           <DropdownMenuItem
             key={index}
-            onClick={() => {
-              sortUi(option);
-            }}
+            onClick={() => handleSortChange(option)}
             className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
               currentSort === option ? "font-semibold bg-blue-50" : ""
             }`}

@@ -2,29 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Plus, Minus } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import BudgetSlider from "../ui/budgetSlider";
+import { useSearchParams } from "react-router-dom";
 
-// Simulated backend function
+// Simulated backend function for fetching item count
 const fetchItemCount = (itemLabel) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      // Simulate some items not having a count
       if (Math.random() > 0.8) {
         resolve(null);
       } else {
         resolve(Math.floor(Math.random() * 50) + 1);
       }
-    }, 100); // Simulate network delay
+    }, 100);
   });
 };
-interface Filters{
-  title: string;
-  items: [],
-  showAll?: number,
-  expanded?: boolean;
-}
-const FilterSection = ({ title, items, showAll, expanded = false }:Filters) => {
+
+// FilterSection component
+const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
   const [isExpanded, setIsExpanded] = useState(expanded);
   const [itemsWithCount, setItemsWithCount] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -40,12 +37,69 @@ const FilterSection = ({ title, items, showAll, expanded = false }:Filters) => {
     fetchCounts();
   }, [items]);
 
-  // Generate dummy items for expansion
-  const generateDummyItems = (count:number) => {
-    return Array.from({ length: count }, (_, index) => ({
-      label: `Dummy ${title} ${index + 1}`,
-      count: "null",
-    }));
+  const handleFilterChange = (label, type) => {
+    const currentParams = new URLSearchParams(searchParams.toString());
+
+    if (type === "meals") {
+      const existingMeals = currentParams.get("meals");
+      const newMeal = label;
+
+      if (existingMeals) {
+        const mealsArray = existingMeals.split(",");
+        if (mealsArray.includes(newMeal)) {
+          // Remove the meal if it already exists
+          const updatedMeals = mealsArray.filter((meal) => meal !== newMeal);
+          if (updatedMeals.length > 0) {
+            currentParams.set("meals", updatedMeals.join(","));
+          } else {
+            currentParams.delete("meals");
+          }
+        } else {
+          // Add the new meal
+          currentParams.set("meals", [...mealsArray, newMeal].join(","));
+        }
+      } else {
+        // Set the first meal
+        currentParams.set("meals", newMeal);
+      }
+    } else if (type === "stars") {
+      const existingRatings = currentParams.get("starRating");
+      const newRating = label.replace(" stars", ""); // Extract number only
+
+      if (existingRatings) {
+        const ratingsArray = existingRatings.split(",");
+        if (ratingsArray.includes(newRating)) {
+          // Remove the rating if it already exists
+          const updatedRatings = ratingsArray.filter(
+            (rating) => rating !== newRating
+          );
+          if (updatedRatings.length > 0) {
+            currentParams.set("starRating", updatedRatings.join(","));
+          } else {
+            currentParams.delete("starRating");
+          }
+        } else {
+          // Add the new rating
+          currentParams.set(
+            "starRating",
+            [...ratingsArray, newRating].join(",")
+          );
+        }
+      } else {
+        // Set the first rating
+        currentParams.set("starRating", newRating);
+      }
+    } else {
+      // Handle special cases like Free cancellation, No prepayment, etc.
+      const isActive = searchParams.get(label.replace(" ", "")) === "true";
+      if (isActive) {
+        currentParams.delete(label.replace(" ", ""));
+      } else {
+        currentParams.set(label.replace(" ", ""), "true");
+      }
+    }
+
+    setSearchParams(currentParams);
   };
 
   const allItems = showAll
@@ -65,6 +119,17 @@ const FilterSection = ({ title, items, showAll, expanded = false }:Filters) => {
           <input
             type="checkbox"
             className="mr-2 h-4 w-4 border-gray-300 rounded"
+            onChange={() => handleFilterChange(item.label, type)}
+            checked={
+              type === "stars"
+                ? searchParams
+                    .get("starRating")
+                    ?.split(",")
+                    .includes(item.label.replace(" stars", ""))
+                : type === "meals"
+                ? searchParams.get("meals")?.split(",").includes(item.label)
+                : searchParams.get(item.label.replace(" ", "")) === "true"
+            }
           />
           <span className="flex-grow text-sm text-gray-700">{item.label}</span>
           <span className="text-gray-500 text-sm">{item.count}</span>
@@ -83,8 +148,16 @@ const FilterSection = ({ title, items, showAll, expanded = false }:Filters) => {
   );
 };
 
+// CounterInput component
 const CounterInput = ({ label }) => {
   const [count, setCount] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(label, count.toString());
+    setSearchParams(params);
+  }, [count]);
 
   return (
     <div className="flex items-center justify-between mb-2">
@@ -108,34 +181,44 @@ const CounterInput = ({ label }) => {
   );
 };
 
+// Generate dummy items for testing/show-all functionality
+const generateDummyItems = (count) => {
+  return Array.from({ length: count }, (_, i) => ({
+    label: `Item ${i + 1}`,
+    count: Math.floor(Math.random() * 50) + 1,
+  }));
+};
+
+// BookingSidebarFilter component
 const BookingSidebarFilter = () => {
+  const [searchParams] = useSearchParams();
+
   return (
-    <div className="w-64 p-4 bg-white shadow-md">
-      <h2 className="font-bold text-lg mb-4 text-gray-900">Filter by:</h2>
-
-      <div className="mb-4">
-        <h3 className="font-bold text-sm mb-2 text-gray-900">
-          Your budget (per night)
-        </h3>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-700">₪ 150</span>
-          <span className="text-sm text-gray-700">₪ 2,000+</span>
-        </div>
-        <BudgetSlider />
-      </div>
-
+    <div className="p-4 bg-white rounded shadow">
+      <BudgetSlider />
       <FilterSection
         title="Popular filters"
         items={[
-          { label: "Hotels" },
-          { label: "Very good: 8+" },
-          { label: "Breakfast included" },
           { label: "Free cancellation" },
-          { label: "Swimming Pool" },
-          { label: "Beachfront" },
-          { label: "Parking" },
           { label: "No prepayment" },
+          { label: "Breakfast included" },
+          { label: "Pet friendly" },
+          { label: "Spa facilities" },
+          { label: "Family-friendly" },
         ]}
+        expanded
+      />
+
+      <FilterSection
+        title="Star rating"
+        items={[
+          { label: "1 star" },
+          { label: "2 stars" },
+          { label: "3 stars" },
+          { label: "4 stars" },
+          { label: "5 stars" },
+        ]}
+        type="stars"
       />
 
       <FilterSection
@@ -147,163 +230,61 @@ const BookingSidebarFilter = () => {
           { label: "All-inclusive" },
           { label: "Breakfast & dinner included" },
         ]}
+        type="meals"
       />
 
       <FilterSection
-        title="Facilities"
+        title="Guest rating"
         items={[
-          { label: "Parking" },
-          { label: "Free WiFi" },
-          { label: "Restaurant" },
-          { label: "Pets allowed" },
-          { label: "Room service" },
+          { label: "Wonderful: 9+" },
+          { label: "Very good: 8+" },
+          { label: "Good: 7+" },
+          { label: "Pleasant: 6+" },
         ]}
-        showAll={14}
+        showAll={10}
       />
 
       <FilterSection
         title="Property type"
         items={[
-          { label: "Entire homes & apartments" },
-          { label: "Apartments" },
           { label: "Hotels" },
-          { label: "Lodges" },
-          { label: "Guest houses" },
-        ]}
-        showAll={8}
-      />
-
-      <FilterSection
-        title="Guest review score"
-        items={[
-          { label: "Superb: 9+" },
-          { label: "Very good: 8+" },
-          { label: "Good: 7+" },
-          { label: "Pleasant: 6+" },
-        ]}
-      />
-
-      <FilterSection
-        title="Room facilities"
-        items={[
-          { label: "Air conditioning" },
-          { label: "Private bathroom" },
-          { label: "Private pool" },
-          { label: "Sea view" },
-          { label: "Balcony" },
-        ]}
-        showAll={25}
-      />
-
-      <FilterSection
-        title="Property rating"
-        items={[
-          { label: "3 stars" },
-          { label: "4 stars" },
-          { label: "5 stars" },
-        ]}
-      />
-
-      <FilterSection title="Beach access" items={[{ label: "Beachfront" }]} />
-
-      <FilterSection
-        title="Reservation policy"
-        items={[{ label: "Free cancellation" }, { label: "No prepayment" }]}
-      />
-
-      <FilterSection
-        title="Fun things to do"
-        items={[
-          { label: "Beach" },
-          { label: "Massage" },
-          { label: "Hiking" },
-          { label: "Spa and wellness centre" },
-          { label: "Children's playground" },
-        ]}
-        showAll={25}
-      />
-
-      <FilterSection
-        title="Bed preference"
-        items={[{ label: "Twin beds" }, { label: "Double bed" }]}
-      />
-
-      <FilterSection
-        title="City"
-        items={[
-          { label: "Neve Zohar" },
-          { label: "Ein Bokek" },
-          { label: "Ein Gedi" },
-          { label: "Ovnat" },
-          { label: "Ne'ot HaKikar" },
-        ]}
-        showAll={7}
-      />
-
-      <div className="mb-4">
-        <h3 className="font-bold text-sm mb-2 text-gray-900">
-          Bedrooms and bathrooms
-        </h3>
-        <CounterInput label="Bedrooms" />
-        <CounterInput label="Bathrooms" />
-      </div>
-
-      <FilterSection
-        title="Online payment"
-        items={[{ label: "Accepts online payments" }]}
-      />
-
-      <FilterSection
-        title="Brands"
-        items={[
-          { label: "Fattal Hotels" },
-          { label: "Isrotel Hotels & Resorts" },
-          { label: "Prima Hotels Israel" },
-          { label: "The Setai, Herbert Samuel & Orchid Hotels" },
-          { label: "AFI Hotels" },
-        ]}
-      />
-
-      <FilterSection
-        title="Property accessibility"
-        items={[
-          { label: "Toilet with grab rails" },
-          { label: "Higher level toilet" },
-          { label: "Lower bathroom sink" },
-          { label: "Visual aids: Braille" },
-          { label: "Visual aids: Tactile signs" },
-          { label: "Auditory guidance" },
-        ]}
-      />
-
-      <FilterSection
-        title="Room accessibility"
-        items={[
-          { label: "Entire unit located on ground floor" },
-          { label: "Upper floors accessible by elevator" },
-          { label: "Entire unit wheelchair accessible" },
-          { label: "Toilet with grab rails" },
-          { label: "Adapted bath" },
-          { label: "Roll-in shower" },
-          { label: "Raised toilet" },
-        ]}
-        showAll={15}
-      />
-
-      <FilterSection
-        title="Sustainability initiatives"
-        items={[
-          {
-            label:
-              "Linens, towels and laundry washed in accordance with local guidelines",
-          },
-          { label: "Water cooler/dispenser" },
-          { label: "Food waste policy" },
-          { label: "Recycling policy" },
-          { label: "No plastic" },
+          { label: "Apartments" },
+          { label: "Resorts" },
+          { label: "Villas" },
+          { label: "Hostels" },
+          { label: "B&Bs" },
         ]}
         showAll={10}
       />
+
+      <FilterSection
+        title="Facilities"
+        items={[
+          { label: "Free WiFi" },
+          { label: "Swimming pool" },
+          { label: "Parking" },
+          { label: "Airport shuttle" },
+          { label: "Fitness centre" },
+          { label: "Non-smoking rooms" },
+        ]}
+        showAll={10}
+      />
+
+      <FilterSection
+        title="Neighbourhood"
+        items={[
+          { label: "City centre" },
+          { label: "Near the beach" },
+          { label: "Old Town" },
+          { label: "Near public transport" },
+          { label: "Shopping district" },
+        ]}
+        showAll={10}
+      />
+
+      <CounterInput label="Adults" />
+      <CounterInput label="Children" />
+      <CounterInput label="Rooms" />
     </div>
   );
 };

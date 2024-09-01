@@ -105,10 +105,11 @@ const HotelDetailsPage: React.FC = () => {
   return (
     <>
       <Header type="results" />
-      <div className="px-44">
+
+      <div className="lg:px-72">
         <SearchBar />
       </div>
-      <div className="px-44 py-8">
+      <div className="lg:px-72 py-8">
         <nav className="flex gap-2 text-sm text-gray-600 mb-4">
           <a href="/" className="text-blue-500 hover:underline">
             Home

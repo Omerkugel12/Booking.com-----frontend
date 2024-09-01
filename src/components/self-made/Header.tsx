@@ -43,7 +43,9 @@ function Header({ type }: PropType) {
   return (
     <nav
       className={
-        type !== "results" ? "bg-blue_1 px-44 p-4" : "bg-blue_1 px-44 p-4 pb-10"
+        type !== "results"
+          ? "bg-blue_1 lg:px-96 p-4 "
+          : "bg-blue_1 lg:px-72 p-4 pb-10"
       }
     >
       <div className="flex justify-between items-center">

@@ -1,13 +1,24 @@
 import React, { useState } from "react";
 import ReactSlider from "react-slider";
+import { useSearchParams } from "react-router-dom";
 
 const BudgetSlider = () => {
   const [minPrice, setMinPrice] = useState(250);
   const [maxPrice, setMaxPrice] = useState(2000);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const handleSliderChange = (values: number[]) => {
     setMinPrice(values[0]);
     setMaxPrice(values[1]);
+
+    // Update the search parameters
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams.toString());
+      newParams.set("priceMin", values[0].toString());
+      newParams.set("priceMax", values[1].toString());
+      return newParams;
+    });
   };
 
   return (
@@ -23,7 +34,7 @@ const BudgetSlider = () => {
         min={250}
         max={2000}
         step={50}
-        defaultValue={[250, 2000]}
+        value={[minPrice, maxPrice]} // Set initial values
         ariaLabel={["Lower thumb", "Upper thumb"]}
         ariaValuetext={(state) => `₪ ${state.valueNow}`}
         onChange={handleSliderChange}
