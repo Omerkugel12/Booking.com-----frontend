@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-
 import { getHotelDetailsWithAvailableRooms } from "../services/hotels.service";
 import RoomTableDemo from "../components/self-made/DetailsPage/ReservationsTable";
 import goldLike from "@/images/goldLike.svg";
@@ -25,13 +24,22 @@ import SearchBar from "@/components/self-made/SearchBar";
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
 import GuestRevies from "@/components/self-made/DetailsPage/GuestRevies";
+import RenderFacilities from "@/components/self-made/DetailsPage/RenderFacilities";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const HotelDetailsPage: React.FC = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
   const [searchParams] = useSearchParams();
   const [hotel, setHotel] = useState<HotelDetails | null>(null);
   const [rooms, setRooms] = useState<AvailableRoom | null>(null);
-  const [activeTab, setActiveTab] = useState("Overview");
   const myDivRef = useRef(null);
 
   const startDate = searchParams.get("startDate");
@@ -49,15 +57,6 @@ const HotelDetailsPage: React.FC = () => {
     console.error("Invalid date parameters");
   }
 
-  const tabs = [
-    "Overview",
-    "Info & prices",
-    "Facilities",
-    "House rules",
-    "The fine print",
-    `Guest reviews (${hotel?.reviews.length || 0})`,
-  ];
-
   useEffect(() => {
     const fetchHotelDetails = async () => {
       try {
@@ -66,6 +65,8 @@ const HotelDetailsPage: React.FC = () => {
           startDate!,
           endDate!
         );
+        console.log(response);
+
         setHotel(response);
         setRooms(response.availableRooms);
         // console.log(response.availableRooms);
@@ -87,34 +88,14 @@ const HotelDetailsPage: React.FC = () => {
     }
   };
 
-  const renderFacilities = () => {
-    // Group facilities by category
-    const groupedFacilities = hotel.facilities.reduce((acc, facility) => {
-      if (!acc[facility.category]) {
-        acc[facility.category] = [];
-      }
-      acc[facility.category].push(...facility.name.split("\n"));
-      return acc;
-    }, {} as Record<string, string[]>);
-
-    return (
-      <div id="faciliteis" className="grid grid-cols-3 gap-6 mt-8">
-        {Object.keys(groupedFacilities).map((category) => (
-          <div key={category}>
-            <h3 className="font-bold text-lg mb-2">{category}</h3>
-            <ul className="list-none">
-              {groupedFacilities[category].map((item, index) => (
-                <li key={index} className="flex items-center mb-2">
-                  <span className="mr-2">✓</span>{" "}
-                  {/* This can be replaced with an icon if needed */}
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    );
+  // Function to convert numeric rating to descriptive string
+  const getScoreLetter = (rating: number): string => {
+    if (rating < 7) return "Pleasant";
+    else if (rating >= 7 && rating < 8) return "Good";
+    else if (rating >= 8 && rating <= 8.5) return "Very Good";
+    else if (rating > 8.5 && rating <= 9) return "Excellent";
+    else if (rating > 9 && rating <= 10) return "Wonderful";
+    return "";
   };
 
   return (
@@ -123,9 +104,9 @@ const HotelDetailsPage: React.FC = () => {
       <div className="lg:px-72">
         <SearchBar />
       </div>
-      <main className="lg:px-72 py-8">
+      <main className="lg:px-72">
         {/*Breadcrumb*/}
-        <div className="flex gap-2 text-sm text-gray-600 mb-4">
+        <div className="flex gap-2 text-[0.7rem] text-gray-600 py-6">
           <a href="" className="text-blue-500 hover:underline">
             Home
           </a>
@@ -143,49 +124,57 @@ const HotelDetailsPage: React.FC = () => {
 
         {/*navbar*/}
         <nav className="border-b border-gray-300 mb-4">
-          <ul className="flex justify-between space-x-8">
-            {/* <li
-              key={tab}
-              className={`cursor-pointer p-4 text-sm text-center font-semibold text-gray-600 hover:bg-gray-200 ${
-                activeTab === tab ? "text-blue-600 border-blue-600" : ""
-              }`}
-              onClick={() => setActiveTab(tab)}
+          <ul className="flex justify-between text-sm">
+            <Button
+              variant="ghost"
+              className="flex-1 px-10 border-b-2  pb-5 border-nav_btn_text rounded-none"
             >
-              {tab}
-              {activeTab === tab && (
-                <div className="mt-1 h-[2px] bg-blue-900 w-full"></div>
-              )}
-            </li> */}
-            <li>
-              <a href="#overview">Overview</a>
-            </li>
-            <li>
+              <a href="#overview" className="">
+                Overview
+              </a>
+            </Button>
+            <Button variant="ghost" className="flex-1 px-10 pb-5">
               <a href="#info&prices">Info & prices</a>
-            </li>
-            <li>
+            </Button>
+            <Button variant="ghost" className="flex-1 px-10 pb-5">
               <a href="#faciliteis">Facilities</a>
-            </li>
-            <li>
+            </Button>
+            <Button variant="ghost" className="flex-1 px-10 pb-5">
               <a href="#houseRules">House rules</a>
-            </li>
-            <li>
+            </Button>
+            <Button variant="ghost" className="flex-1 px-10 pb-5">
               <a href="#theFinePrint">The fine print</a>
-            </li>
-            <li>
-              <a>Guest reviews ({hotel.reviews.length})</a>
-            </li>
+            </Button>
+            <Button variant="ghost" className="flex-1 px-10 pb-5">
+              <Sheet>
+                <SheetTrigger>
+                  Guest reviews ({hotel.reviews.length})
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Are you absolutely sure?</SheetTitle>
+                    <SheetDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
+                    </SheetDescription>
+                  </SheetHeader>
+                </SheetContent>
+              </Sheet>
+            </Button>
           </ul>
         </nav>
 
         {/*overview*/}
-        <div className="flex gap-8" id="overview">
-          <div className="flex-1">
-            <div className="flex justify-between items-center mb-6">
+        <section className="flex gap-8" id="overview">
+          <div className="flex flex-col">
+            <div className="flex justify-between items-center">
+              {/*hotel*/}
               <div>
-                <div className="flex items-center mb-2">
-                  <span className="bg-white text-yellow font-bold px-2 py-1 rounded-sm mr-2">
-                    ★★★
+                <div className="flex items-center">
+                  <span className="bg-white text-yellow font-bold py-1 rounded-sm mr-2">
+                    {hotel.starsRating && "★".repeat(hotel.starsRating)}
                   </span>
+
                   <img src={goldLike} alt="Booking Logo" className="h-6" />
                 </div>
                 <h1 className="text-2xl font-bold mb-2">{hotel.name}</h1>
@@ -199,8 +188,7 @@ const HotelDetailsPage: React.FC = () => {
                   <span className="ml-2">– Subway Access</span>
                 </div>
               </div>
-
-              <div className="flex flex-col gap-2 items-center space-x-4">
+              <div className="flex flex-col gap-3 items-center space-x-4">
                 <div className="flex gap-4 items-center">
                   <Heart className="text-blue-600 cursor-pointer" />
                   <Share className="text-blue-600 cursor-pointer" />
@@ -213,10 +201,10 @@ const HotelDetailsPage: React.FC = () => {
                 </div>
                 <div>
                   <a
-                    href="#"
-                    className="flex items-center text-blue-600 underline"
+                    href="#info&prices"
+                    className="flex items-center gap-2 text-blue-600 text-sm font-semibold"
                   >
-                    <Tag className="mr-1" />
+                    <Tag size={"16px"} />
                     We Price Match
                   </a>
                 </div>
@@ -224,90 +212,107 @@ const HotelDetailsPage: React.FC = () => {
             </div>
 
             <div className="flex">
-              <div className="grid grid-cols-3 gap-2 mb-6 w-4/5">
-                <img
-                  src={hotel.image}
-                  alt={hotel.name}
-                  className="w-full h-full object-cover rounded-lg shadow-lg col-span-2"
-                />
-                <div className="grid grid-rows-2 gap-2">
-                  <img
-                    src={hotel.image}
-                    alt="Additional view"
-                    className="w-full h-full object-cover rounded-lg shadow-lg"
-                  />
-                  <img
-                    src={hotel.image}
-                    alt="Additional view"
-                    className="w-full h-full object-cover rounded-lg shadow-lg"
-                  />
+              <div className="max-w-[75%] w-full">
+                <div className="grid grid-cols-3 grid-rows-2 gap-2 w-full h-[450px] ">
+                  {/* Main large image */}
+                  <div className="col-span-2 row-span-2">
+                    <img
+                      src={hotel.image}
+                      alt={hotel.name}
+                      className="w-full h-full"
+                    />
+                  </div>
+
+                  {/* Smaller images */}
+                  <div className="col-span-1">
+                    <img
+                      src={hotel.image}
+                      alt="Additional view"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <img
+                      src={hotel.image}
+                      alt="Additional view"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <img
+                      src={hotel.image}
+                      alt="Additional view"
+                      className="w-full h-full"
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="w-1/5 bg-white p-4 rounded-lg shadow-lg">
-                <div className="flex items-center justify-end gap-2 border-b pb-4 mb-4">
-                  <div className="flex flex-col items-center">
-                    <span className="ml-2 text-lg font-semibold">
-                      Very Good
-                    </span>
-                    <p className="text-sm text-gray-600">272 reviews</p>
+              <div className="w-[25%] pl-3 h-[450px] flex flex-col justify-between">
+                <div className="border">
+                  <div className="flex items-center justify-end gap-2 p-3">
+                    <div className="flex flex-col items-center">
+                      <span className="ml-2 text-md font-semibold">
+                        {getScoreLetter(hotel.avgRating)}
+                      </span>
+                      <p className="text-[0.7rem] text-gray-600">{`${hotel.reviews.length} reviews`}</p>
+                    </div>
+                    <div className="bg-blue_1 p-1 rounded-tl-md rounded-tr-md rounded-br-md">
+                      <p className="text-md font-semibold text-white">
+                        {hotel?.avgRating.toFixed(1)}
+                      </p>
+                    </div>
                   </div>
-                  <span className="bg-blue-900 text-white text-lg font-bold px-3 py-1 rounded-md">
-                    8.2
-                  </span>
-                </div>
 
-                <div className="mb-6">
-                  <p className="text-gray-800 font-semibold mb-2">
-                    Guests who stayed here loved:
-                  </p>
-                  <div className="flex items-start mb-2">
-                    <BedSingle className="w-5 h-5 text-gray-600 mr-2" />
-                    <p className="text-sm text-gray-600">
-                      "Great location just near tube & Portobello Market on a
-                      gorgeous street."
+                  <div className="border-y p-3 flex flex-col gap-2">
+                    <p className="font-semibold text-[0.7rem]">
+                      Guests who stayed here loved
                     </p>
+                    {/*carusele*/}
+                    <div className="flex flex-col gap-5">
+                      <div className="flex items-start mb-2">
+                        <p className="text-sm text-gray-600">
+                          "Great location just near tube & Portobello Market on
+                          a gorgeous street."
+                        </p>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <span className="font-semibold">
+                          <Avatar className="size-6">
+                            <AvatarImage
+                              className=""
+                              src="https://github.com/shadcn.png"
+                              alt="@shadcn"
+                            />
+                            <AvatarFallback>CN</AvatarFallback>
+                          </Avatar>
+                        </span>
+                        <span className="text-[0.7rem] ml-2">Susan</span>
+                        <span className="ml-2 text-gray-500 text-[0.7rem]">
+                          Israel
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center text-sm">
-                    <span className="font-semibold">Susan</span>
-                    <span className="ml-2 text-gray-500">
-                      United Arab Emirates
-                    </span>
+
+                  <div className="border-b p-3 flex justify-between">
+                    <p className="text-lg font-bold">
+                      Location: {getScoreLetter(hotel?.location)}
+                    </p>
+                    <div className="bg-blue_1 p-1 rounded-tl-md rounded-tr-md rounded-br-md">
+                      <p className="text-md font-semibold text-white">
+                        {hotel?.location.toFixed(1)}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="border-b pb-4 mb-4 flex justify-between">
-                  <p className="text-lg font-bold">Excellent location!</p>
-                  <p className="text-blue-600 font-bold text-xl">
-                    {hotel.location.toFixed(1)}
-                  </p>
-                </div>
-
-                <div className="mb-4">
-                  <img className=" w-80 h-32 rounded-xl" src={map} alt="Map" />
-                  <Button
-                    variant="outline"
-                    className="w-full flex items-center justify-center gap-2"
-                  >
-                    <BedSingle className="w-5 h-5" />
-                    Show on map
-                  </Button>
-                </div>
-
-                <div className="flex flex-col items-center gap-2">
-                  <Link to={`/hotel/${hotelId}/booking`}>
-                    <Button className="w-full bg-blue-600 text-white">
-                      Reserve
-                    </Button>
-                  </Link>
-
-                  <Button variant="outline" className="w-full">
-                    Save the property
-                  </Button>
+                <div className="">
+                  <img className="" src={map} alt="Map" />
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 mb-6">
+            {/* <div className="grid grid-cols-4 gap-4 mb-6">
               <FeatureItem
                 icon={<BedSingle className="w-6 h-6 text-gray-700" />}
                 label="Apartments"
@@ -340,26 +345,24 @@ const HotelDetailsPage: React.FC = () => {
                 icon={<CigaretteOff className="w-6 h-6 text-gray-700" />}
                 label="Non-smoking rooms"
               />
-            </div>
+            </div> */}
 
-            <div className="flex gap-8 pt-4">
-              <div className="mb-6 w-3/4">
-                <div>
-                  <p className="text-gray-800">{hotel.description}</p>
-                  <p className="mt-4 text-gray-800">
-                    Couples in particular like the location — they rated it 9.6
-                    for a two-person trip.
-                  </p>
-                  <p className="mt-4 text-gray-500 text-sm">
-                    Distance in property description is calculated using ©
-                    OpenStreetMap
-                  </p>
-                </div>
-
-                {/* <MostPopularFacilities /> */}
+            <div className="flex justify-between">
+              <div className="max-w-[65%]">
+                <p className="text-gray-800 text-sm">{hotel.description}</p>
+                <p className="mt-4 text-gray-800">
+                  Couples in particular like the location — they rated it 9.6
+                  for a two-person trip.
+                </p>
+                <p className="mt-4 text-gray-500 text-sm">
+                  Distance in property description is calculated using ©
+                  OpenStreetMap
+                </p>
               </div>
-              <div className="w-1/4">
-                <div className="bg-white rounded-lg shadow-lg mb-4">
+
+              {/* <MostPopularFacilities /> */}
+              <div className="max-w-[28%] w-full bg-purple">
+                <div className=" rounded-lg shadow-lg mb-4">
                   <h4 className="text-lg font-semibold mb-2">
                     Property highlights
                   </h4>
@@ -391,18 +394,22 @@ const HotelDetailsPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/*info & prices*/}
-        <div ref={myDivRef} id="info&prices">
+        <section ref={myDivRef} id="info&prices">
           <RoomTableDemo availableRooms={rooms} nights={numberOfNights} />
-        </div>
+          {/*Guest reviews*/}
+          <GuestRevies hotel={hotel} />
+        </section>
 
         {/*Facilities*/}
-        {renderFacilities()}
+        <RenderFacilities hotel={hotel} />
 
-        {/*Guest reviews*/}
-        <GuestRevies hotel={hotel} />
+        {/*House rules*/}
+        <section id="houseRules">House rules</section>
+        {/*The fine print*/}
+        <section id="theFinePrint">The fine print</section>
       </main>
       <Footer />
     </>

@@ -13,6 +13,7 @@ import { Label } from "../../ui/label";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { HotelDetails } from "@/models/Hotel.model";
+import goldLike from "@/images/goldLike.svg";
 
 interface PropsTypes {
   hotelId: string | undefined;
@@ -56,8 +57,14 @@ function ReservationSideBar({
       {/*hotel*/}
       <div className="border-[1px] rounded-md flex p-3 gap-2 items-center">
         <div className="flex flex-col gap-1">
-          <div>
+          <div className="flex">
             <p className="text-[0.7rem] font-normal">Hotel</p>
+            <div className="flex items-center mb-2">
+              <span className="bg-white text-yellow font-bold py-1 rounded-sm mr-2">
+                {hotel?.starsRating && "★".repeat(hotel.starsRating)}
+              </span>
+              <img src={goldLike} alt="Booking Logo" className="h-6" />
+            </div>
           </div>
           <p className="text-md font-bold">{hotel?.name}</p>
           <div className="flex flex-col gap-1 mt-1">

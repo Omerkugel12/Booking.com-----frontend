@@ -5,8 +5,8 @@ import { useReservation } from "@/context/ReservationContext";
 import { useNavigate } from "react-router-dom";
 
 interface RoomTableProps {
-  availableRooms: AvailableRoom[];
-  nights: number;
+  availableRooms: AvailableRoom | null;
+  nights: number | undefined;
 }
 
 interface LocalRoomSelection {
