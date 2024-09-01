@@ -55,7 +55,7 @@ export interface HotelDetails {
 // Model for the results view of a hotel
 export interface HotelResult {
   location: any;
-  reviews: number;
+  reviews: [HotelResult];
   id: number;
   name: string;
   city: string;
@@ -70,4 +70,9 @@ export interface HotelResult {
   image: string;
   avgRating: number;
   totalPrice: number;
+}
+
+export interface HotelResult {
+  text: string;
+  userId: string;
 }

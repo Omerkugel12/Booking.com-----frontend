@@ -12,27 +12,52 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
   const [searchParams] = useSearchParams();
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
-  // Function to handle navigation to the hotel details page
+
+  // Function to handle navigation to the hotel details page and saving to localStorage
+
   const handleNavigation = () => {
+    const propertyData = {
+      id: hotel.id,
+      imageSrc: hotel.image,
+      title: hotel.name,
+      location: hotel.city,
+      rating: hotel.avgRating.toString(),
+      reviewInfo: `${getScoreLetter(hotel.avgRating)} · ${
+        hotel.reviews.length
+      } reviews`,
+    };
+
+    const storedProperties = JSON.parse(
+      localStorage.getItem("savedProperties") || "[]"
+    );
+
+    // Avoid duplicates by checking if the property already exists in storage
+    if (
+      !storedProperties.some(
+        (storedProperty: any) => storedProperty.title === hotel.name
+      )
+    ) {
+      storedProperties.push(propertyData);
+      localStorage.setItem("savedProperties", JSON.stringify(storedProperties));
+    }
+
     navigate(`/hotel/${hotel.id}?startDate=${startDate}&endDate=${endDate}`); // Assuming the URL pattern is /hotels/:id
   };
 
-  function ratingToText(rating: number): string {
-    if (rating === 10) {
-      return "Excellent";
-    } else if (rating >= 8 && rating < 10) {
-      return "Very Good";
-    } else if (rating >= 6 && rating < 8) {
-      return "Good";
-    } else if (rating >= 4 && rating < 6) {
-      return "Average";
-    } else if (rating >= 2 && rating < 4) {
-      return "Poor";
-    } else {
-      return "Very Poor";
-    }
-  }
+
+  // Function to convert numeric rating to descriptive string
+  const getScoreLetter = (rating: number): string => {
+    if (rating < 7) return "Pleasant";
+    else if (rating >= 7 && rating < 8) return "Good";
+    else if (rating >= 8 && rating <= 8.5) return "Very Good";
+    else if (rating > 8.5 && rating <= 9) return "Excellent";
+    else if (rating > 9 && rating <= 10) return "Wonderful";
+    return "";
+  };
+
+
 console.log(hotel);
+
 
   return (
     <Card className="flex mt-2 w-full border border-gray-300 rounded-lg shadow-md">
@@ -79,10 +104,10 @@ console.log(hotel);
             <div className="flex space-x-2">
               <div className="flex flex-col items-end">
                 <p className="text-[16px] font-semibold text-gray-900">
-                  {ratingToText(hotel.avgRating)}
+                  {getScoreLetter(hotel.avgRating)}
                 </p>
                 <p className="text-xs text-gray-500">
-                  {hotel.reviews || 0} reviews
+                  {hotel?.reviews.length || 0} reviews
                 </p>
               </div>
             </div>
