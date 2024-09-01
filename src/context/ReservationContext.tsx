@@ -2,14 +2,20 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface RoomSelection {
   roomId: string;
+  roomType: string; // Added roomType here
   quantity: number;
-  price: number | null; // make sure price is nullable if needed
+  price: number | null; // Make sure price is nullable if needed
 }
 
 interface ReservationContextProps {
   roomSelections: RoomSelection[];
   totalPrice: number;
-  addRoom: (roomId: string, quantity: number, price: number) => void;
+  addRoom: (
+    roomId: string,
+    roomType: string,
+    quantity: number,
+    price: number
+  ) => void;
   clearReservation: () => void;
 }
 
@@ -30,17 +36,27 @@ export const ReservationProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [roomSelections, setRoomSelections] = useState<RoomSelection[]>([]);
 
-  const addRoom = (roomId: string, quantity: number, price: number) => {
+  const addRoom = (
+    roomId: string,
+    roomType: string, // Added roomType parameter here
+    quantity: number,
+    price: number
+  ) => {
     setRoomSelections((prevSelections) => {
       const existingIndex = prevSelections.findIndex(
         (selection) => selection.roomId === roomId
       );
       if (existingIndex >= 0) {
         const updatedSelections = [...prevSelections];
-        updatedSelections[existingIndex] = { roomId, quantity, price };
+        updatedSelections[existingIndex] = {
+          roomId,
+          roomType, // Updated roomType
+          quantity,
+          price,
+        };
         return updatedSelections;
       } else {
-        return [...prevSelections, { roomId, quantity, price }];
+        return [...prevSelections, { roomId, roomType, quantity, price }]; // Added roomType to new selection
       }
     });
   };
@@ -50,7 +66,7 @@ export const ReservationProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const totalPrice = roomSelections.reduce(
-    (total, selection) => total + selection.price,
+    (total, selection) => total + (selection.price || 0) * selection.quantity,
     0
   );
 

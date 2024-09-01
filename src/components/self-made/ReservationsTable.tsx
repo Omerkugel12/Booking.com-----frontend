@@ -3,7 +3,6 @@ import { CheckCircle, UserRound } from "lucide-react";
 import { AvailableRoom } from "@/models/Hotel.model";
 import { useReservation } from "@/context/ReservationContext";
 import { useNavigate } from "react-router-dom";
-import { log } from "console";
 
 interface RoomTableProps {
   availableRooms: AvailableRoom[];
@@ -12,6 +11,7 @@ interface RoomTableProps {
 
 interface LocalRoomSelection {
   roomId: string;
+  roomType: string; // Include roomType here
   quantity: number;
   price: number;
 }
@@ -28,15 +28,16 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
       const existingIndex = prevSelections.findIndex(
         (selection) => selection.roomId === room.id
       );
-      const roomPrice = room.price * qty * nights;
+      const roomPrice = room.price * nights; // Price for one room for given nights
 
       if (existingIndex >= 0) {
         const updatedSelections = [...prevSelections];
         if (qty > 0) {
           updatedSelections[existingIndex] = {
             roomId: room.id,
+            roomType: room.type, // Store roomType
             quantity: qty,
-            price: roomPrice,
+            price: roomPrice, // Store price per room (price * nights)
           };
         } else {
           updatedSelections.splice(existingIndex, 1);
@@ -46,7 +47,12 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
         return qty > 0
           ? [
               ...prevSelections,
-              { roomId: room.id, quantity: qty, price: roomPrice },
+              {
+                roomId: room.id,
+                roomType: room.type, // Store roomType
+                quantity: qty,
+                price: roomPrice, // Store price per room (price * nights)
+              },
             ]
           : prevSelections;
       }
@@ -54,7 +60,7 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
   };
 
   const totalPrice = localSelections.reduce(
-    (total, selection) => total + selection.price,
+    (total, selection) => total + selection.price * selection.quantity, // Multiply price by quantity
     0
   );
 
@@ -63,10 +69,13 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
   );
 
   const handleReserve = () => {
-    console.log(localSelections); // This should output the correct selections
-
     localSelections.forEach((selection) => {
-      addRoom(selection.roomId, selection.quantity, selection.price);
+      addRoom(
+        selection.roomId,
+        selection.roomType, // Pass roomType
+        selection.quantity,
+        selection.price // Store total price for selected quantity
+      );
     });
     navigate("booking");
   };
