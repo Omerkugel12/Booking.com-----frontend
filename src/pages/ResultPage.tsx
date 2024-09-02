@@ -27,7 +27,7 @@ function ResultPage() {
   const freeCancelation = searchParams.get("Freecancellation");
   const noPrepayment = searchParams.get("Noprepayment");
   const starRating = searchParams.get("starRating");
-  const meals = searchParams.get("meals")
+  const meals = searchParams.get("meals");
   const sortBy = searchParams.get("sortBy");
 
   // State to store fetched hotels
@@ -95,7 +95,7 @@ function ResultPage() {
     };
 
     fetchHotels();
-  }, [destination, startDate, endDate, adults, children, rooms,searchParams]);
+  }, [destination, startDate, endDate, adults, children, rooms, searchParams]);
 
   if (error) return <p>{error}</p>;
 
@@ -103,7 +103,7 @@ function ResultPage() {
     <>
       <Header type="results" />
       <div className="px-44">
-        <SearchBar />
+        <SearchBar type="default" />
       </div>
       <div className="flex mt-10 px-44">
         <div>

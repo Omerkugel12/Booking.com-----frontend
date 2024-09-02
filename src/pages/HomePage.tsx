@@ -16,7 +16,7 @@ const HomePage = () => {
     <div>
       {/* <Header /> */}
       <HeroSection />
-      <SearchBar />
+      <SearchBar type="default" />
       <div className="mt-10 space-y-10">
         {recentSearches.length > 0 && <RecentSearches />}
 

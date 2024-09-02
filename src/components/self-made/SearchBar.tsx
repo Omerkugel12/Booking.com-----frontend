@@ -16,7 +16,11 @@ interface Options {
   rooms: number;
 }
 
-function SearchBar() {
+interface Type {
+  type: "availability" | "default";
+}
+
+function SearchBar({ type }: Type) {
   const {
     destination1,
     setDestination1,
@@ -98,30 +102,79 @@ function SearchBar() {
     setDestination(ev.target.value);
   }
 
+  function handleAvailabilty(ev: React.FormEvent<HTMLFormElement>) {
+    ev.preventDefault();
+
+    const formData = new FormData(ev.currentTarget);
+    const destination = formData.get("destination") as string;
+    setDestination1(destination);
+
+    const data = {
+      destination: destination,
+      startDate: date?.from ? format(date.from, "yyyy-MM-dd") : undefined, // Format date to YYYY-MM-DD
+      endDate: date?.to ? format(date.to, "yyyy-MM-dd") : undefined,
+      guests: {
+        adults: options.adults,
+        children: options.children,
+        rooms: options.rooms,
+      },
+    };
+
+    const updatedSearchParams = new URLSearchParams(searchParams.toString());
+    if (destination) updatedSearchParams.set("destination", destination);
+    if (data.startDate) updatedSearchParams.set("startDate", data.startDate);
+    if (data.endDate) updatedSearchParams.set("endDate", data.endDate);
+    updatedSearchParams.set("adults", options.adults.toString());
+    updatedSearchParams.set("children", options.children.toString());
+    updatedSearchParams.set("rooms", options.rooms.toString());
+
+    // Call the saveRecentSearch method
+    saveRecentSearch(
+      data.destination,
+      data.startDate,
+      data.endDate,
+      data.guests
+    );
+
+    setSearchParams(updatedSearchParams);
+    setDate1(date);
+    setOptions1(options);
+  }
+
   return (
-    <div className="-mt-8 p-[3px] rounded-sm h-[70px] z-30">
+    <div
+      className={
+        type === "availability"
+          ? "p-[3px] h-[55px] rounded-sm"
+          : "-mt-9 p-[3px] rounded-sm h-[70px] z-30"
+      }
+    >
       <form
-        onSubmit={handleSearchSubmit}
+        onSubmit={
+          type === "availability" ? handleAvailabilty : handleSearchSubmit
+        }
         id="search-form"
         className="rounded-sm bg-bg_search_bar flex items-center gap-1 p-1 h-full"
       >
         {/* Destination Input */}
-        <div className="relative h-full flex-1 ring-0 bg-white flex items-center px-4 rounded-sm hover:ring-1 ring-orange-600">
-          <BedSingle
-            strokeWidth={1.75}
-            className="mr-2 h-7 w-7 text-gray-500"
-          />
-          <Input
-            type="text"
-            id="destination"
-            name="destination"
-            value={destination}
-            onChange={handleDestinationChange}
-            placeholder="Where are you going?"
-            required
-            className="w-full border-none outline-0 placeholder-gray-500 text-xs font-semibold"
-          />
-        </div>
+        {type !== "availability" && (
+          <div className="relative h-full flex-1 ring-0 bg-white flex items-center px-4 rounded-sm hover:ring-1 ring-orange-600">
+            <BedSingle
+              strokeWidth={1.75}
+              className="mr-2 h-7 w-7 text-gray-500"
+            />
+            <Input
+              type="text"
+              id="destination"
+              name="destination"
+              value={destination}
+              onChange={handleDestinationChange}
+              placeholder="Where are you going?"
+              required
+              className="w-full border-none outline-0 placeholder-gray-500 text-xs font-semibold"
+            />
+          </div>
+        )}
 
         {/* Date Input */}
         <DatePickerWithRange date={date} setDate={setDate} />
@@ -218,13 +271,22 @@ function SearchBar() {
         </Popover>
 
         {/* Search Button */}
-        <Button
-          type="submit"
-          id="search-btn"
-          className="flex-none w-24 px-4 py-3 h-full bg-nav_btn_text text-white text-xl font-semibold rounded-sm hover:bg-blue-700 transition-colors"
-        >
-          Search
-        </Button>
+        {type === "availability" ? (
+          <Button
+            type="submit"
+            className="flex-none bg-nav_btn_text text-white text-sm font-semibold rounded-sm hover:bg-blue-700 transition-colors"
+          >
+            View availability
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            id="search-btn"
+            className="flex-none w-24 px-4 py-3 h-full bg-nav_btn_text text-white text-xl font-semibold rounded-sm hover:bg-blue-700 transition-colors"
+          >
+            Search
+          </Button>
+        )}
       </form>
     </div>
   );
