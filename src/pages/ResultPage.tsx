@@ -10,8 +10,11 @@ import { HotelResult } from "@/models/Hotel.model";
 import { useSearchParams } from "react-router-dom";
 import { getHotels } from "@/services/hotels.service";
 import Map from "@/components/self-made/Map";
+import ModalMap from "@/components/self-made/ModalMap";
 
 function ResultPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // Get the current search parameters
   const [searchParams] = useSearchParams();
 
@@ -97,6 +100,12 @@ function ResultPage() {
     fetchHotels();
   }, [destination, startDate, endDate, adults, children, rooms,searchParams]);
 
+  const openModal = () => {
+    console.log('Opening modal. Hotels:', hotels);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => setIsModalOpen(false);
+
   if (error) return <p>{error}</p>;
 
   return (
@@ -109,11 +118,17 @@ function ResultPage() {
         <div>
           <div>
             <img
-              className=" w-80 h-32 rounded-xl"
+              className=" w-80 h-32 rounded-xl cursor-pointer"
               src="src/images/ShowOnMap.webp"
               alt="Map"
+    	        onClick={openModal}
             />
-            {/* <Map hotels={hotels} /> */}
+            <Map hotels={hotels} />
+            <ModalMap 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+                hotels={hotels}
+              />
             <div>
               <FilterSidebar />
             </div>
