@@ -44,7 +44,6 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
     navigate(`/hotel/${hotel.id}?startDate=${startDate}&endDate=${endDate}`); // Assuming the URL pattern is /hotels/:id
   };
 
-
   // Function to convert numeric rating to descriptive string
   const getScoreLetter = (rating: number): string => {
     if (rating < 7) return "Pleasant";
@@ -55,9 +54,7 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
     return "";
   };
 
-
-console.log(hotel);
-
+  console.log(hotel);
 
   return (
     <Card className="flex mt-2 w-full border border-gray-300 rounded-lg shadow-md">
@@ -99,40 +96,52 @@ console.log(hotel);
               {hotel.distance} km from center
             </p>
           </div>
+          <div>
+            <div id="rightCon" className="flex gap-2 h-fit">
+              <div className="flex space-x-2">
+                <div className="flex flex-col items-end">
+                  <p className="text-[16px] font-semibold text-gray-900">
+                    {getScoreLetter(hotel.avgRating)}
+                  </p>
+                  <p className="text-xs text-gray-500 w-full text-nowrap">
+                    {hotel?.reviews.length || 0} reviews
+                  </p>
+                </div>
+              </div>
 
-          <div className="flex gap-2">
-            <div className="flex space-x-2">
-              <div className="flex flex-col items-end">
-                <p className="text-[16px] font-semibold text-gray-900">
-                  {getScoreLetter(hotel.avgRating)}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {hotel?.reviews.length || 0} reviews
+              <div
+                id="acd"
+                className="flex justify-center w-10 h-8 bg-blue-900 rounded"
+              >
+                <p className=" text-white text-[16px] font-bold">
+                  {hotel.avgRating}
                 </p>
               </div>
             </div>
-            <div className="flex justify-center w-10 h-8 bg-blue-900 rounded">
-              <p className=" text-white text-[16px] font-bold">
-                {hotel.avgRating}
-              </p>
-            </div>
+            {hotel.location.toFixed(1) > hotel.avgRating.toFixed(1) ? (<p className=" text-end flex-nowrap w-fit text-sm text-green font-bold ">
+              Location {hotel.location.toFixed(1)}
+            </p>) : ""}
+           
           </div>
         </div>
-        <p>Location {hotel.location.toFixed(1)}</p>
         <div className="flex justify-between">
           <div>
             <p className="text-xs text-black font-bold mt-2">
               {hotel.type || "Standard Room"}
             </p>
-            {hotel.freeCancellation && (
-              <div className="text-green-600 text-sm mt-2">
+            {hotel.freeCancellation ? (
+              <div className=" text-green font-bold text-sm mt-2">
                 ✓ Free cancellation
               </div>
+            ) : (
+              ""
             )}
-            {hotel.prepayment && (
-              <div className="text-green-600 text-sm mt-1">
+            {hotel.prepayment ? (
+              <div className=" text-green font-bold text-sm mt-1">
                 ✓ No prepayment needed - pay at the property
               </div>
+            ) : (
+              ""
             )}
           </div>
           <div className="flex items-end mt-4">
