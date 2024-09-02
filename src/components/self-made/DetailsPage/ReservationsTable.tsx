@@ -3,9 +3,10 @@ import { CheckCircle, UserRound } from "lucide-react";
 import { AvailableRoom } from "@/models/Hotel.model";
 import { useReservation } from "@/context/ReservationContext";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../SearchBar";
 
 interface RoomTableProps {
-  availableRooms: AvailableRoom | null;
+  availableRooms: AvailableRoom[] | null;
   nights: number | undefined;
 }
 
@@ -28,6 +29,7 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
       const existingIndex = prevSelections.findIndex(
         (selection) => selection.roomId === room.id
       );
+
       const roomPrice = room.price * nights; // Price for one room for given nights
 
       if (existingIndex >= 0) {
@@ -83,88 +85,97 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
   };
 
   return (
-    <div className="flex">
-      <div className="flex-grow overflow-y-auto p-4">
-        <table className="w-full border-collapse border">
-          <thead>
+    <div className="my-5">
+      <h1 className="text-2xl font-bold">Availability</h1>
+      <div className="mt-11 mb-4 m max-w-[650px]">
+        <SearchBar type="availability" />
+      </div>
+      <div className="">
+        <table className="relative">
+          <thead className="sticky top-0">
             <tr className="bg-blue-100">
-              <th className="p-4 border text-white bg-[#4C76B2]">
-                Accommodation Type
+              <th className="text-white bg-[#4C76B2]">
+                <p className="text-sm text-white font-bold">Room Type</p>
               </th>
-              <th className="p-4 border text-white bg-[#4C76B2]">
-                Number of Guests
+              <th className="border-x-[1px] text-white bg-[#4C76B2]">
+                <p className="text-sm text-white font-bold">Number of Guests</p>
               </th>
-              <th className="p-4 border text-white bg-[#003B95]">
-                Price for {nights} Nights
+              <th className="border-x-[1px] text-white bg-[#003B95]">
+                <p className="text-sm text-white font-bold">
+                  Price for {nights} nights
+                </p>
               </th>
-              <th className="p-4 border text-white bg-[#4C76B2]">
-                Your Choices
+              <th className="border-x-[1px] text-white bg-[#4C76B2]">
+                <p className="text-sm text-white font-bold">Your choices</p>
               </th>
-              <th className="p-4 border text-white bg-[#4C76B2]">
-                Select Amount
+              <th className="border-x-[1px] text-white bg-[#4C76B2]">
+                <p className="text-sm text-white font-bold">Select amount</p>
               </th>
+
+              <th className="p-4 border text-white bg-[#4C76B2]"></th>
             </tr>
           </thead>
           <tbody>
-            {availableRooms.map((room) => (
-              <tr key={room.id} className="bg-white">
-                <td className="p-4 border">
-                  <strong>{room.type}</strong>
-                  <p>{room.description}</p>
-                </td>
-                <td className="p-2 border text-center">
-                  {[...Array(room.capacity)].map((_, i) => (
-                    <UserRound key={i} className="inline-block" />
-                  ))}
-                </td>
-                <td className="p-4 border text-center">
-                  ${room.price * nights}
-                  <p className="text-gray-500 text-sm">
-                    Includes taxes and fees
-                  </p>
-                  <p className="text-green-600 text-sm">10% off</p>
-                </td>
-                <td className="p-4 border text-xs text-emerald-600">
-                  <div className="flex items-center mb-2 ">
-                    <CheckCircle className="mr-2" /> Includes high-speed
-                    internet
-                  </div>
-                  <div className="flex items-center">
-                    <CheckCircle className="text-green-600 mr-2" />{" "}
-                    Non-refundable
-                  </div>
-                  <p className="mt-2">
-                    10% Genius discount applied to the price before taxes and
-                    charges
-                  </p>
-                </td>
-                <td className="p-4 border text-center">
-                  <select
-                    className="border border-gray-300 p-2 rounded"
-                    value={
-                      localSelections.find((sel) => sel.roomId === room.id)
-                        ?.quantity || 0
-                    }
-                    onChange={(e) =>
-                      handleRoomSelection(room, parseInt(e.target.value))
-                    }
-                  >
-                    {[...Array(parseInt(room.available_rooms) + 1).keys()].map(
-                      (num) => (
+            {availableRooms &&
+              availableRooms.map((room) => (
+                <tr key={room.id} className="bg-white">
+                  <td className="p-4 border">
+                    <strong>{room.type}</strong>
+                    <p>{room.description}</p>
+                  </td>
+                  <td className="p-2 border text-center">
+                    {[...Array(room.capacity)].map((_, i) => (
+                      <UserRound key={i} className="inline-block" />
+                    ))}
+                  </td>
+                  <td className="p-4 border text-center">
+                    ${nights && room.price * nights}
+                    <p className="text-gray-500 text-sm">
+                      Includes taxes and fees
+                    </p>
+                    <p className="text-green-600 text-sm">10% off</p>
+                  </td>
+                  <td className="p-4 border text-xs text-emerald-600">
+                    <div className="flex items-center mb-2 ">
+                      <CheckCircle className="mr-2" /> Includes high-speed
+                      internet
+                    </div>
+                    <div className="flex items-center">
+                      <CheckCircle className="text-green-600 mr-2" />{" "}
+                      Non-refundable
+                    </div>
+                    <p className="mt-2">
+                      10% Genius discount applied to the price before taxes and
+                      charges
+                    </p>
+                  </td>
+                  <td className="p-4 border text-center">
+                    <select
+                      className="border border-gray-300 p-2 rounded"
+                      value={
+                        localSelections.find((sel) => sel.roomId === room.id)
+                          ?.quantity || 0
+                      }
+                      onChange={(e) =>
+                        handleRoomSelection(room, parseInt(e.target.value))
+                      }
+                    >
+                      {[
+                        ...Array(parseInt(room.available_rooms) + 1).keys(),
+                      ].map((num) => (
                         <option key={num} value={num}>
                           {num}
                         </option>
-                      )
-                    )}
-                  </select>
-                </td>
-              </tr>
-            ))}
+                      ))}
+                    </select>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
       <div
-        className="sticky top-24 right-0 w-52 p-4 bg-blue-50 shadow-md"
+        className="sticky top-0 p-4 bg-blue-50"
         style={{ height: "calc(100vh - 6rem)" }}
       >
         <div className="mb-4">

@@ -98,6 +98,7 @@ console.log(freeCancelation)
     fetchHotels();
   }, [destination, startDate, endDate, adults, children, rooms, searchParams]);
 
+
   const openModal = () => {
     console.log("Opening modal. Hotels:", hotels);
     setIsModalOpen(true);
@@ -110,7 +111,7 @@ console.log(freeCancelation)
     <div className=" h-full">
       <Header type="results" />
       <div className="px-44">
-        <SearchBar />
+        <SearchBar type="default" />
       </div>
       <div className="flex mt-10 pl-44">
         <div>
