@@ -46,7 +46,7 @@ const about = [
 
 function Footer() {
   return (
-    <div className="bg-footer">
+    <div className="bg-footer  w-full mt-1 ">
       <div className="mx-40 bg-footer py-6">
         <div className="flex flex-col gap-2 border-b-2 p-6">
           <div className="flex justify-between gap-10">

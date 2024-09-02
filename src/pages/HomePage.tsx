@@ -18,7 +18,7 @@ const HomePage = () => {
       <HeroSection />
       <SearchBar />
       <div className="mt-10 space-y-10">
-        {recentSearches.length > 0 && <RecentSearches />}
+        {/* {recentSearches.length > 0 && <RecentSearches />} */}
 
         <InterestedProperties />
         <OffersSection />
