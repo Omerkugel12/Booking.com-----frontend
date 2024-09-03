@@ -70,6 +70,8 @@ export interface HotelResult {
   image: string;
   avgRating: number;
   totalPrice: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface HotelResult {

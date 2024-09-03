@@ -118,10 +118,13 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
                 </p>
               </div>
             </div>
-            {hotel.location.toFixed(1) > hotel.avgRating.toFixed(1) ? (<p className=" text-end flex-nowrap w-fit text-sm text-green font-bold ">
-              Location {hotel.location.toFixed(1)}
-            </p>) : ""}
-           
+            {hotel.location.toFixed(1) > hotel.avgRating.toFixed(1) ? (
+              <p className=" text-end flex-nowrap w-fit text-sm text-green font-bold ">
+                Location {hotel.location.toFixed(1)}
+              </p>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div className="flex justify-between">
@@ -147,11 +150,9 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
           <div className="flex items-end mt-4">
             <div className="text-right">
               <p className="text-sm text-gray-500 line-through">
-                ₪{hotel.totalPrice + 500} {/* Example of a discounted price */}
+                ₪{hotel.price + 500} {/* Example of a discounted price */}
               </p>
-              <p className="text-xl font-bold text-gray-900">
-                ₪{hotel.totalPrice}
-              </p>
+              <p className="text-xl font-bold text-gray-900">₪{hotel.price}</p>
               <p className="text-xs text-gray-500">Includes taxes and fees</p>
               <Button
                 className="bg-blue-600 text-white text-sm font-medium py-2 px-4 mt-2 rounded"

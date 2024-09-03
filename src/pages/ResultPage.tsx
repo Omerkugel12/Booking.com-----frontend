@@ -7,13 +7,16 @@ import ResultHotelCard from "@/components/self-made/ResultHotelCard";
 import SearchBar from "@/components/self-made/SearchBar";
 import { useSearch } from "@/context/SearchContext";
 import { HotelResult } from "@/models/Hotel.model";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getHotels } from "@/services/hotels.service";
 import Map from "@/components/self-made/Map";
 import ModalMap from "@/components/self-made/ModalMap";
 
 function ResultPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //hack for map instance do not re-render
+  const navigate = useNavigate();
 
   // Get the current search parameters
   const [searchParams] = useSearchParams();
@@ -102,7 +105,10 @@ function ResultPage() {
     console.log("Opening modal. Hotels:", hotels);
     setIsModalOpen(true);
   };
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate(0);
+  };
 
   if (error) return <p>{error}</p>;
 
@@ -122,11 +128,7 @@ function ResultPage() {
               onClick={openModal}
             />
             {/* <Map hotels={hotels} /> */}
-            <ModalMap
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              hotels={hotels}
-            />
+            {isModalOpen && <ModalMap onClose={closeModal} hotels={hotels} />}
             <div>
               <FilterSidebar />
             </div>
