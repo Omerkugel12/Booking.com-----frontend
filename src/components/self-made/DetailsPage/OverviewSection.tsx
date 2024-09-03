@@ -54,7 +54,7 @@ const FeatureItem = ({
 function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
   return (
     <section className="flex gap-8 pb-7 border-b-[1px]" id="overview">
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         <div className="flex justify-between items-center">
           {/*hotel*/}
           <div className="mb-5">
@@ -75,7 +75,7 @@ function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
               </a>
             </div>
           </div>
-          <div className="flex flex-col gap-3 items-center space-x-4">
+          <div className="flex flex-col gap-3 items-center">
             <div className="flex gap-4 items-center">
               <Heart className="text-blue-600 cursor-pointer" />
               <Share className="text-blue-600 cursor-pointer" />
@@ -162,7 +162,11 @@ function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
                           className="w-full h-full flex items-center justify-center"
                         >
                           <div className="w-full h-full flex items-center justify-center">
-                            <img src={imageURL} alt={hotel.name} className="" />
+                            <img
+                              src={imageURL}
+                              alt={hotel.name}
+                              className="w-3/5"
+                            />
                           </div>
                         </CarouselItem>
                       ))}
@@ -174,7 +178,7 @@ function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
               </Dialog>
             </div>
           </div>
-          <div className="w-[25%] pl-3 h-[450px] flex flex-col justify-between">
+          <div className="max-w-[25%] w-full pl-3 h-[450px] flex flex-col justify-between">
             <div className="border">
               <div className="flex items-center justify-end gap-2 p-3">
                 <div className="flex flex-col items-center">
@@ -197,50 +201,54 @@ function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
                 </p>
 
                 {/* Carousel */}
-                <Carousel className="relative">
-                  {/* Carousel content */}
-                  <CarouselContent className="">
-                    {hotel.reviews.slice(0, 10).map((review, index) => {
-                      return (
-                        <CarouselItem key={index} className="">
-                          <div className="flex flex-col gap-5">
-                            <div className="flex items-start mb-2">
-                              <p className="text-sm text-gray-600">
-                                {review.text}
-                              </p>
+                <div className="w-56">
+                  <Carousel className="relative">
+                    {/* Carousel content */}
+                    <CarouselContent className="">
+                      {hotel.reviews.slice(0, 10).map((review, index) => {
+                        return (
+                          <CarouselItem key={index} className="">
+                            <div className="flex flex-col gap-5">
+                              <div className="flex items-start mb-2">
+                                <p className="text-sm text-gray-600">
+                                  {review.text}
+                                </p>
+                              </div>
+                              <div className="flex items-center text-sm">
+                                <span className="font-semibold">
+                                  <Avatar className="size-6">
+                                    <AvatarImage
+                                      className=""
+                                      src="https://github.com/shadcn.png"
+                                      alt="@shadcn"
+                                    />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                  </Avatar>
+                                </span>
+                                <span className="text-[0.7rem] ml-2">
+                                  Susan
+                                </span>
+                                <span className="ml-2 text-gray-500 text-[0.7rem]">
+                                  Israel
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex items-center text-sm">
-                              <span className="font-semibold">
-                                <Avatar className="size-6">
-                                  <AvatarImage
-                                    className=""
-                                    src="https://github.com/shadcn.png"
-                                    alt="@shadcn"
-                                  />
-                                  <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                              </span>
-                              <span className="text-[0.7rem] ml-2">Susan</span>
-                              <span className="ml-2 text-gray-500 text-[0.7rem]">
-                                Israel
-                              </span>
-                            </div>
-                          </div>
-                        </CarouselItem>
-                      );
-                    })}
-                  </CarouselContent>
+                          </CarouselItem>
+                        );
+                      })}
+                    </CarouselContent>
 
-                  {/* Carousel Previous Arrow */}
-                  <CarouselPrevious className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-transparent border-none">
-                    &lt;
-                  </CarouselPrevious>
+                    {/* Carousel Previous Arrow */}
+                    <CarouselPrevious className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-transparent border-none">
+                      &lt;
+                    </CarouselPrevious>
 
-                  {/* Carousel Next Arrow */}
-                  <CarouselNext className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-transparent p-2 border-none">
-                    &gt;
-                  </CarouselNext>
-                </Carousel>
+                    {/* Carousel Next Arrow */}
+                    <CarouselNext className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-transparent p-2 border-none">
+                      &gt;
+                    </CarouselNext>
+                  </Carousel>
+                </div>
               </div>
 
               <div className="border-b p-3 flex justify-between">

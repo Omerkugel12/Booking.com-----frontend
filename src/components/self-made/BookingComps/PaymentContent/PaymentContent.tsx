@@ -19,6 +19,7 @@ import {
 import { HotelDetails } from "@/models/Hotel.model";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
+import { RoomSelection } from "@/context/ReservationContext";
 
 interface PropsTypes {
   addResrvation: () => Promise<void>;
@@ -29,6 +30,7 @@ interface PropsTypes {
   // totalRooms: number;
   // totalGuests: number;
   totalDays: number | undefined;
+  roomSelections: RoomSelection[];
 }
 
 const formSchema = z.object({
@@ -59,6 +61,7 @@ function PaymentContent({
   // totalRooms,
   // totalGuests,
   totalDays,
+  roomSelections,
 }: PropsTypes) {
   const [searchParams] = useSearchParams();
 
@@ -231,10 +234,14 @@ function PaymentContent({
                           </div>
                         </section>
                       </div>
-                      <div className="py-2 border-b">
-                        <p className="text-sm font-bold">
-                          1 x Double Room with Balcony
-                        </p>
+                      <div className="py-2 border-b flex flex-col gap-1">
+                        {roomSelections.map((roomSelection) => {
+                          return (
+                            <p className="text-sm font-bold">
+                              {`${roomSelection.quantity} x ${roomSelection.roomType}`}
+                            </p>
+                          );
+                        })}
                       </div>
                       <div className="py-2 flex flex-col gap-2">
                         <div className="flex justify-between">

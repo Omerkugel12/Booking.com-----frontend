@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { CheckCircle, UserRound } from "lucide-react";
 import { AvailableRoom } from "@/models/Hotel.model";
 import { useReservation } from "@/context/ReservationContext";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar";
+import { useAuth } from "@/context/AuthContext";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface RoomTableProps {
   availableRooms: AvailableRoom[] | null;
@@ -18,6 +21,8 @@ interface LocalRoomSelection {
 }
 
 const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
+  const { loggedInUser } = useAuth();
+  const { toast } = useToast();
   const [localSelections, setLocalSelections] = useState<LocalRoomSelection[]>(
     []
   );
@@ -87,12 +92,13 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
   return (
     <div className="my-5">
       <h1 className="text-2xl font-bold">Availability</h1>
-      <div className="mt-11 mb-4 m max-w-[650px]">
+      <div className="mt-11 mb-4 max-w-[650px]">
         <SearchBar type="availability" />
       </div>
-      <div className="">
-        <table className="relative">
-          <thead className="sticky top-0">
+      {/*table*/}
+      <div className="flex">
+        <table className="w-[80%]">
+          <thead className="sticky top-0 z-10">
             <tr className="bg-blue-100">
               <th className="text-white bg-[#4C76B2]">
                 <p className="text-sm text-white font-bold">Room Type</p>
@@ -111,8 +117,6 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
               <th className="border-x-[1px] text-white bg-[#4C76B2]">
                 <p className="text-sm text-white font-bold">Select amount</p>
               </th>
-
-              <th className="p-4 border text-white bg-[#4C76B2]"></th>
             </tr>
           </thead>
           <tbody>
@@ -173,51 +177,76 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
               ))}
           </tbody>
         </table>
-      </div>
-      <div
-        className="sticky top-0 p-4 bg-blue-50"
-        style={{ height: "calc(100vh - 6rem)" }}
-      >
-        <div className="mb-4">
-          <h2 className="text-blue-600 font-bold">Genius</h2>
-          {isAnyRoomSelected ? (
-            <>
-              <p>
-                {localSelections.reduce(
-                  (acc, selection) => acc + selection.quantity,
-                  0
-                )}{" "}
-                room(s) for
-              </p>
-              <p className="text-red-500 line-through">{`$${totalPrice.toFixed(
-                2
-              )}`}</p>
-              <p className="text-gray-900 text-xl font-bold">{`$${(
-                totalPrice * 0.9
-              ).toFixed(2)}`}</p>
-              <p className="text-gray-600 text-sm">Includes taxes and fees</p>
-            </>
-          ) : (
-            <p>Please select a room.</p>
-          )}
-        </div>
-        <button
-          className={`w-full py-2 rounded mb-4 ${
-            isAnyRoomSelected
-              ? "bg-blue-600 text-white"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
-          }`}
-          disabled={!isAnyRoomSelected}
-          onClick={handleReserve}
-        >
-          Reserve with Genius discount
-        </button>
-        {isAnyRoomSelected && (
-          <div>
-            <p className="text-sm">• It only takes 2 minutes</p>
-            <p className="text-sm">• Confirmation is immediate</p>
+        {/*reserve - div*/}
+        <div className="w-[20%] flex flex-col bg-purple">
+          <div
+            className="bg-[#4C76B2] h-11 sticky top-0"
+            style={{ zIndex: 10 }} // Ensures the sticky element appears above others
+          ></div>
+          <div className="p-4 sticky top-11">
+            <div className="mb-4">
+              <h2 className="text-blue-600 font-bold">Genius</h2>
+              {isAnyRoomSelected ? (
+                <>
+                  <p>
+                    {localSelections.reduce(
+                      (acc, selection) => acc + selection.quantity,
+                      0
+                    )}{" "}
+                    room(s) for
+                  </p>
+                  <p className="text-red-500 line-through">{`$${totalPrice.toFixed(
+                    2
+                  )}`}</p>
+                  <p className="text-gray-900 text-xl font-bold">{`$${(
+                    totalPrice * 0.9
+                  ).toFixed(2)}`}</p>
+                  <p className="text-gray-600 text-sm">
+                    Includes taxes and fees
+                  </p>
+                </>
+              ) : (
+                <p>Please select a room.</p>
+              )}
+            </div>
+            <button
+              className={`w-full py-2 rounded mb-4 ${
+                isAnyRoomSelected
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              disabled={!isAnyRoomSelected}
+              onClick={
+                loggedInUser
+                  ? handleReserve
+                  : () => {
+                      toast({
+                        variant: "destructive",
+                        title: "You must be logged in to reserve",
+                        action: (
+                          <ToastAction
+                            altText="Login/Register"
+                            className="bg-white"
+                          >
+                            <Link to="/auth" className="text-red-600">
+                              Login / Register
+                            </Link>
+                          </ToastAction>
+                        ),
+                      });
+                    }
+              }
+            >
+              Reserve with Genius discount
+            </button>
+            {isAnyRoomSelected && (
+              <div>
+                <p className="text-sm">• It only takes 2 minutes</p>
+                <p className="text-sm">• Confirmation is immediate</p>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
