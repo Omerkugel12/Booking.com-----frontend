@@ -154,7 +154,7 @@ function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
                   </div>
                 </DialogTrigger>
                 <DialogContent className="max-w-[80%] max-h-[80%] w-full h-full flex items-center justify-center bg-transparent border-none">
-                  <Carousel className="w-full h-full">
+                  <Carousel className="w-full h-full flex justify-center items-center">
                     <CarouselContent className="w-full h-full flex items-center justify-center">
                       {hotel.imageURLs.map((imageURL: string) => (
                         <CarouselItem
@@ -162,11 +162,7 @@ function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
                           className="w-full h-full flex items-center justify-center"
                         >
                           <div className="w-full h-full flex items-center justify-center">
-                            <img
-                              src={imageURL}
-                              alt={hotel.name}
-                              className="w-1/2"
-                            />
+                            <img src={imageURL} alt={hotel.name} className="" />
                           </div>
                         </CarouselItem>
                       ))}
