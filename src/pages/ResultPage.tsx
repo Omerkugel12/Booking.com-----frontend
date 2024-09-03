@@ -32,7 +32,7 @@ function ResultPage() {
   const starRating = searchParams.get("starRating");
   const meals = searchParams.get("meals");
   const sortBy = searchParams.get("sortBy");
-console.log(freeCancelation)
+  console.log(freeCancelation);
   // State to store fetched hotels
   const [hotels, setHotels] = useState<HotelResult[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,7 +81,7 @@ console.log(freeCancelation)
           sortBy: sortBy,
         };
         const response = await getHotels(filters);
-        console.log( filters.priceMin);
+        console.log(filters.priceMin);
         setHotels(response.data);
 
         if (response.data.length > 0) {
@@ -98,7 +98,6 @@ console.log(freeCancelation)
     fetchHotels();
   }, [destination, startDate, endDate, adults, children, rooms, searchParams]);
 
-
   const openModal = () => {
     console.log("Opening modal. Hotels:", hotels);
     setIsModalOpen(true);
@@ -110,10 +109,10 @@ console.log(freeCancelation)
   return (
     <div className=" h-full">
       <Header type="results" />
-      <div className="px-44">
+      <div className="max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto">
         <SearchBar type="default" />
       </div>
-      <div className="flex mt-10 pl-44">
+      <div className="flex mt-10 max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto">
         <div>
           <div>
             <img
@@ -122,7 +121,7 @@ console.log(freeCancelation)
               alt="Map"
               onClick={openModal}
             />
-            <Map hotels={hotels} />
+            {/* <Map hotels={hotels} /> */}
             <ModalMap
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
@@ -141,7 +140,7 @@ console.log(freeCancelation)
                 {destination ? destination.toUpperCase() : ""}: {hotels.length}{" "}
                 properties found
               </h2>
-              
+
               {/*  <p className="text-sm">
                 Dates: {startDate} to {endDate}
               </p>
@@ -162,7 +161,10 @@ console.log(freeCancelation)
                   {hotels.map((hotel) => (
                     <ResultHotelCard key={hotel.id} hotel={hotel} />
                   ))}
-                </div>) : (<p>No hotels matched</p>)}
+                </div>
+              ) : (
+                <p>No hotels matched</p>
+              )}
             </div>
           </div>
         </div>
