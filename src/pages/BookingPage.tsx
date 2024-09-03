@@ -50,10 +50,10 @@ function BookingPage() {
     0
   );
 
-  useEffect(() => {
-    console.log("Room Selections:", roomSelections);
-    console.log("Total Price:", totalPrice);
-  }, [roomSelections, totalPrice]);
+  // useEffect(() => {
+  //   console.log("Room Selections:", roomSelections);
+  //   console.log("Total Price:", totalPrice);
+  // }, [roomSelections, totalPrice]);
 
   async function addResrvation() {
     roomSelections.forEach(async (roomSelections) => {
@@ -138,6 +138,7 @@ function BookingPage() {
               //   totalRooms={totalRooms}
               //   totalGuests={totalGuests}
               totalDays={totalDays}
+              roomSelections={roomSelections}
             />
           )}
         </section>
