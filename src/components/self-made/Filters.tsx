@@ -28,14 +28,14 @@ const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
       const updatedItems = await Promise.all(
         items.map(async (item) => {
           const count = await fetchItemCount(item.label);
-          return { ...item, count: count === null ? "null" : count };
+          return { ...item, count: count === null ? "0" : count };
         })
       );
       setItemsWithCount(updatedItems);
     };
 
     fetchCounts();
-  }, [items]);
+  },[]);
 
   const handleFilterChange = (label, type) => {
     const currentParams = new URLSearchParams(searchParams.toString());
@@ -194,7 +194,7 @@ const BookingSidebarFilter = () => {
   const [searchParams] = useSearchParams();
 
   return (
-    <div className="p-4 bg-white rounded shadow">
+    <div className="p-4 bg-white rounded shadow sticky">
       <BudgetSlider />
       <FilterSection
         title="Popular filters"
