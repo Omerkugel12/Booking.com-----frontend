@@ -1,7 +1,16 @@
 // Interface for the review associated with the hotel
 interface Review {
+  date: string;
   text: string;
+  staff: number;
   userId: string;
+  comfort: number;
+  freeWifi: number;
+  location: number;
+  username: string;
+  facilities: number;
+  cleanliness: number;
+  valueForMoney: number;
 }
 
 // Interface for the facilities associated with the hotel

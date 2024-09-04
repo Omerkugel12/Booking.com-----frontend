@@ -9,80 +9,51 @@ interface PropsTypes {
   hotel: HotelDetails;
 }
 
+export function getRandomLetter() {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const randomIndex = Math.floor(Math.random() * alphabet.length);
+  return alphabet[randomIndex];
+}
+
+export function getNameByFirstLetter(letter: string) {
+  const namesByAlphabet: Record<string, string> = {
+    A: "Alice",
+    B: "Brian",
+    C: "Charlotte",
+    D: "David",
+    E: "Emma",
+    F: "Frank",
+    G: "Grace",
+    H: "Henry",
+    I: "Isabella",
+    J: "James",
+    K: "Katherine",
+    L: "Liam",
+    M: "Megan",
+    N: "Nathan",
+    O: "Olivia",
+    P: "Paul",
+    Q: "Quinn",
+    R: "Rachel",
+    S: "Samuel",
+    T: "Thomas",
+    U: "Ursula",
+    V: "Victor",
+    W: "William",
+    X: "Xander",
+    Y: "Yasmine",
+    Z: "Zachary",
+  };
+
+  const firstLetter = letter.toUpperCase();
+
+  if (namesByAlphabet[firstLetter]) {
+    return namesByAlphabet[firstLetter];
+  } else {
+    return getNameByFirstLetter(getRandomLetter());
+  }
+}
 function ReviewModal({ hotel }: PropsTypes) {
-  function getRandomLetter() {
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    const randomIndex = Math.floor(Math.random() * alphabet.length);
-    return alphabet[randomIndex];
-  }
-
-  function getNameByFirstLetter(letter: string) {
-    const namesByAlphabet: Record<string, string> = {
-      A: "Alice",
-      B: "Brian",
-      C: "Charlotte",
-      D: "David",
-      E: "Emma",
-      F: "Frank",
-      G: "Grace",
-      H: "Henry",
-      I: "Isabella",
-      J: "James",
-      K: "Katherine",
-      L: "Liam",
-      M: "Megan",
-      N: "Nathan",
-      O: "Olivia",
-      P: "Paul",
-      Q: "Quinn",
-      R: "Rachel",
-      S: "Samuel",
-      T: "Thomas",
-      U: "Ursula",
-      V: "Victor",
-      W: "William",
-      X: "Xander",
-      Y: "Yasmine",
-      Z: "Zachary",
-    };
-
-    const firstLetter = letter.toUpperCase();
-
-    if (namesByAlphabet[firstLetter]) {
-      return namesByAlphabet[firstLetter];
-    } else {
-      return getNameByFirstLetter(getRandomLetter());
-    }
-  }
-
-  function getRandomDateFormatted() {
-    const currentDate = new Date();
-    const twoYearsAgo = new Date();
-    twoYearsAgo.setFullYear(currentDate.getFullYear() - 2);
-    const randomTimestamp = Math.floor(
-      Math.random() * (currentDate.getTime() - twoYearsAgo.getTime()) +
-        twoYearsAgo.getTime()
-    );
-    const randomDate = new Date(randomTimestamp);
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const day = randomDate.getDate();
-    const month = monthNames[randomDate.getMonth()];
-    const year = randomDate.getFullYear();
-    return `${month} ${day}, ${year}`;
-  }
   return (
     <div className="relative">
       <h1 className="text-xl font-bold">{`Guest reviews for ${hotel.name}`}</h1>
@@ -222,36 +193,52 @@ function ReviewModal({ hotel }: PropsTypes) {
         <div className="flex flex-col gap-4 py-6">
           <h4 className="text-md font-bold">Guest reviews</h4>
           {hotel.reviews.map((review, i) => {
-            const userFirstLetter = getRandomLetter();
-            const userName = getNameByFirstLetter(userFirstLetter);
-            const reviwedDate = getRandomDateFormatted();
+            const firstLetter = getRandomLetter().toUpperCase();
+            const username = getNameByFirstLetter(firstLetter);
+
+            const avgRatingPerReview =
+              (review.cleanliness +
+                review.comfort +
+                review.facilities +
+                review.freeWifi +
+                review.location +
+                review.staff +
+                review.valueForMoney) /
+              7;
+
             return (
               <div
                 key={i}
                 className="py-4 border-b flex justify-between items-start"
               >
-                <div className="flex gap-4">
+                <div className="flex gap-10">
                   <div className="flex gap-2">
                     <Avatar>
                       <AvatarFallback className="bg-green text-white text-sm font-bold">
-                        {userFirstLetter.toUpperCase()}
+                        {review.username !== null
+                          ? review.username.charAt(0)
+                          : firstLetter}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
                       <p className="text-sm font-bold">
-                        <p>{userName}</p>
+                        <p>
+                          {review.username !== null
+                            ? review.username
+                            : username}
+                        </p>
                       </p>
                       <p className="text-gray-600 text-[0.7rem]">Israel</p>
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <p className="text-[0.7rem] text-gray-500">{`Reviewd: ${reviwedDate}`}</p>
+                    <p className="text-[0.7rem] text-gray-500">{`Reviewd: ${review.date}`}</p>
                     <p className="text-sm">{review.text}</p>
                   </div>
                 </div>
                 <div className="bg-blue_1 p-1 rounded-tl-md rounded-tr-md rounded-br-md flex items-center justify-center">
                   <p className="text-md font-semibold text-white">
-                    {hotel?.avgRating.toFixed(1)}
+                    {avgRatingPerReview.toFixed(1)}
                   </p>
                 </div>
               </div>
