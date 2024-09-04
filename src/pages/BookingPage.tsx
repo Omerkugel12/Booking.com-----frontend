@@ -59,6 +59,7 @@ function BookingPage() {
     roomSelections.forEach(async (roomSelections) => {
       const newReservation = {
         userID: loggedInUser?._id,
+        email: loggedInUser?.email,
         hotelID: hotelId,
         roomID: roomSelections.roomId,
         startDate: date1?.from ? format(date1.from, "yyyy-MM-dd") : null,

@@ -25,7 +25,7 @@ const BudgetSlider = () => {
     <div className="w-64 p-4 border rounded-md shadow-sm bg-white">
       <h2 className="font-semibold text-sm mb-2">Your budget (per night)</h2>
       <p className="text-gray-700 text-sm mb-4">
-        ₪ {minPrice} – ₪ {maxPrice}+
+        $ {minPrice} – $ {maxPrice}+
       </p>
       <ReactSlider
         className="horizontal-slider"
@@ -36,7 +36,7 @@ const BudgetSlider = () => {
         step={15}
         value={[minPrice, maxPrice]} // Set initial values
         ariaLabel={["Lower thumb", "Upper thumb"]}
-        ariaValuetext={(state) => `₪ ${state.valueNow}`}
+        ariaValuetext={(state) => `$ ${state.valueNow}`}
         onChange={handleSliderChange}
         renderThumb={(props, state) => (
           <div

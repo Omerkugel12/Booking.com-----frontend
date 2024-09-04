@@ -11,7 +11,6 @@ import { useAuth } from "@/context/AuthContext"; // Adjust the import path as ne
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
 
-
 const HomePage = () => {
   const { loggedInUser } = useAuth();
 

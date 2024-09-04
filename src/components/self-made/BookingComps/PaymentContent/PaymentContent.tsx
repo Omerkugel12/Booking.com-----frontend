@@ -117,6 +117,9 @@ function PaymentContent({
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     addResrvation();
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
   }
 
   return (
@@ -247,7 +250,7 @@ function PaymentContent({
                         <div className="flex justify-between">
                           <p className="text-md font-bold">Price</p>
                           <p className="text-md font-bold">
-                            ₪ {totalPrice1.toFixed(2)}
+                            $ {totalPrice1.toFixed(2)}
                           </p>
                         </div>
                         <p className="text-[0.7rem] text-gray-600">

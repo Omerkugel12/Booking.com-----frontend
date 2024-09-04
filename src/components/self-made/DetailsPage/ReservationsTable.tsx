@@ -86,7 +86,11 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
         selection.price // Store total price for selected quantity
       );
     });
-    navigate("booking");
+    navigate("booking", { replace: true });
+
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
   };
 
   return (

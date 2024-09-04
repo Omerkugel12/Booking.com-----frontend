@@ -54,7 +54,6 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
     return "";
   };
 
-
   return (
     <Card className="flex mt-2 w-full border border-gray-300 rounded-lg shadow-md">
       <CardHeader
@@ -149,9 +148,9 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
           <div className="flex items-end mt-4">
             <div className="text-right">
               <p className="text-sm text-gray-500 line-through">
-                ₪{hotel.price + 500} {/* Example of a discounted price */}
+                ${hotel.price + 500} {/* Example of a discounted price */}
               </p>
-              <p className="text-xl font-bold text-gray-900">₪{hotel.price}</p>
+              <p className="text-xl font-bold text-gray-900">${hotel.price}</p>
               <p className="text-xs text-gray-500">Includes taxes and fees</p>
               <Button
                 className="bg-blue-600 text-white text-sm font-medium py-2 px-4 mt-2 rounded"
