@@ -3,7 +3,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { HotelDetails } from "@/models/Hotel.model";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -48,13 +57,35 @@ const formSchema = z.object({
     .min(10, "Review text must be at least 10 characters long.")
     .max(500, "Review text must be at most 500 characters long."),
   userID: z.string(),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters long.")
+    .max(30, "Username must be at most 30 characters long."),
+  date: z.string(),
 });
 
 function AddReviewForm({ hotel }: PropsTypes) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      hotelID: "" /*hotel._id*/,
+      staff: 5,
+      facilities: 5,
+      cleanliness: 5,
+      freeWifi: 5,
+      location: 5,
+      valueForMoney: 5,
+      comfort: 5,
+      text: "",
+      userID: "" /*loggedInUser._id*/,
+      username: "" /*loggedInUser.email.slice(0,)*/,
+      date: "" /*new Date() --- format like SQL*/,
+    },
   });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+  }
 
   return (
     <DialogContent className="max-w-[40%]">
@@ -62,10 +93,29 @@ function AddReviewForm({ hotel }: PropsTypes) {
         <DialogTitle className="font-bold">{`Add your review for ${hotel.name}`}</DialogTitle>
       </DialogHeader>
       <div>
-        <Textarea
+        <div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="staff"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Staff</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+          {/* <Textarea
           placeholder="Write a brief review..."
           className="border border-gray-300 rounded-md p-4 w-full"
-        />
+        /> */}
+        </div>
       </div>
     </DialogContent>
   );
