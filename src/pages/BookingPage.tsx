@@ -65,6 +65,7 @@ function BookingPage() {
         startDate: date1?.from ? format(date1.from, "yyyy-MM-dd") : null,
         endDate: date1?.to ? format(date1.to, "yyyy-MM-dd") : null,
         roomsForReservation: roomSelections.quantity,
+        hotelName: hotel?.name,
       };
 
       try {
