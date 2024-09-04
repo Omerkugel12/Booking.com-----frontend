@@ -54,7 +54,6 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
     return "";
   };
 
-  console.log(hotel);
 
   return (
     <Card className="flex mt-2 w-full border border-gray-300 rounded-lg shadow-md">

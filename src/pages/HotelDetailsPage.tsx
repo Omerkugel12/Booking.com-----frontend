@@ -13,6 +13,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import HouseRulesComp from "@/components/self-made/DetailsPage/HouseRulesComp";
 import FinePrintComp from "@/components/self-made/DetailsPage/FinePrintComp";
 import OverviewSection from "@/components/self-made/DetailsPage/OverviewSection";
+import ReviewModal from "@/components/self-made/DetailsPage/ReviewModal";
 
 export const getScoreLetter = (rating: number): string => {
   if (rating < 7) return "Pleasant";
@@ -129,8 +130,11 @@ const HotelDetailsPage: React.FC = () => {
                 <SheetTrigger>
                   Guest reviews ({hotel.reviews.length})
                 </SheetTrigger>
-                <SheetContent className="max-w-[600px] w-full">
-                  <div className="max-w-[600px] w-full"></div>
+                <SheetContent
+                  style={{ maxWidth: "900px" }}
+                  className="rounded-l-2xl  overflow-scroll"
+                >
+                  <ReviewModal hotel={hotel} />
                 </SheetContent>
               </Sheet>
             </Button>
