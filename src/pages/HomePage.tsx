@@ -1,3 +1,4 @@
+import React from "react";
 import HeroSection from "@/components/self-made/HeroSection";
 import RecentSearches from "@/components/self-made/RecentSearches";
 import InterestedProperties from "@/components/self-made/InterestedProperties";
@@ -6,10 +7,14 @@ import SearchBar from "@/components/self-made/SearchBar";
 import BrowseByPropertyTypeCarucel from "@/components/self-made/BrowseByPropertyTypeCarucel";
 import { HomePageCarousels } from "@/components/self-made/HomePageCarousels";
 import Banner from "@/components/self-made/HomePageBanner";
+import { useAuth } from "@/context/AuthContext"; // Adjust the import path as needed
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
 
+
 const HomePage = () => {
+  const { loggedInUser } = useAuth();
+
   const recentSearches = JSON.parse(
     localStorage.getItem("recentSearches") || "[]"
   );
@@ -27,7 +32,7 @@ const HomePage = () => {
         <InterestedProperties />
         <OffersSection />
 
-        <HomePageCarousels />
+        {loggedInUser && <HomePageCarousels />}
         <BrowseByPropertyTypeCarucel />
         <Banner />
       </div>

@@ -37,7 +37,7 @@ export function HomePageCarousels() {
                     className="h-4 filter invert-0"
                   />
                   <p className="text-sm pt-2">
-                    omer, you're at <b>Genius Level 3</b> in our loyalty program
+                    You're at <b>Genius Level 1</b> in our loyalty program
                   </p>
                 </CardContent>
               </Card>
@@ -110,7 +110,7 @@ export function HomePageCarousels() {
               <Card className="p-4 h-[100px] w-64 border-[1px] border-blue-900">
                 <CardContent className="p-0 flex flex-col gap-2 cursor-pointer">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-sm font-bold">Free breakfasts</h3>
+                    <h3 className="text-sm font-bold">Free room upgrades</h3>
                     <img
                       src={bad}
                       alt="Stays"
@@ -122,7 +122,7 @@ export function HomePageCarousels() {
                     />
                   </div>
                   <p className="text-sm">
-                    Start your day with free breakfast at select options
+                    Upgrade your stay with a better room at no extra cost{" "}
                   </p>
                 </CardContent>
               </Card>
@@ -131,7 +131,9 @@ export function HomePageCarousels() {
               <Card className="p-4 h-[100px] w-64 border-[1px] border-blue-900">
                 <CardContent className="p-0 flex flex-col gap-2 cursor-pointer">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-sm font-bold">Free breakfasts</h3>
+                    <h3 className="text-sm font-bold">
+                      Priority support on stays
+                    </h3>
                     <img
                       src={prioritySupport}
                       alt="Stays"
@@ -143,7 +145,8 @@ export function HomePageCarousels() {
                     />
                   </div>
                   <p className="text-sm">
-                    Start your day with free breakfast at select options
+                    Get direct access to a live agent when contacting Customer
+                    Service
                   </p>
                 </CardContent>
               </Card>
