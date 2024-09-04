@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CheckCircle, UserRound } from "lucide-react";
 import { AvailableRoom } from "@/models/Hotel.model";
 import { useReservation } from "@/context/ReservationContext";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar";
 import { useAuth } from "@/context/AuthContext";
 import { ToastAction } from "@/components/ui/toast";

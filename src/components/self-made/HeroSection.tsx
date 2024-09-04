@@ -4,11 +4,11 @@ import homeImage from "@/images/Homepage.jpeg";
 const HeroSection = () => {
   return (
     <div
-      className=" h-[400px] bg-cover bg-center -mx-52"
+      className=" h-[300px] bg-cover bg-center -mx-52"
       style={{ backgroundImage: `url(${homeImage})` }}
     >
       {/* <div className="absolute inset-0 bg-black bg-opacity-40"></div> */}
-      <div className="relativepy-12 pt-10 text-white w-8/12 px-52">
+      <div className="relative py-12 text-white max-w-[1050px] mx-auto w-full">
         <h1 className="text-5xl font-bold my-4">
           A place to call home on your next adventure
         </h1>
