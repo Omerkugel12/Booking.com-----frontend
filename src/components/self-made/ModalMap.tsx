@@ -1,7 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  OverlayView,
+} from "@react-google-maps/api";
 import BookingSidebarFilter from "./Filters";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { HotelResult } from "@/models/Hotel.model";
 import { getHotels } from "@/services/hotels.service";
 
@@ -233,15 +238,14 @@ function ModalMap({ onClose }: ModalMapProps) {
                       <p className="text-sm font-bold">
                         {hotel.type || "Standard Room"}
                       </p>
-                      {hotel.freeCancellation && (
-                        <div className="text-green-600 text-sm mt-1">
+                      {hotel.freeCancellation ? (
+                        <p className=" text-green text-sm mt-1">
                           ✓ Free cancellation
-                        </div>
-                      )}
-                      {hotel.prepayment && (
-                        <div className="text-green-600 text-sm mt-1">
+                        </p>
+                      ) : (
+                        <p className="text-sm text-red-600 mt-1">
                           ✓ No prepayment needed - pay at the property
-                        </div>
+                        </p>
                       )}
                     </div>
                     <div className="text-right">
@@ -271,25 +275,75 @@ function ModalMap({ onClose }: ModalMapProps) {
               {map &&
                 hotels.length > 0 &&
                 hotels.map((hotel) => (
-                  <Marker
-                    key={hotel.id}
-                    position={{
-                      lat: Number(hotel.latitude),
-                      lng: Number(hotel.longitude),
-                    }}
-                    icon={{
-                      url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Blue pin icon
-                      scaledSize: new google.maps.Size(20, 20),
-                    }}
-                    label={{
-                      text: `₪${hotel.price}`,
-                      color: "white",
-                      className:
-                        "bg-blue-800 text-white px-2 py-1 rounded-md text-sm font-bold shadow-lg border border-gray-300",
-                    }}
-                    onMouseOver={() => handleMarkerHover(hotel.id)}
-                    onMouseOut={handleMarkerOut}
-                  />
+                  <React.Fragment key={hotel.id}>
+                    <Marker
+                      position={{
+                        lat: Number(hotel.latitude),
+                        lng: Number(hotel.longitude),
+                      }}
+                      icon={{
+                        url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                        scaledSize: new google.maps.Size(20, 20),
+                      }}
+                      label={{
+                        text: `₪${hotel.price}`,
+                        color: "white",
+                        className:
+                          "bg-blue-800 text-white px-2 py-1 rounded-md text-sm font-bold shadow-lg border border-gray-300",
+                      }}
+                      onMouseOver={() => handleMarkerHover(hotel)}
+                      onMouseOut={handleMarkerOut}
+                    />
+                    {hoveredHotel && hoveredHotel.id === hotel.id && (
+                      <OverlayView
+                        position={{
+                          lat: Number(hotel.latitude),
+                          lng: Number(hotel.longitude),
+                        }}
+                        mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                      >
+                        <div className="bg-white p-4 rounded-lg shadow-lg w-96">
+                          <img
+                            src={hotel.image}
+                            alt={hotel.name}
+                            className="w-full h-32 object-cover rounded-t-lg"
+                          />
+                          <div className="mt-2">
+                            <h3 className="font-bold text-lg">{hotel.name}</h3>
+                            <p className="text-sm text-gray-600">
+                              {hotel.address}
+                            </p>
+                            <div className="flex justify-between items-center">
+                              <div className="flex justify-between items-center mt-2 gap-4">
+                                <span className="text-sm font-semibold">
+                                  ₪{hotel.price}
+                                </span>
+                                <span className="text-sm font-semibold text-red-500 line-through">
+                                  ₪{hotel.price + 28}
+                                </span>
+                              </div>
+                              <span className="bg-blue-600 text-white px-2 py-1 rounded text-sm">
+                                {hotel.avgRating}
+                              </span>
+                            </div>
+                            <p className="text-xs mt-1">
+                              Including taxes and charges
+                            </p>
+                            {hotel.freeCancellation ? (
+                              <p className=" text-green text-sm mt-1">
+                                ✓ Free cancellation <br /> ✓ No prepayment
+                                needed - pay at the property
+                              </p>
+                            ) : (
+                              <p className="text-sm text-red-600 mt-1">
+                                Prepayment needed
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </OverlayView>
+                    )}
+                  </React.Fragment>
                 ))}
             </GoogleMap>
           </LoadScript>
