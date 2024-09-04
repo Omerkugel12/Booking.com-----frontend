@@ -73,6 +73,9 @@ function BookingContent({
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("values: ", values);
     setNextStep(true);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
   }
 
   return (

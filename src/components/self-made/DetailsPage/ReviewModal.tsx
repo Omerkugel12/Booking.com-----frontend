@@ -1,9 +1,10 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { HotelDetails } from "@/models/Hotel.model";
+import { HotelDetails, Review } from "@/models/Hotel.model";
 import { getScoreLetter } from "@/pages/HotelDetailsPage";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddReviewForm from "./AddReviewForm";
+import { useState } from "react";
 
 interface PropsTypes {
   hotel: HotelDetails;
@@ -54,6 +55,9 @@ export function getNameByFirstLetter(letter: string) {
   }
 }
 function ReviewModal({ hotel }: PropsTypes) {
+  const [reviews, setReviews] = useState<Review[]>(hotel.reviews);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
   return (
     <div className="relative">
       <h1 className="text-xl font-bold">{`Guest reviews for ${hotel.name}`}</h1>
@@ -76,7 +80,7 @@ function ReviewModal({ hotel }: PropsTypes) {
             </p>
           </div>
 
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger>
               <Button
                 variant="ghost"
@@ -85,7 +89,11 @@ function ReviewModal({ hotel }: PropsTypes) {
                 Write a review
               </Button>
             </DialogTrigger>
-            <AddReviewForm hotel={hotel} />
+            <AddReviewForm
+              hotel={hotel}
+              setReviews={setReviews}
+              setIsDialogOpen={setIsDialogOpen}
+            />
           </Dialog>
         </div>
         <div className="flex justify-between border-b py-6">
@@ -192,7 +200,7 @@ function ReviewModal({ hotel }: PropsTypes) {
         </div>
         <div className="flex flex-col gap-4 py-6">
           <h4 className="text-md font-bold">Guest reviews</h4>
-          {hotel.reviews.map((review, i) => {
+          {reviews.map((review, i) => {
             const firstLetter = getRandomLetter().toUpperCase();
             const username = getNameByFirstLetter(firstLetter);
 
@@ -216,8 +224,8 @@ function ReviewModal({ hotel }: PropsTypes) {
                     <Avatar>
                       <AvatarFallback className="bg-green text-white text-sm font-bold">
                         {review.username !== null
-                          ? review.username.charAt(0)
-                          : firstLetter}
+                          ? review.username.charAt(0).toUpperCase()
+                          : firstLetter.toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">

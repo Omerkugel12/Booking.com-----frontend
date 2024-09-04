@@ -1,9 +1,10 @@
 // Interface for the review associated with the hotel
-interface Review {
+export interface Review {
+  hotelID: number;
   date: string;
   text: string;
   staff: number;
-  userId: string;
+  userID: string;
   comfort: number;
   freeWifi: number;
   location: number;

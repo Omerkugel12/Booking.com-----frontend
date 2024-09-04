@@ -161,7 +161,7 @@ function ReservationSideBar({
           <div className="bg-purple flex flex-col p-3">
             <div className="flex justify-between items-center">
               <p className="text-2xl font-bold">Price</p>
-              <p className="text-2xl font-bold">{`₪ ${totalPrice1.toFixed(
+              <p className="text-2xl font-bold">{`$ ${totalPrice1.toFixed(
                 2
               )}`}</p>
             </div>
@@ -174,13 +174,13 @@ function ReservationSideBar({
             <div className="flex gap-3">
               <Banknote size={"20px"} />
               <div className="flex flex-col gap-2">
-                <p className="text-sm ">{`Includes ₪ ${tax?.toFixed(
+                <p className="text-sm ">{`Includes $ ${tax?.toFixed(
                   2
                 )} in taxes and fees`}</p>
                 {detailsShow && (
                   <div className="flex justify-between">
                     <p className="text-sm text-gray-600">17 % VAT</p>
-                    <p className="text-sm text-gray-600">{`₪ ${tax?.toFixed(
+                    <p className="text-sm text-gray-600">{`$ ${tax?.toFixed(
                       2
                     )}`}</p>
                   </div>
@@ -223,7 +223,7 @@ function ReservationSideBar({
                   ? format(dateSevenDaysBefore, "MMM d") // This will format as "Sep 15"
                   : "N/A"
               }`}</p>
-              <p className="text-sm">{`₪ ${priceWithoutTaxes?.toFixed(2)}`}</p>
+              <p className="text-sm">{`$ ${priceWithoutTaxes?.toFixed(2)}`}</p>
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@ function ReservationSideBar({
           <h2 className="text-md font-bold">Your payment details</h2>
           <div className="flex justify-between">
             <p className="text-sm">The property will charge you</p>
-            <p className="text-sm">₪ {priceWithoutTaxes}</p>
+            <p className="text-sm">$ {priceWithoutTaxes}</p>
           </div>
         </div>
       )}

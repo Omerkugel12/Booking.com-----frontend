@@ -251,10 +251,10 @@ function ModalMap({ onClose }: ModalMapProps) {
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-gray-500 line-through">
-                        ₪{hotel.price + 500}
+                        ${hotel.price + 500}
                       </p>
                       <p className="text-lg font-bold text-gray-900">
-                        ₪{hotel.price}
+                        ${hotel.price}
                       </p>
                       <p className="text-xs text-gray-500">
                         Includes taxes and fees
@@ -287,7 +287,7 @@ function ModalMap({ onClose }: ModalMapProps) {
                         scaledSize: new google.maps.Size(20, 20),
                       }}
                       label={{
-                        text: `₪${hotel.price}`,
+                        text: `$${hotel.price}`,
                         color: "white",
                         className:
                           "bg-blue-800 text-white px-2 py-1 rounded-md text-sm font-bold shadow-lg border border-gray-300",
@@ -317,10 +317,10 @@ function ModalMap({ onClose }: ModalMapProps) {
                             <div className="flex justify-between items-center">
                               <div className="flex justify-between items-center mt-2 gap-4">
                                 <span className="text-sm font-semibold">
-                                  ₪{hotel.price}
+                                  ${hotel.price}
                                 </span>
                                 <span className="text-sm font-semibold text-red-500 line-through">
-                                  ₪{hotel.price + 28}
+                                  ${hotel.price + 28}
                                 </span>
                               </div>
                               <span className="bg-blue-600 text-white px-2 py-1 rounded text-sm">
