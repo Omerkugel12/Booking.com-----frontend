@@ -1,4 +1,13 @@
 import { HotelDetails } from "@/models/Hotel.model";
+import { getScoreLetter } from "@/pages/HotelDetailsPage";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface PropsTypes {
   hotel: HotelDetails;
@@ -6,110 +15,115 @@ interface PropsTypes {
 
 function GuestRevies({ hotel }: PropsTypes) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg">
-      <h3 className="text-2xl font-semibold mb-4">Guest reviews</h3>
+    <div className="">
+      <h3 className="text-2xl font-bold mb-4">Guest reviews</h3>
 
-      <div className="flex items-center gap-2 mb-4">
-        <span className="bg-blue-900 text-white font-bold px-2 py-1 rounded-sm text-lg">
-          {hotel.avgRating.toFixed(1)}
+      <div className="flex items-center gap-2 my-6">
+        <div className="bg-blue_1 p-1 rounded-tl-md rounded-tr-md rounded-br-md">
+          <p className="text-md font-bold text-white">
+            {hotel?.avgRating.toFixed(1)}
+          </p>
+        </div>
+        <span className="text-md font-semibold text-gray-600">
+          <span className="text-black">{getScoreLetter(hotel.avgRating)}</span>·{" "}
+          {hotel.reviews.length} reviews
         </span>
-        <span className="text-lg font-semibold text-gray-600">
-          <span className="text-black">Very Good </span>· {hotel.reviews.length}{" "}
-          reviews
-        </span>
-        <a href="#" className="text-blue-600 underline ml-4">
+        <a href="#" className="text-blue-600 text-sm ml-4">
           Read all reviews
         </a>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-4">
-        <div>
-          <div className="flex justify-between pb-2">
-            <p className="font-semibold">Staff</p>{" "}
-            <p className="text-sm text-gray-500 mt-1">
-              {hotel.cleanliness.toFixed(1)}
-            </p>
+      <div>
+        <h4 className="text-md font-bold mb-3">Categories:</h4>
+        <div className="grid grid-cols-3 gap-4 mb-4">
+          <div>
+            <div className="flex justify-between pb-2">
+              <p className="font-semibold">Staff</p>{" "}
+              <p className="text-sm text-gray-500 mt-1">
+                {hotel.cleanliness.toFixed(1)}
+              </p>
+            </div>
+            <div className="relative h-2 bg-gray-200 rounded-full">
+              <div
+                className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
+                style={{ width: `${hotel.cleanliness * 10}%` }}
+              ></div>
+            </div>
           </div>
-          <div className="relative h-2 bg-gray-200 rounded-full">
-            <div
-              className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-              style={{ width: `${hotel.cleanliness * 10}%` }}
-            ></div>
-          </div>
-        </div>
 
-        <div>
-          <div className="flex justify-between pb-2">
-            <p className="font-semibold">Cleanliness</p>{" "}
-            <p className="text-sm text-gray-500 mt-1">
-              {hotel.cleanliness.toFixed(1)}
-            </p>
+          <div>
+            <div className="flex justify-between pb-2">
+              <p className="font-semibold">Cleanliness</p>{" "}
+              <p className="text-sm text-gray-500 mt-1">
+                {hotel.cleanliness.toFixed(1)}
+              </p>
+            </div>
+            <div className="relative h-2 bg-gray-200 rounded-full">
+              <div
+                className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
+                style={{ width: `${hotel.cleanliness * 10}%` }}
+              ></div>
+            </div>
           </div>
-          <div className="relative h-2 bg-gray-200 rounded-full">
-            <div
-              className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-              style={{ width: `${hotel.cleanliness * 10}%` }}
-            ></div>
-          </div>
-        </div>
 
-        <div>
-          <div className="flex justify-between pb-2">
-            <p className="font-semibold">Comfort</p>
-            <p className="text-sm text-gray-500 mt-1">
-              {hotel.comfort.toFixed(1)}
-            </p>
+          <div>
+            <div className="flex justify-between pb-2">
+              <p className="font-semibold">Comfort</p>
+              <p className="text-sm text-gray-500 mt-1">
+                {hotel.comfort.toFixed(1)}
+              </p>
+            </div>
+            <div className="relative h-2 bg-gray-200 rounded-full">
+              <div
+                className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
+                style={{ width: `${hotel.comfort * 10}%` }}
+              ></div>
+            </div>
           </div>
-          <div className="relative h-2 bg-gray-200 rounded-full">
-            <div
-              className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-              style={{ width: `${hotel.comfort * 10}%` }}
-            ></div>
-          </div>
-        </div>
 
-        <div>
-          <div className="flex justify-between pb-2">
-            <p className="font-semibold">Free Wifi</p>
-            <p className="text-sm text-gray-500 mt-1">
-              {hotel.freeWifi.toFixed(1)}
-            </p>
+          <div>
+            <div className="flex justify-between pb-2">
+              <p className="font-semibold">Free Wifi</p>
+              <p className="text-sm text-gray-500 mt-1">
+                {hotel.freeWifi.toFixed(1)}
+              </p>
+            </div>
+            <div className="relative h-2 bg-gray-200 rounded-full">
+              <div
+                className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
+                style={{ width: `${hotel.freeWifi * 10}%` }}
+              ></div>
+            </div>
           </div>
-          <div className="relative h-2 bg-gray-200 rounded-full">
-            <div
-              className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-              style={{ width: `${hotel.freeWifi * 10}%` }}
-            ></div>
-          </div>
-        </div>
 
-        <div>
-          <div className="flex justify-between pb-2">
-            <p className="font-semibold">Location</p>{" "}
-            <p className="text-sm text-gray-500 mt-1">
-              {hotel.location.toFixed(1)}
-            </p>
+          <div>
+            <div className="flex justify-between pb-2">
+              <p className="font-semibold">Location</p>{" "}
+              <p className="text-sm text-gray-500 mt-1">
+                {hotel.location.toFixed(1)}
+              </p>
+            </div>
+            <div className="relative h-2 bg-gray-200 rounded-full">
+              <div
+                className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
+                style={{ width: `${hotel.location * 10}%` }}
+              ></div>
+            </div>
           </div>
-          <div className="relative h-2 bg-gray-200 rounded-full">
-            <div
-              className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-              style={{ width: `${hotel.location * 10}%` }}
-            ></div>
-          </div>
-        </div>
 
-        <div>
-          <div className="flex justify-between pb-2">
-            <p className="font-semibold">Value for money</p>
-            <p className="text-sm text-gray-500 mt-1">
-              {hotel.valueForMoney.toFixed(1)}
-            </p>
-          </div>
-          <div className="relative h-2 bg-gray-200 rounded-full">
-            <div
-              className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
-              style={{ width: `${hotel.valueForMoney * 10}%` }}
-            ></div>
+          <div>
+            <div className="flex justify-between pb-2">
+              <p className="font-semibold">Value for money</p>
+              <p className="text-sm text-gray-500 mt-1">
+                {hotel.valueForMoney.toFixed(1)}
+              </p>
+            </div>
+            <div className="relative h-2 bg-gray-200 rounded-full">
+              <div
+                className="absolute top-0 left-0 h-2 bg-blue-900 rounded-full"
+                style={{ width: `${hotel.valueForMoney * 10}%` }}
+              ></div>
+            </div>
           </div>
         </div>
       </div>
@@ -130,6 +144,41 @@ function GuestRevies({ hotel }: PropsTypes) {
             )
           )}
         </div>
+      </div>
+
+      <div>
+        <h1 className="text-md font-bold mt-6">Guests who stayed here loved</h1>
+        <Carousel className="w-full">
+          <CarouselContent className="">
+            {hotel.reviews.map((review, i) => (
+              <CarouselItem key={i} className=" md:basis-1/2 lg:basis-1/3">
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center text-sm mb-4">
+                    <span className="font-semibold">
+                      <Avatar className="size-8">
+                        <AvatarImage
+                          className=""
+                          src="https://github.com/shadcn.png"
+                          alt="@shadcn"
+                        />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                    </span>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold ml-2">Susan</span>
+                      <span className="ml-2 text-gray-500 text-[0.7rem]">
+                        Israel
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-[0.8rem]">"{review.text}"</p>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
     </div>
   );

@@ -50,10 +50,10 @@ function BookingPage() {
     0
   );
 
-  useEffect(() => {
-    console.log("Room Selections:", roomSelections);
-    console.log("Total Price:", totalPrice);
-  }, [roomSelections, totalPrice]);
+  // useEffect(() => {
+  //   console.log("Room Selections:", roomSelections);
+  //   console.log("Total Price:", totalPrice);
+  // }, [roomSelections, totalPrice]);
 
   async function addResrvation() {
     roomSelections.forEach(async (roomSelections) => {
@@ -90,7 +90,7 @@ function BookingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header type="bookingPage" />
-      <main className="flex-1 px-0 lg:px-96 pb-32">
+      <main className="flex-1 px-0 max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto pb-32">
         {/* Pogress-bar */}
         <ProgressStepsBar nextStep={nextStep} />
         {/* <Button onClick={() => setNextStep(false)} className="">
@@ -138,6 +138,7 @@ function BookingPage() {
               //   totalRooms={totalRooms}
               //   totalGuests={totalGuests}
               totalDays={totalDays}
+              roomSelections={roomSelections}
             />
           )}
         </section>

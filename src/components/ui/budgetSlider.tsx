@@ -3,8 +3,8 @@ import ReactSlider from "react-slider";
 import { useSearchParams } from "react-router-dom";
 
 const BudgetSlider = () => {
-  const [minPrice, setMinPrice] = useState(250);
-  const [maxPrice, setMaxPrice] = useState(2000);
+  const [minPrice, setMinPrice] = useState(30);
+  const [maxPrice, setMaxPrice] = useState(250);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -31,9 +31,9 @@ const BudgetSlider = () => {
         className="horizontal-slider"
         thumbClassName="thumb"
         trackClassName="track"
-        min={250}
-        max={2000}
-        step={50}
+        min={30}
+        max={250}
+        step={15}
         value={[minPrice, maxPrice]} // Set initial values
         ariaLabel={["Lower thumb", "Upper thumb"]}
         ariaValuetext={(state) => `₪ ${state.valueNow}`}
@@ -54,7 +54,7 @@ const BudgetSlider = () => {
         )}
       />
       {/* Example Histogram-like bars below the slider */}
-      <div className="flex justify-between mt-4">
+      <div className="flex justify-between ">
         {[20, 15, 10, 25, 10, 30, 15].map((height, index) => (
           <div
             key={index}

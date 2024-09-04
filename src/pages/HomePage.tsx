@@ -8,6 +8,9 @@ import BrowseByPropertyTypeCarucel from "@/components/self-made/BrowseByProperty
 import { HomePageCarousels } from "@/components/self-made/HomePageCarousels";
 import Banner from "@/components/self-made/HomePageBanner";
 import { useAuth } from "@/context/AuthContext"; // Adjust the import path as needed
+import Header from "@/components/self-made/Header";
+import Footer from "@/components/self-made/Footer";
+
 
 const HomePage = () => {
   const { loggedInUser } = useAuth();
@@ -18,11 +21,13 @@ const HomePage = () => {
 
   return (
     <div>
-      {/* <Header /> */}
+      <Header type="deafult" />
       <HeroSection />
-      <SearchBar />
-      <div className="mt-10 space-y-10">
-        {recentSearches.length > 0 && <RecentSearches />}
+      <div className="max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto">
+        <SearchBar type="default" />
+      </div>
+      <div className="mt-10 space-y-10 max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto">
+        {/* {recentSearches.length > 0 && <RecentSearches />} */}
 
         <InterestedProperties />
         <OffersSection />
@@ -31,7 +36,7 @@ const HomePage = () => {
         <BrowseByPropertyTypeCarucel />
         <Banner />
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

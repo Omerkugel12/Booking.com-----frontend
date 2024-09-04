@@ -22,9 +22,9 @@ function App() {
           <Route
             path=""
             element={
-              <Layout>
-                <HomePage />
-              </Layout>
+              // <Layout>
+              <HomePage />
+              // </Layout>
             }
           />
           <Route

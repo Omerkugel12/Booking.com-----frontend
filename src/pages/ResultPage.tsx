@@ -7,11 +7,18 @@ import ResultHotelCard from "@/components/self-made/ResultHotelCard";
 import SearchBar from "@/components/self-made/SearchBar";
 import { useSearch } from "@/context/SearchContext";
 import { HotelResult } from "@/models/Hotel.model";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getHotels } from "@/services/hotels.service";
 import Map from "@/components/self-made/Map";
+import ModalMap from "@/components/self-made/ModalMap";
+import NoItemsFound from "@/components/self-made/NoItemsFound";
 
 function ResultPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //hack for map instance do not re-render
+  const navigate = useNavigate();
+
   // Get the current search parameters
   const [searchParams] = useSearchParams();
 
@@ -27,14 +34,13 @@ function ResultPage() {
   const freeCancelation = searchParams.get("Freecancellation");
   const noPrepayment = searchParams.get("Noprepayment");
   const starRating = searchParams.get("starRating");
-  const meals = searchParams.get("meals")
+  const meals = searchParams.get("meals");
   const sortBy = searchParams.get("sortBy");
-
+  console.log(freeCancelation);
   // State to store fetched hotels
   const [hotels, setHotels] = useState<HotelResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const saveRecentSearch = (imageUrl: string) => {
     const recentSearch = {
       destination: destination || "",
@@ -66,8 +72,8 @@ function ResultPage() {
           endDate: endDate || undefined,
           numOfPeople: adults ? parseInt(adults) : undefined,
           numOfRooms: rooms ? parseInt(rooms) : undefined,
-          priceMin: minPrice ? parseFloat(minPrice) : undefined,
-          priceMax: maxPrice ? parseFloat(maxPrice) : undefined,
+          priceMin: minPrice ? parseInt(minPrice) : undefined,
+          priceMax: maxPrice ? parseInt(maxPrice) : undefined,
           freeCancellation: freeCancelation
             ? freeCancelation === "true"
             : undefined,
@@ -79,8 +85,7 @@ function ResultPage() {
           sortBy: sortBy,
         };
         const response = await getHotels(filters);
-        console.log(response.data);
-
+        console.log(filters.priceMin);
         setHotels(response.data);
 
         if (response.data.length > 0) {
@@ -95,25 +100,36 @@ function ResultPage() {
     };
 
     fetchHotels();
-  }, [destination, startDate, endDate, adults, children, rooms,searchParams]);
+  }, [destination, startDate, endDate, adults, children, rooms, searchParams]);
+
+  const openModal = () => {
+    console.log("Opening modal. Hotels:", hotels);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate(0);
+  };
 
   if (error) return <p>{error}</p>;
 
   return (
-    <>
+    <div className=" h-full">
       <Header type="results" />
-      <div className="px-44">
-        <SearchBar />
+      <div className="max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto">
+        <SearchBar type="default" />
       </div>
-      <div className="flex mt-10 px-44">
+      <div className="flex mt-10 max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto">
         <div>
           <div>
             <img
-              className=" w-80 h-32 rounded-xl"
+              className=" w-80 h-32 rounded-xl cursor-pointer"
               src="src/images/ShowOnMap.webp"
               alt="Map"
+              onClick={openModal}
             />
             {/* <Map hotels={hotels} /> */}
+            {isModalOpen && <ModalMap onClose={closeModal} hotels={hotels} />}
             <div>
               <FilterSidebar />
             </div>
@@ -124,15 +140,17 @@ function ResultPage() {
             {loading && <p>Loading hotels...</p>}
             <div className="flex flex-col gap-2 text-lg">
               <h2 className="font-bold text-xl pb-4">
-                {destination}: {hotels.length} properties found
+                {destination ? destination.toUpperCase() : ""}: {hotels.length}{" "}
+                properties found
               </h2>
+
               {/*  <p className="text-sm">
                 Dates: {startDate} to {endDate}
               </p>
               <p className="text-sm">
                 Guests: {adults} adults, {children} children, {rooms} rooms
               </p> */}
-              <DropDownSort />
+              <DropDownSort  />
               {/* <p className="border text-sm border-gray-200-200 mt-2 rounded-md p-2 w-fit">
                 Review any travel advisories provided by your government to make
                 an informed decision about your stay in this area, which may be
@@ -141,17 +159,22 @@ function ResultPage() {
             </div>
 
             <div className="flex w-full">
-              <div className="w-[95%]">
-                {hotels.map((hotel) => (
-                  <ResultHotelCard key={hotel.id} hotel={hotel} />
-                ))}
-              </div>
+              {hotels.length > 0 ? (
+                <div className="w-[95%]">
+                  {hotels.map((hotel) => (
+                    <ResultHotelCard key={hotel.id} hotel={hotel} />
+                  ))}
+                </div>
+              ) : (
+                  <div className=" ml-18 mt-6">
+                    <NoItemsFound />
+                    </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <Footer />
-    </>
+    </div>
   );
 }
 

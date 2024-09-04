@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 // Interface for the review associated with the hotel
 interface Review {
   text: string;
@@ -25,7 +23,7 @@ export interface AvailableRoom {
 
 // Model for the detailed view of a hotel
 export interface HotelDetails {
-  address: ReactNode;
+  address: string;
   imageURLs: any;
   id: number;
   name: string;
@@ -54,7 +52,7 @@ export interface HotelDetails {
 
 // Model for the results view of a hotel
 export interface HotelResult {
-  location: any;
+  address: string;
   reviews: [HotelResult];
   id: number;
   name: string;
@@ -70,6 +68,8 @@ export interface HotelResult {
   image: string;
   avgRating: number;
   totalPrice: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface HotelResult {
