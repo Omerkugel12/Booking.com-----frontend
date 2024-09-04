@@ -98,10 +98,12 @@ function Header({ type }: PropType) {
                         <User className="mr-2 h-4 w-4" />
                         <span>Manage account</span>
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <CreditCard className="mr-2 h-4 w-4" />
-                        <span>Bookings & Trips</span>
-                      </DropdownMenuItem>
+                      <Link className="hover:no-underline" to={"/MyTrips"}>
+                        <DropdownMenuItem className="cursor-pointer text-black">
+                          <CreditCard className="mr-2 h-4 w-4" />
+                          <span>Bookings & Trips</span>
+                        </DropdownMenuItem>
+                      </Link>
                       <DropdownMenuItem>
                         <Settings className="mr-2 h-4 w-4" />
                         <span>Genius loyalty program</span>
@@ -120,7 +122,10 @@ function Header({ type }: PropType) {
                         <UserPlus className="mr-2 h-4 w-4" />
                         <span>Saved</span>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={logout}>
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={logout}
+                      >
                         <Plus className="mr-2 h-4 w-4" />
                         <span>Sign out</span>
                       </DropdownMenuItem>

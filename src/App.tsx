@@ -12,6 +12,7 @@ import HotelDetailsPage from "./pages/HotelDetailsPage";
 import TaxiPage from "./pages/TaxiPage";
 import { useSessionStorage } from "@uidotdev/usehooks";
 import BookingPage from "./pages/BookingPage";
+import MyTripsPage from "./pages/MyTripsPage";
 
 function App() {
   const [email, setEmail] = useSessionStorage("auth_email", "");
@@ -43,6 +44,16 @@ function App() {
               // </Layout>
             }
           />
+
+          <Route
+            path="myTrips"
+            element={
+              <Layout>
+                <MyTripsPage />
+              </Layout>
+            }
+          />
+
           <Route path="hotel/:hotelId/booking" element={<BookingPage />} />
           <Route path="stays" />
         </Route>

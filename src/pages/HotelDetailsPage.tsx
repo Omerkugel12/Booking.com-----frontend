@@ -14,6 +14,7 @@ import HouseRulesComp from "@/components/self-made/DetailsPage/HouseRulesComp";
 import FinePrintComp from "@/components/self-made/DetailsPage/FinePrintComp";
 import OverviewSection from "@/components/self-made/DetailsPage/OverviewSection";
 import ReviewModal from "@/components/self-made/DetailsPage/ReviewModal";
+import { Loader } from "rsuite";
 
 export const getScoreLetter = (rating: number): string => {
   if (rating < 7) return "Pleasant";
@@ -73,7 +74,11 @@ const HotelDetailsPage: React.FC = () => {
   }, [hotelId, startDate, endDate]);
 
   if (!hotel) {
-    return <p>Loading...</p>;
+    return (
+      <p>
+        <Loader />
+      </p>
+    );
   }
 
   // Function to convert numeric rating to descriptive string
