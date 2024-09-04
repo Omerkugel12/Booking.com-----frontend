@@ -32,6 +32,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ModalMapForOneHotel from "../ModalMapForOneHotel";
 
 interface PropsTypes {
   hotel: HotelDetails;
@@ -52,6 +55,17 @@ const FeatureItem = ({
 );
 
 function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  //hack for map instance do not re-render
+  const navigate = useNavigate();
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate(0);
+  };
   return (
     <section className="flex gap-8 pb-7 border-b-[1px]" id="overview">
       <div className="flex flex-col ">
@@ -264,7 +278,15 @@ function OverviewSection({ hotel, scrollToMyDiv }: PropsTypes) {
             </div>
 
             <div className="">
-              <img className="" src={map} alt="Map" />
+              <img
+                className="cursor-pointer"
+                src={map}
+                alt="Map"
+                onClick={openModal}
+              />
+              {isModalOpen && (
+                <ModalMapForOneHotel onClose={closeModal} hotel={hotel} />
+              )}
             </div>
           </div>
         </div>

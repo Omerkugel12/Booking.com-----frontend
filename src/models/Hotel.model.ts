@@ -48,6 +48,8 @@ export interface HotelDetails {
   comfort: number;
   avgRating: number;
   availableRooms: AvailableRoom[];
+  latitude: number;
+  longitude: number;
 }
 
 // Model for the results view of a hotel
