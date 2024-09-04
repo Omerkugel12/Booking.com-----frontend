@@ -100,7 +100,9 @@ function Header({ type }: PropType) {
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <CreditCard className="mr-2 h-4 w-4" />
-                        <span>Bookings & Trips</span>
+                        <Link to={"/MyTrips"}>
+                          <span>Bookings & Trips</span>
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Settings className="mr-2 h-4 w-4" />
@@ -121,7 +123,7 @@ function Header({ type }: PropType) {
                         <span>Saved</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={logout}>
-                        <Plus className="mr-2 h-4 w-4" />
+                        <Plus className="mr-2 h-4 w-4 cursor-pointer" />
                         <span>Sign out</span>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
