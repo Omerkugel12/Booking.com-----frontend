@@ -1,5 +1,7 @@
+import UnderConstruction from "@/components/self-made/UnderConstruction";
+
 function CarRentalsPage() {
-  return <div>CarRentalsPage</div>;
+  return <UnderConstruction />;
 }
 
 export default CarRentalsPage;

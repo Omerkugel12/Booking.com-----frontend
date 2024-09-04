@@ -1,5 +1,7 @@
+import UnderConstruction from "@/components/self-made/UnderConstruction";
+
 function FlightsPage() {
-  return <div>FlightsPage</div>;
+  return <UnderConstruction />;
 }
 
 export default FlightsPage;

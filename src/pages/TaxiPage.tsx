@@ -1,5 +1,7 @@
+import UnderConstruction from "@/components/self-made/UnderConstruction";
+
 function TaxiPage() {
-  return <div>TaxiPage</div>;
+  return <UnderConstruction />;
 }
 
 export default TaxiPage;

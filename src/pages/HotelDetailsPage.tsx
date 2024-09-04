@@ -59,7 +59,7 @@ const HotelDetailsPage: React.FC = () => {
           startDate!,
           endDate!
         );
-        // console.log(response);
+        console.log(response);
 
         setHotel(response);
         setRooms(response.availableRooms);
