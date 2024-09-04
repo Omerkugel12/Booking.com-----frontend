@@ -9,6 +9,7 @@ import BookingSidebarFilter from "./Filters";
 import { useSearchParams } from "react-router-dom";
 import { HotelResult } from "@/models/Hotel.model";
 import { getHotels } from "@/services/hotels.service";
+import { Loader } from "rsuite";
 
 interface ModalMapProps {
   onClose: () => void;

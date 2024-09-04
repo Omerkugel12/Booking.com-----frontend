@@ -9,9 +9,9 @@ import { useSearch } from "@/context/SearchContext";
 import { HotelResult } from "@/models/Hotel.model";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getHotels } from "@/services/hotels.service";
-import Map from "@/components/self-made/Map";
 import ModalMap from "@/components/self-made/ModalMap";
 import NoItemsFound from "@/components/self-made/NoItemsFound";
+import { Loader } from "rsuite";
 
 function ResultPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -137,7 +137,11 @@ function ResultPage() {
         </div>
         <div className="h-[100vh] w-full">
           <div className="px-10">
-            {loading && <p>Loading hotels...</p>}
+            {loading && (
+              <p>
+                <Loader />
+              </p>
+            )}
             <div className="flex flex-col gap-2 text-lg">
               <h2 className="font-bold text-xl pb-4">
                 {destination ? destination.toUpperCase() : ""}: {hotels.length}{" "}
@@ -150,7 +154,7 @@ function ResultPage() {
               <p className="text-sm">
                 Guests: {adults} adults, {children} children, {rooms} rooms
               </p> */}
-              <DropDownSort  />
+              <DropDownSort />
               {/* <p className="border text-sm border-gray-200-200 mt-2 rounded-md p-2 w-fit">
                 Review any travel advisories provided by your government to make
                 an informed decision about your stay in this area, which may be
@@ -166,9 +170,9 @@ function ResultPage() {
                   ))}
                 </div>
               ) : (
-                  <div className=" ml-18 mt-6">
-                    <NoItemsFound />
-                    </div>
+                <div className=" ml-18 mt-6">
+                  <NoItemsFound />
+                </div>
               )}
             </div>
           </div>

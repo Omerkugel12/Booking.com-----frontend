@@ -11,7 +11,6 @@ import { useAuth } from "@/context/AuthContext"; // Adjust the import path as ne
 import Header from "@/components/self-made/Header";
 import Footer from "@/components/self-made/Footer";
 
-
 const HomePage = () => {
   const { loggedInUser } = useAuth();
 
@@ -27,7 +26,7 @@ const HomePage = () => {
         <SearchBar type="default" />
       </div>
       <div className="mt-10 space-y-10 max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto">
-        {/* {recentSearches.length > 0 && <RecentSearches />} */}
+        {recentSearches.length > 0 && <RecentSearches />}
 
         <InterestedProperties />
         <OffersSection />
