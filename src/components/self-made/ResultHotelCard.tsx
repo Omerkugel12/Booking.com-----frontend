@@ -44,7 +44,6 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
     navigate(`/hotel/${hotel.id}?startDate=${startDate}&endDate=${endDate}`); // Assuming the URL pattern is /hotels/:id
   };
 
-
   // Function to convert numeric rating to descriptive string
   const getScoreLetter = (rating: number): string => {
     if (rating < 7) return "Pleasant";
@@ -54,10 +53,6 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
     else if (rating > 9 && rating <= 10) return "Wonderful";
     return "";
   };
-
-
-console.log(hotel);
-
 
   return (
     <Card className="flex mt-2 w-full border border-gray-300 rounded-lg shadow-md">
