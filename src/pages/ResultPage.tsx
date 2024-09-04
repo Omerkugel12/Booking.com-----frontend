@@ -11,6 +11,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getHotels } from "@/services/hotels.service";
 import Map from "@/components/self-made/Map";
 import ModalMap from "@/components/self-made/ModalMap";
+import NoItemsFound from "@/components/self-made/NoItemsFound";
 
 function ResultPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -149,7 +150,7 @@ function ResultPage() {
               <p className="text-sm">
                 Guests: {adults} adults, {children} children, {rooms} rooms
               </p> */}
-              <DropDownSort />
+              <DropDownSort  />
               {/* <p className="border text-sm border-gray-200-200 mt-2 rounded-md p-2 w-fit">
                 Review any travel advisories provided by your government to make
                 an informed decision about your stay in this area, which may be
@@ -165,7 +166,9 @@ function ResultPage() {
                   ))}
                 </div>
               ) : (
-                <p>No hotels matched</p>
+                  <div className=" ml-18 mt-6">
+                    <NoItemsFound />
+                    </div>
               )}
             </div>
           </div>

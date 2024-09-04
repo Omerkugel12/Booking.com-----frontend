@@ -54,7 +54,7 @@ const BudgetSlider = () => {
         )}
       />
       {/* Example Histogram-like bars below the slider */}
-      <div className="flex justify-between mt-4">
+      <div className="flex justify-between ">
         {[20, 15, 10, 25, 10, 30, 15].map((height, index) => (
           <div
             key={index}
