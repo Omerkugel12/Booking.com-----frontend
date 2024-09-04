@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getNameByFirstLetter, getRandomLetter } from "./ReviewModal";
 
 interface PropsTypes {
   hotel: HotelDetails;
@@ -150,31 +151,38 @@ function GuestRevies({ hotel }: PropsTypes) {
         <h1 className="text-md font-bold mt-6">Guests who stayed here loved</h1>
         <Carousel className="w-full">
           <CarouselContent className="">
-            {hotel.reviews.map((review, i) => (
-              <CarouselItem key={i} className=" md:basis-1/2 lg:basis-1/3">
-                <div className="p-5 border rounded-lg">
-                  <div className="flex items-center text-sm mb-4">
-                    <span className="font-semibold">
+            {hotel.reviews.map((review, i) => {
+              const firstLetter = getRandomLetter().toUpperCase();
+              const username = getNameByFirstLetter(firstLetter);
+
+              return (
+                <CarouselItem key={i} className=" md:basis-1/2 lg:basis-1/3">
+                  <div className="p-5 border rounded-lg">
+                    <div className="flex items-center text-sm mb-4">
                       <Avatar className="size-8">
-                        <AvatarImage
-                          className=""
-                          src="https://github.com/shadcn.png"
-                          alt="@shadcn"
-                        />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarFallback className="bg-green text-white text-sm font-bold">
+                          {review.username !== null
+                            ? review.username.charAt(0)
+                            : firstLetter}
+                        </AvatarFallback>
                       </Avatar>
-                    </span>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-bold ml-2">Susan</span>
-                      <span className="ml-2 text-gray-500 text-[0.7rem]">
-                        Israel
-                      </span>
+
+                      <div className="flex flex-col">
+                        <span className="text-sm font-bold ml-2">
+                          {review.username !== null
+                            ? review.username
+                            : username}
+                        </span>
+                        <span className="ml-2 text-gray-500 text-[0.7rem]">
+                          Israel
+                        </span>
+                      </div>
                     </div>
+                    <p className="text-[0.8rem]">"{review.text}"</p>
                   </div>
-                  <p className="text-[0.8rem]">"{review.text}"</p>
-                </div>
-              </CarouselItem>
-            ))}
+                </CarouselItem>
+              );
+            })}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />
