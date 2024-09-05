@@ -34,7 +34,7 @@ interface AuthContextTypes {
   logout: () => void;
   register: (userData: UserToRegister) => void;
   handleGoogleSuccess: (credentialResponse: {
-    credential: string;
+    credential?: string;
   }) => Promise<void>;
 }
 
@@ -99,13 +99,15 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
   }
 
   const handleGoogleSuccess = async (credentialResponse: {
-    credential: string;
+    credential?: string;
   }): Promise<void> => {
     const { credential } = credentialResponse;
+
     if (!credential) {
       console.error("Credential is undefined");
       return;
     }
+
     try {
       const response = await api.post("/auth/google", { credential });
       setToken(response.data.token);

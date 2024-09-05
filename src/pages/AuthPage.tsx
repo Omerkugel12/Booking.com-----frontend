@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google"; // Import CredentialResponse for type
 import Header from "@/components/self-made/Header";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/services/api.service";
@@ -92,15 +92,16 @@ function AuthPage({
             or use one of these options
           </p>
           <div className="flex justify-evenly items-center py-8 border-y-[1px]">
-            {/* Google Login Button */}
             {/* Facebook Login */}
             <div className="border w-16 h-16 rounded-sm flex justify-center items-center cursor-pointer hover:border-nav_btn_text">
               <div className="w-6">
                 <img src="/src/images/facebook.svg" alt="facebook" />
               </div>
             </div>{" "}
+            {/* Google Login Button */}
             <GoogleLogin
-              onSuccess={(credentialResponse) => {
+              type="icon"
+              onSuccess={(credentialResponse: CredentialResponse) => {
                 console.log("Google Login Success:", credentialResponse);
                 handleGoogleSuccess(credentialResponse);
               }}
