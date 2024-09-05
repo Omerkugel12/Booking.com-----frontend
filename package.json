@@ -28,6 +28,7 @@
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "@react-google-maps/api": "^2.19.3",
+    "@react-oauth/google": "^0.12.1",
     "@uidotdev/usehooks": "^2.4.1",
     "add": "^2.0.6",
     "alert": "^6.0.2",

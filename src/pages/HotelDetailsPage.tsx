@@ -31,7 +31,7 @@ const HotelDetailsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [hotel, setHotel] = useState<HotelDetails | null>(null);
   const [rooms, setRooms] = useState<AvailableRoom[] | null>(null);
-  const myDivRef = useRef(null);
+  const myDivRef = useRef<HTMLDivElement>(null); // Type the ref properly
   const { clearReservation } = useReservation();
 
   const scrollToMyDiv = () => {
@@ -150,7 +150,7 @@ const HotelDetailsPage: React.FC = () => {
         <OverviewSection hotel={hotel} scrollToMyDiv={scrollToMyDiv} />
         {/*info & prices*/}
         <section ref={myDivRef} id="info&prices">
-          <RoomTableDemo availableRooms={rooms} nights={numberOfNights} />
+          <RoomTableDemo availableRooms={rooms} nights={numberOfNights ?? 0} />
           {/*Guest reviews*/}
           <GuestRevies hotel={hotel} />
         </section>

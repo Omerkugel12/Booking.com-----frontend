@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface RoomTableProps {
   availableRooms: AvailableRoom[] | null;
-  nights: number | undefined;
+  nights: number;
 }
 
 interface LocalRoomSelection {

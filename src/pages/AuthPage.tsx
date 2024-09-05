@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { ShieldQuestion } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -13,8 +12,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/services/api.service";
+import { GoogleLogin } from "@react-oauth/google";
 import Header from "@/components/self-made/Header";
+import { useAuth } from "@/context/AuthContext";
+import api from "@/services/api.service";
 
 function AuthPage({
   setEmail,
@@ -22,6 +23,7 @@ function AuthPage({
   email: string;
   setEmail: (email: string) => void;
 }) {
+  const { handleGoogleSuccess } = useAuth();
   const navigate = useNavigate();
 
   const formSchema = z.object({
@@ -89,20 +91,26 @@ function AuthPage({
           <p className="text-center mt-4 text-sm">
             or use one of these options
           </p>
-          <div className="flex justify-evenly py-8 border-y-[1px]">
+          <div className="flex justify-evenly items-center py-8 border-y-[1px]">
+            {/* Facebook Login */}
             <div className="border w-16 h-16 rounded-sm flex justify-center items-center cursor-pointer hover:border-nav_btn_text">
               <div className="w-6">
-                <img src="/src/images/facebook.svg" alt="" className="" />
+                <img src="/src/images/facebook.svg" alt="facebook" />
               </div>
             </div>
-            <div className="border w-16 h-16 rounded-sm flex justify-center items-center cursor-pointer hover:border-nav_btn_text">
-              <div className="w-12">
-                <img src="/src/images/images.png" alt="" className="" />
-              </div>
-            </div>
+            {/* Google Login Button */}
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log("Google Login Success:", credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+            {/* Apple Login */}
             <div className="border w-16 h-16 rounded-sm flex justify-center items-center cursor-pointer hover:border-nav_btn_text">
               <div className="w-6">
-                <img src="/src/images/apple-logo.svg" alt="" className="" />
+                <img src="/src/images/apple-logo.svg" alt="apple" />
               </div>
             </div>
           </div>

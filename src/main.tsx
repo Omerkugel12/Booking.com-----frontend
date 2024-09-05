@@ -7,19 +7,28 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import { SearchProvider } from "./context/SearchContext.tsx";
 import { ReservationProvider } from "./context/ReservationContext.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
-// import "rsuite/dist/rsuite.min.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+// Use the correct Vite environment variable
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+if (!GOOGLE_CLIENT_ID) {
+  console.error("Google Client ID is missing!", GOOGLE_CLIENT_ID);
+}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <ReservationProvider>
-        <AuthProvider>
-          <SearchProvider>
-            <App />
-            <Toaster />
-          </SearchProvider>
-        </AuthProvider>
-      </ReservationProvider>
-    </BrowserRouter>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <BrowserRouter>
+        <ReservationProvider>
+          <AuthProvider>
+            <SearchProvider>
+              <App />
+              <Toaster />
+            </SearchProvider>
+          </AuthProvider>
+        </ReservationProvider>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   </StrictMode>
 );
