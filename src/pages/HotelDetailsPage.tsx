@@ -15,6 +15,7 @@ import FinePrintComp from "@/components/self-made/DetailsPage/FinePrintComp";
 import OverviewSection from "@/components/self-made/DetailsPage/OverviewSection";
 import ReviewModal from "@/components/self-made/DetailsPage/ReviewModal";
 import { Loader } from "rsuite";
+import { useReservation } from "@/context/ReservationContext";
 
 export const getScoreLetter = (rating: number): string => {
   if (rating < 7) return "Pleasant";
@@ -31,6 +32,7 @@ const HotelDetailsPage: React.FC = () => {
   const [hotel, setHotel] = useState<HotelDetails | null>(null);
   const [rooms, setRooms] = useState<AvailableRoom[] | null>(null);
   const myDivRef = useRef(null);
+  const { clearReservation } = useReservation();
 
   const scrollToMyDiv = () => {
     if (myDivRef.current) {
@@ -61,7 +63,7 @@ const HotelDetailsPage: React.FC = () => {
           startDate!,
           endDate!
         );
-
+        clearReservation();
         setHotel(response);
         setRooms(response.availableRooms);
         // console.log(response.availableRooms);

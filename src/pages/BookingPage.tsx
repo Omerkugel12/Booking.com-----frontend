@@ -88,7 +88,7 @@ function BookingPage() {
       }
     });
   }
-
+  console.log(totalPrice1, totalPrice);
   return (
     <div className="flex flex-col min-h-screen">
       <Header type="bookingPage" />

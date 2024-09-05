@@ -40,7 +40,7 @@ const ReservationsPage: React.FC = () => {
   }, [loggedInUser]);
 
   if (!loggedInUser) {
-    return <div>Please log in to view your reservations.</div>;
+    navigate(-1);
   }
 
   const formatDate = (date: string) => format(new Date(date), "dd MMM yyyy");
