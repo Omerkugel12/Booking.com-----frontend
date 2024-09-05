@@ -92,16 +92,17 @@ function AuthPage({
             or use one of these options
           </p>
           <div className="flex justify-evenly items-center py-8 border-y-[1px]">
+            {/* Google Login Button */}
             {/* Facebook Login */}
             <div className="border w-16 h-16 rounded-sm flex justify-center items-center cursor-pointer hover:border-nav_btn_text">
               <div className="w-6">
                 <img src="/src/images/facebook.svg" alt="facebook" />
               </div>
-            </div>
-            {/* Google Login Button */}
+            </div>{" "}
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 console.log("Google Login Success:", credentialResponse);
+                handleGoogleSuccess(credentialResponse);
               }}
               onError={() => {
                 console.log("Login Failed");
