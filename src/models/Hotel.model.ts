@@ -33,6 +33,7 @@ export interface AvailableRoom {
 
 // Model for the detailed view of a hotel
 export interface HotelDetails {
+  hotelId: number;
   address: string;
   imageURLs: string;
   id: number;
