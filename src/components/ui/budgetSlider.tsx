@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactSlider from "react-slider";
 import { useSearchParams } from "react-router-dom";
 

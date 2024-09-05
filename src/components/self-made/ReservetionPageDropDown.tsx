@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddReviewForm from "../self-made/DetailsPage/AddReviewForm"; // Assuming you have the review form component
+import { useState } from "react";
 
 interface ReservationDropdownProps {
   isCompleted: boolean;

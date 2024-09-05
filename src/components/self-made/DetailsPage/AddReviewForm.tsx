@@ -95,7 +95,7 @@ function AddReviewForm({ hotel, setReviews, setIsDialogOpen }: PropsTypes) {
     console.log(hotel);
 
     const newReview: Review = {
-      hotelID: hotel.hotelId,
+      hotelID: hotel.hotelID,
       staff: values.staff,
       facilities: values.facilities,
       cleanliness: values.cleanliness,

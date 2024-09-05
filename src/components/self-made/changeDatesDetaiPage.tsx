@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { DatePickerWithRange } from "./DateRangePicker"; // Assume you have this component
 import { Input } from "@/components/ui/input"; // Your custom components

@@ -139,7 +139,7 @@ const ReservationsPage: React.FC = () => {
                           handleRemoveBooking(reservation.id)
                         }
                         hotel={reservation}
-                        setReviews={function (reviews: any): void {}}
+                        setReviews={function (): void {}}
                       />
                     </p>
                   </div>
