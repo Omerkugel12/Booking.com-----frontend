@@ -12,7 +12,7 @@ function SignedInComp({ loggedInUser }: PropsTypes) {
         <Avatar className="w-12 h-12">
           <AvatarImage src="" />
           <AvatarFallback className="bg-green text-lg text-white font-bold border-2 border-yellow">
-            {loggedInUser.email.split("@")[0]}
+            {loggedInUser.email.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col justify-between">
