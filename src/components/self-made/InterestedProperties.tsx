@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Heart, X } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useSearch } from "@/context/SearchContext"; // Import useSearch
 import { format } from "date-fns";
 
@@ -49,12 +49,12 @@ const InterestedProperties: React.FC = () => {
   };
 
   // Handle removing a property
-  const handleRemoveProperty = (index: number) => {
-    const updatedProperties = [...savedProperties];
-    updatedProperties.splice(index, 1);
-    localStorage.setItem("savedProperties", JSON.stringify(updatedProperties));
-    setSavedProperties(updatedProperties);
-  };
+  // const handleRemoveProperty = (index: number) => {
+  //   const updatedProperties = [...savedProperties];
+  //   updatedProperties.splice(index, 1);
+  //   localStorage.setItem("savedProperties", JSON.stringify(updatedProperties));
+  //   setSavedProperties(updatedProperties);
+  // };
 
   return (
     <div>

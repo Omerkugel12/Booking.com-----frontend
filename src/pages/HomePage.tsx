@@ -1,4 +1,3 @@
-import React from "react";
 import HeroSection from "@/components/self-made/HeroSection";
 import RecentSearches from "@/components/self-made/RecentSearches";
 import InterestedProperties from "@/components/self-made/InterestedProperties";

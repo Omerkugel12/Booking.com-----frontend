@@ -1,10 +1,3 @@
-import React from "react";
-
-interface RatingBarProps {
-  label: string;
-  value: number;
-}
-
 const RatingsOverview: React.FC<{ hotel: any }> = ({ hotel }) => {
   const renderRatingBar = (label: string, value: number) => {
     const ratingColor = value > 9 ? "bg-green" : "bg-blue-900";

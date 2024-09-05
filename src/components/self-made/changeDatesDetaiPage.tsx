@@ -49,6 +49,8 @@ function SimpleSearchBar() {
     navigate(`/search?${queryParams.toString()}`);
   };
 
+  console.log(searchParams);
+
   return (
     <div className="availability-search-bar">
       <DatePickerWithRange date={date} onChange={handleDateChange} />

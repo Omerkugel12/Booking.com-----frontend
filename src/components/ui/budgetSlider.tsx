@@ -21,6 +21,8 @@ const BudgetSlider = () => {
     });
   };
 
+  console.log(searchParams);
+
   return (
     <div className="w-64 p-4 border rounded-md shadow-sm bg-white">
       <h2 className="font-semibold text-sm mb-2">Your budget (per night)</h2>
@@ -38,7 +40,7 @@ const BudgetSlider = () => {
         ariaLabel={["Lower thumb", "Upper thumb"]}
         ariaValuetext={(state) => `$ ${state.valueNow}`}
         onChange={handleSliderChange}
-        renderThumb={(props, state) => (
+        renderThumb={(props) => (
           <div
             {...props}
             className="w-4 h-4 bg-blue-600 rounded-full cursor-pointer"

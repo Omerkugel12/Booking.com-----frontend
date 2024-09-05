@@ -27,7 +27,7 @@ function DropDownSort() {
     "Distance (high to low)",
   ];
 
-  const handleSortChange = (option) => {
+  const handleSortChange = (option: string) => {
     let paramValue = "";
     switch (option) {
       case "Price (lowest first)":

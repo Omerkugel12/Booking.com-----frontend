@@ -1,5 +1,3 @@
-import React from "react";
-
 const UnderConstruction = () => {
   return (
     <div className="flex flex-col items-center justify-start h-full bg-gray-100 gap-4 mt-2">

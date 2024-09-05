@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Minus } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
 import BudgetSlider from "../ui/budgetSlider";
 import { useSearchParams } from "react-router-dom";
 
 // Simulated backend function for fetching item count
-const fetchItemCount = (itemLabel) => {
+const fetchItemCount = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       if (Math.random() > 0.8) {
@@ -35,7 +34,7 @@ const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
     };
 
     fetchCounts();
-  },[]);
+  }, []);
 
   const handleFilterChange = (label, type) => {
     const currentParams = new URLSearchParams(searchParams.toString());

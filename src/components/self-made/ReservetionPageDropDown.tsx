@@ -1,4 +1,3 @@
-import React from "react";
 import { EllipsisVertical } from "lucide-react";
 import {
   DropdownMenu,

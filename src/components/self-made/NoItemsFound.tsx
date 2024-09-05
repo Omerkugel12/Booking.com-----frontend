@@ -1,6 +1,4 @@
 import { Search } from "lucide-react";
-import React from "react";
-import { IoIosSearch } from "react-icons/io";
 import { Button } from "../ui/button";
 
 function NoItemsFound() {
