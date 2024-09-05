@@ -92,8 +92,10 @@ function AddReviewForm({ hotel, setReviews, setIsDialogOpen }: PropsTypes) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(hotel);
+
     const newReview: Review = {
-      hotelID: hotel.hotelID,
+      hotelID: hotel.hotelId,
       staff: values.staff,
       facilities: values.facilities,
       cleanliness: values.cleanliness,
