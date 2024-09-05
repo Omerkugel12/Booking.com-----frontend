@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CheckCircle, UserRound } from "lucide-react";
 import { AvailableRoom } from "@/models/Hotel.model";
 import { useReservation } from "@/context/ReservationContext";
@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface RoomTableProps {
   availableRooms: AvailableRoom[] | null;
-  nights: number | undefined;
+  nights: number;
 }
 
 interface LocalRoomSelection {
@@ -76,7 +76,7 @@ const RoomTable: React.FC<RoomTableProps> = ({ availableRooms, nights }) => {
   );
 
   const handleReserve = () => {
-    // console.log(localSelections); // This should output the correct selections
+    console.log(localSelections); // This should output the correct selections
 
     localSelections.forEach((selection) => {
       addRoom(

@@ -7,9 +7,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, ShieldQuestion } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { FormProvider } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

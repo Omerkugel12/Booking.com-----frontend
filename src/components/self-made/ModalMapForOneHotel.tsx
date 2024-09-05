@@ -16,14 +16,11 @@ function ModalMapForOneHotel({ onClose, hotel }: ModalMapProps) {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   //display div of hotel for desired hotel on map
-  const [hoveredHotel, setHoveredHotel] = useState(null);
+  const [hoveredHotel, setHoveredHotel] = useState<number | null>(null);
   const [googleLoaded, setGoogleLoaded] = useState(false);
 
-  const handleLoad = useCallback((mapInstance) => {
+  const handleLoad = useCallback((mapInstance: google.maps.Map | null) => {
     if (typeof google !== "undefined") {
       setMap(mapInstance);
       setGoogleLoaded(true);
@@ -53,7 +50,8 @@ function ModalMapForOneHotel({ onClose, hotel }: ModalMapProps) {
 
       // Zoom out a bit after a short delay to ensure the map has finished rendering
       const zoomTimeout = setTimeout(() => {
-        map.setZoom(map.getZoom() - 2);
+        const currentZoom = map.getZoom() ?? 12; // Default zoom level if getZoom() returns undefined
+        map.setZoom(currentZoom - 2);
       }, 100);
 
       return () => clearTimeout(zoomTimeout); // Clean up timeout on unmount
@@ -199,11 +197,11 @@ function ModalMapForOneHotel({ onClose, hotel }: ModalMapProps) {
                         className:
                           "bg-blue-800 text-white px-2 py-1 rounded-md text-sm font-bold shadow-lg border border-gray-300",
                       }}
-                      onMouseOver={() => handleMarkerHover(hotel)}
+                      onMouseOver={() => handleMarkerHover(hotel.id)}
                       onMouseOut={handleMarkerOut}
                     />
                   )}
-                  {hoveredHotel && hoveredHotel.id === hotel.id && (
+                  {hoveredHotel && hoveredHotel === hotel.id && (
                     <OverlayView
                       position={center}
                       mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}

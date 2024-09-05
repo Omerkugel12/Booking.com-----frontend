@@ -2,9 +2,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { HotelDetails, Review } from "@/models/Hotel.model";
 import { getScoreLetter } from "@/pages/HotelDetailsPage";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AddReviewForm from "./AddReviewForm";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { Link } from "react-router-dom";
+import VerifyToAddReview from "./VerifyToAddReview";
 
 interface PropsTypes {
   hotel: HotelDetails;
@@ -54,9 +57,11 @@ export function getNameByFirstLetter(letter: string) {
     return getNameByFirstLetter(getRandomLetter());
   }
 }
-function ReviewModal({ hotel }: PropsTypes) {
+export function ReviewModal({ hotel }: PropsTypes) {
   const [reviews, setReviews] = useState<Review[]>(hotel.reviews);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const { loggedInUser } = useAuth();
+  const [verify, setVerify] = useState<boolean>(false);
 
   return (
     <div className="relative">
@@ -89,11 +94,33 @@ function ReviewModal({ hotel }: PropsTypes) {
                 Write a review
               </Button>
             </DialogTrigger>
-            <AddReviewForm
-              hotel={hotel}
-              setReviews={setReviews}
-              setIsDialogOpen={setIsDialogOpen}
-            />
+            <DialogContent className="max-w-[40%]">
+              {loggedInUser ? (
+                <>
+                  {!verify ? (
+                    <VerifyToAddReview verify={verify} setVerify={setVerify} />
+                  ) : (
+                    <AddReviewForm
+                      hotel={hotel}
+                      setReviews={setReviews}
+                      setIsDialogOpen={setIsDialogOpen}
+                    />
+                  )}
+                </>
+              ) : (
+                <div>
+                  <p>You must be logged in to leave a review</p>
+                  <Link to="/auth">
+                    <Button
+                      variant="ghost"
+                      className="border border-nav_btn_text text-nav_btn_text rounded-sm"
+                    >
+                      Login / Register
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </DialogContent>
           </Dialog>
         </div>
         <div className="flex justify-between border-b py-6">
@@ -257,5 +284,3 @@ function ReviewModal({ hotel }: PropsTypes) {
     </div>
   );
 }
-
-export default ReviewModal;

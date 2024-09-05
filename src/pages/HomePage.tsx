@@ -1,4 +1,3 @@
-import React from "react";
 import HeroSection from "@/components/self-made/HeroSection";
 import RecentSearches from "@/components/self-made/RecentSearches";
 import InterestedProperties from "@/components/self-made/InterestedProperties";
@@ -26,7 +25,7 @@ const HomePage = () => {
         <SearchBar type="default" />
       </div>
       <div className="mt-10 space-y-10 max-w-[1050px] 2xl:max-w-[1050px] w-full mx-auto">
-        {/* {recentSearches.length > 0 && <RecentSearches />} */}
+        {recentSearches.length > 0 && <RecentSearches />}
 
         <InterestedProperties />
         <OffersSection />

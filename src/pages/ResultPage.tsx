@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import DropDownSort from "@/components/self-made/DropDownSort";
 import FilterSidebar from "@/components/self-made/Filters";
-import Footer from "@/components/self-made/Footer";
 import Header from "@/components/self-made/Header";
 import ResultHotelCard from "@/components/self-made/ResultHotelCard";
 import SearchBar from "@/components/self-made/SearchBar";
-import { useSearch } from "@/context/SearchContext";
 import { HotelResult } from "@/models/Hotel.model";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getHotels } from "@/services/hotels.service";

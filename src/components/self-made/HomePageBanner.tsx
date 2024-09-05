@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"; // Assume you're using ShadCN's Button component
 import bannerImage from "@/images/BannerImage.png";
 function Banner() {

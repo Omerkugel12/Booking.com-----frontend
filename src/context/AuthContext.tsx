@@ -33,6 +33,9 @@ interface AuthContextTypes {
   login: (userData: UserCradantial) => void;
   logout: () => void;
   register: (userData: UserToRegister) => void;
+  handleGoogleSuccess: (credentialResponse: {
+    credential?: string;
+  }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextTypes | null>(null);
@@ -42,7 +45,6 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
     undefined
   );
   const [token, setToken] = useLocalStorage<string | null>("jwt-taskify", null);
-  // const { modal, setModal } = useModalContext();
 
   const navigate = useNavigate();
 
@@ -75,13 +77,11 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
   function logout() {
     setToken(null);
     setLoggedInUser(null);
-    // navigate("/auth/login");
   }
 
   async function login(userData: UserCradantial) {
     try {
       const response = await api.post("/auth/login", userData);
-
       setToken(response.data.token);
       navigate("/");
     } catch (error) {
@@ -98,8 +98,30 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
     }
   }
 
+  const handleGoogleSuccess = async (credentialResponse: {
+    credential?: string;
+  }): Promise<void> => {
+    const { credential } = credentialResponse;
+
+    if (!credential) {
+      console.error("Credential is undefined");
+      return;
+    }
+
+    try {
+      const response = await api.post("/auth/google", { credential });
+      setToken(response.data.token);
+      setLoggedInUser(response.data.user);
+      navigate("/");
+    } catch (error: unknown) {
+      console.error("Google login failed:", error);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ loggedInUser, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ loggedInUser, login, register, logout, handleGoogleSuccess }}
+    >
       {children}
     </AuthContext.Provider>
   );

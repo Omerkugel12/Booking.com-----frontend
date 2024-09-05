@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -92,6 +88,8 @@ function AddReviewForm({ hotel, setReviews, setIsDialogOpen }: PropsTypes) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(hotel);
+
     const newReview: Review = {
       hotelID: hotel.hotelID,
       staff: values.staff,
@@ -130,9 +128,9 @@ function AddReviewForm({ hotel, setReviews, setIsDialogOpen }: PropsTypes) {
   }
 
   return (
-    <DialogContent className="max-w-[40%]">
+    <div className="">
       <DialogHeader>
-        <DialogTitle className="font-bold">{`Add your review for ${hotel.name}`}</DialogTitle>
+        <DialogTitle className="font-bold mb-8">{`Add your review for ${hotel.name}`}</DialogTitle>
       </DialogHeader>
       <div>
         <div>
@@ -359,7 +357,7 @@ function AddReviewForm({ hotel, setReviews, setIsDialogOpen }: PropsTypes) {
           </Form>
         </div>
       </div>
-    </DialogContent>
+    </div>
   );
 }
 
