@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
+import { format, isBefore, startOfToday } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
@@ -22,6 +22,8 @@ interface PropTypes {
 }
 
 export function DatePickerWithRange({ className, date, setDate }: PropTypes) {
+  const today = startOfToday();
+
   return (
     <div
       className={cn(
@@ -62,6 +64,7 @@ export function DatePickerWithRange({ className, date, setDate }: PropTypes) {
             selected={date}
             onSelect={setDate} // Use setDate directly to update the state
             numberOfMonths={2}
+            disabled={(day) => isBefore(day, today)}
           />
         </PopoverContent>
       </Popover>
