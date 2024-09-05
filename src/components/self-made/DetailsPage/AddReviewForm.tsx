@@ -130,9 +130,9 @@ function AddReviewForm({ hotel, setReviews, setIsDialogOpen }: PropsTypes) {
   }
 
   return (
-    <DialogContent className="max-w-[40%]">
+    <div className="">
       <DialogHeader>
-        <DialogTitle className="font-bold">{`Add your review for ${hotel.name}`}</DialogTitle>
+        <DialogTitle className="font-bold mb-8">{`Add your review for ${hotel.name}`}</DialogTitle>
       </DialogHeader>
       <div>
         <div>
@@ -359,7 +359,7 @@ function AddReviewForm({ hotel, setReviews, setIsDialogOpen }: PropsTypes) {
           </Form>
         </div>
       </div>
-    </DialogContent>
+    </div>
   );
 }
 

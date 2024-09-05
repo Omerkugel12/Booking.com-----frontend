@@ -13,7 +13,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import HouseRulesComp from "@/components/self-made/DetailsPage/HouseRulesComp";
 import FinePrintComp from "@/components/self-made/DetailsPage/FinePrintComp";
 import OverviewSection from "@/components/self-made/DetailsPage/OverviewSection";
-import ReviewModal from "@/components/self-made/DetailsPage/ReviewModal";
+import { ReviewModal } from "@/components/self-made/DetailsPage/ReviewModal";
 import { Loader } from "rsuite";
 import { useReservation } from "@/context/ReservationContext";
 

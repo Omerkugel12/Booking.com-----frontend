@@ -78,7 +78,7 @@ function Header({ type }: PropType) {
                         <Avatar className="w-8 h-8">
                           <AvatarImage src="" />
                           <AvatarFallback className="bg-green text-lg font-bold border-2 border-yellow">
-                            {loggedInUser.email.charAt(0)}
+                            {loggedInUser.email.charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
                         <div>
