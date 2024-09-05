@@ -7,6 +7,7 @@ import AddReviewForm from "./AddReviewForm";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Link } from "react-router-dom";
+import VerifyToAddReview from "./VerifyToAddReview";
 
 interface PropsTypes {
   hotel: HotelDetails;
@@ -60,6 +61,7 @@ export function ReviewModal({ hotel }: PropsTypes) {
   const [reviews, setReviews] = useState<Review[]>(hotel.reviews);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { loggedInUser } = useAuth();
+  const [verify, setVerify] = useState<boolean>(false);
 
   return (
     <div className="relative">
@@ -94,11 +96,17 @@ export function ReviewModal({ hotel }: PropsTypes) {
             </DialogTrigger>
             <DialogContent className="max-w-[40%]">
               {loggedInUser ? (
-                <AddReviewForm
-                  hotel={hotel}
-                  setReviews={setReviews}
-                  setIsDialogOpen={setIsDialogOpen}
-                />
+                <>
+                  {!verify ? (
+                    <VerifyToAddReview verify={verify} setVerify={setVerify} />
+                  ) : (
+                    <AddReviewForm
+                      hotel={hotel}
+                      setReviews={setReviews}
+                      setIsDialogOpen={setIsDialogOpen}
+                    />
+                  )}
+                </>
               ) : (
                 <div>
                   <p>You must be logged in to leave a review</p>

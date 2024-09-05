@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -95,7 +91,7 @@ function AddReviewForm({ hotel, setReviews, setIsDialogOpen }: PropsTypes) {
     console.log(hotel);
 
     const newReview: Review = {
-      hotelID: hotel.hotelId,
+      hotelID: hotel.hotelID,
       staff: values.staff,
       facilities: values.facilities,
       cleanliness: values.cleanliness,
