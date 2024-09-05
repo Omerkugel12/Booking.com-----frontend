@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CheckCircle, UserRound } from "lucide-react";
 import { AvailableRoom } from "@/models/Hotel.model";
 import { useReservation } from "@/context/ReservationContext";

@@ -35,7 +35,7 @@ export interface AvailableRoom {
 export interface HotelDetails {
   hotelId: number;
   address: string;
-  imageURLs: any;
+  imageURLs: string;
   id: number;
   name: string;
   city: string;

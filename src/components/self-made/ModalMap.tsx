@@ -9,7 +9,6 @@ import BookingSidebarFilter from "./Filters";
 import { useSearchParams } from "react-router-dom";
 import { HotelResult } from "@/models/Hotel.model";
 import { getHotels } from "@/services/hotels.service";
-import { Loader } from "rsuite";
 
 interface ModalMapProps {
   onClose: () => void;
@@ -43,10 +42,10 @@ function ModalMap({ onClose }: ModalMapProps) {
   const [error, setError] = useState<string | null>(null);
 
   //display div of hotel for desired hotel on map
-  const [hoveredHotel, setHoveredHotel] = useState(null);
+  const [hoveredHotel, setHoveredHotel] = useState<number | null>(null);
   const [googleLoaded, setGoogleLoaded] = useState(false);
 
-  const handleLoad = useCallback((mapInstance) => {
+  const handleLoad = useCallback((mapInstance: google.maps.Map | null) => {
     if (typeof google !== "undefined") {
       setMap(mapInstance);
       setGoogleLoaded(true);
@@ -114,8 +113,8 @@ function ModalMap({ onClose }: ModalMapProps) {
           const firstImageUrl = response.data[0].image || "";
           saveRecentSearch(firstImageUrl);
         }
-      } catch (err) {
-        setError("Error fetching hotels. Please try again later.");
+      } catch (err: unknown) {
+        setError(`Error fetching hotels. Please try again later. ${err}`);
       } finally {
         setLoading(false);
       }
@@ -172,6 +171,10 @@ function ModalMap({ onClose }: ModalMapProps) {
   //   console.log(mapInstance, "dada");
   //   destroyMap(mapInstance);
   // };
+
+  console.log(error);
+  console.log(loading);
+  console.log(googleLoaded);
 
   return (
     <div
@@ -231,9 +234,7 @@ function ModalMap({ onClose }: ModalMapProps) {
                       </div>
                     </div>
                   </div>
-                  <p className="text-sm mt-2">
-                    Location {hotel.location.toFixed(1)}
-                  </p>
+                  <p className="text-xs mt-2">Location {hotel.distance}</p>
                   <div className="flex justify-between mt-4">
                     <div>
                       <p className="text-sm font-bold">
@@ -292,10 +293,10 @@ function ModalMap({ onClose }: ModalMapProps) {
                         className:
                           "bg-blue-800 text-white px-2 py-1 rounded-md text-sm font-bold shadow-lg border border-gray-300",
                       }}
-                      onMouseOver={() => handleMarkerHover(hotel)}
+                      onMouseOver={() => handleMarkerHover(hotel.id)}
                       onMouseOut={handleMarkerOut}
                     />
-                    {hoveredHotel && hoveredHotel.id === hotel.id && (
+                    {hoveredHotel && hoveredHotel === hotel.id && (
                       <OverlayView
                         position={{
                           lat: Number(hotel.latitude),
