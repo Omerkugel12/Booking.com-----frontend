@@ -52,6 +52,7 @@
     "react-slider": "^2.0.6",
     "rsuite": "^5.70.0",
     "shadcn-ui": "^0.8.0",
+    "skeleton": "^0.1.2",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.0",
