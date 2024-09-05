@@ -138,6 +138,8 @@ const ReservationsPage: React.FC = () => {
                         onRemoveBooking={() =>
                           handleRemoveBooking(reservation.id)
                         }
+                        hotel={reservation}
+                        setReviews={function (reviews: any): void {}}
                       />
                     </p>
                   </div>

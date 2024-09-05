@@ -83,7 +83,7 @@ function Header({ type }: PropType) {
                         </Avatar>
                         <div>
                           <p className="text-white font-bold">
-                            {loggedInUser.email.slice(0, 4)}
+                            {loggedInUser.email.split("@")[0]}
                           </p>
                           <p className="text-yellow text-[0.7rem]">
                             Genius Level 1
