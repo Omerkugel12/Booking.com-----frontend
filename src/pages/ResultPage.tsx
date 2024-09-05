@@ -12,6 +12,7 @@ import { getHotels } from "@/services/hotels.service";
 import ModalMap from "@/components/self-made/ModalMap";
 import NoItemsFound from "@/components/self-made/NoItemsFound";
 import { Loader } from "rsuite";
+import HotelResultsSkeleton from "@/components/self-made/ResultPageSkeleton";
 
 function ResultPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -138,8 +139,8 @@ function ResultPage() {
         <div className="h-[100vh] w-full">
           <div className="px-10">
             {loading && (
-              <p>
-                <Loader />
+              <p className=" mt-20">
+                <HotelResultsSkeleton/>
               </p>
             )}
             <div className="flex flex-col gap-2 text-lg">
