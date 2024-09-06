@@ -2,14 +2,16 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL:
-    process.env.NODE_ENV === "production" ? "/api" : "//localhost:3000/api",
+    process.env.NODE_ENV === "production"
+      ? process.env.VITE_API_URL
+      : "//localhost:3000/api",
 });
 
 api.interceptors.request.use(
   (config) => {
     let token = localStorage.getItem("jwt-taskify") as string;
     // removing the first and last character of the token, which are quotes
-    token = token?.slice(1, -1) ;
+    token = token?.slice(1, -1);
 
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
