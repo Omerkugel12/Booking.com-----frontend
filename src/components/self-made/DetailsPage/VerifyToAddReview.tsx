@@ -12,7 +12,6 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import api from "@/services/api.service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,7 +24,8 @@ const formSchema = z.object({
   reservationNumber: z.string().min(1, "Reservation number is required"),
 });
 
-function VerifyToAddReview({ verify, setVerify }: PropsTypes) {
+function VerifyToAddReview({  setVerify }: PropsTypes) {
+  
   const { loggedInUser } = useAuth();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({

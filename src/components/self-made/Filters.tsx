@@ -1,10 +1,24 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Minus } from "lucide-react";
 import BudgetSlider from "../ui/budgetSlider";
 import { useSearchParams } from "react-router-dom";
 
+// Define types
+type Item = {
+  label: string;
+  count?: number | string;
+};
+
+type FilterSectionProps = {
+  title: string;
+  items: Item[];
+  showAll?: number;
+  expanded?: boolean;
+  type?: string;
+};
+
 // Simulated backend function for fetching item count
-const fetchItemCount = () => {
+const fetchItemCount = (): Promise<number | null> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       if (Math.random() > 0.8) {
@@ -17,16 +31,22 @@ const fetchItemCount = () => {
 };
 
 // FilterSection component
-const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
+const FilterSection: React.FC<FilterSectionProps> = ({
+  title,
+  items,
+  showAll,
+  expanded = false,
+  type,
+}) => {
   const [isExpanded, setIsExpanded] = useState(expanded);
-  const [itemsWithCount, setItemsWithCount] = useState([]);
+  const [itemsWithCount, setItemsWithCount] = useState<Item[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchCounts = async () => {
       const updatedItems = await Promise.all(
         items.map(async (item) => {
-          const count = await fetchItemCount(item.label);
+          const count = await fetchItemCount();
           return { ...item, count: count === null ? "0" : count };
         })
       );
@@ -34,9 +54,9 @@ const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
     };
 
     fetchCounts();
-  }, []);
+  }, [items]);
 
-  const handleFilterChange = (label, type) => {
+  const handleFilterChange = (label: string, type?: string) => {
     const currentParams = new URLSearchParams(searchParams.toString());
 
     if (type === "meals") {
@@ -46,7 +66,6 @@ const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
       if (existingMeals) {
         const mealsArray = existingMeals.split(",");
         if (mealsArray.includes(newMeal)) {
-          // Remove the meal if it already exists
           const updatedMeals = mealsArray.filter((meal) => meal !== newMeal);
           if (updatedMeals.length > 0) {
             currentParams.set("meals", updatedMeals.join(","));
@@ -54,21 +73,18 @@ const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
             currentParams.delete("meals");
           }
         } else {
-          // Add the new meal
           currentParams.set("meals", [...mealsArray, newMeal].join(","));
         }
       } else {
-        // Set the first meal
         currentParams.set("meals", newMeal);
       }
     } else if (type === "stars") {
       const existingRatings = currentParams.get("starRating");
-      const newRating = label.replace(" stars", ""); // Extract number only
+      const newRating = label.replace(" stars", "");
 
       if (existingRatings) {
         const ratingsArray = existingRatings.split(",");
         if (ratingsArray.includes(newRating)) {
-          // Remove the rating if it already exists
           const updatedRatings = ratingsArray.filter(
             (rating) => rating !== newRating
           );
@@ -78,18 +94,15 @@ const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
             currentParams.delete("starRating");
           }
         } else {
-          // Add the new rating
           currentParams.set(
             "starRating",
             [...ratingsArray, newRating].join(",")
           );
         }
       } else {
-        // Set the first rating
         currentParams.set("starRating", newRating);
       }
     } else {
-      // Handle special cases like Free cancellation, No prepayment, etc.
       const isActive = searchParams.get(label.replace(" ", "")) === "true";
       if (isActive) {
         currentParams.delete(label.replace(" ", ""));
@@ -99,6 +112,13 @@ const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
     }
 
     setSearchParams(currentParams);
+  };
+
+  const generateDummyItems = (count: number): Item[] => {
+    return Array.from({ length: count }, (_, i) => ({
+      label: `Item ${i + 1}`,
+      count: Math.floor(Math.random() * 50) + 1,
+    }));
   };
 
   const allItems = showAll
@@ -148,7 +168,7 @@ const FilterSection = ({ title, items, showAll, expanded = false, type }) => {
 };
 
 // CounterInput component
-const CounterInput = ({ label }) => {
+const CounterInput: React.FC<{ label: string }> = ({ label }) => {
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -156,7 +176,7 @@ const CounterInput = ({ label }) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(label, count.toString());
     setSearchParams(params);
-  }, [count]);
+  }, [count, label, searchParams, setSearchParams]);
 
   return (
     <div className="flex items-center justify-between mb-2">
@@ -180,18 +200,8 @@ const CounterInput = ({ label }) => {
   );
 };
 
-// Generate dummy items for testing/show-all functionality
-const generateDummyItems = (count) => {
-  return Array.from({ length: count }, (_, i) => ({
-    label: `Item ${i + 1}`,
-    count: Math.floor(Math.random() * 50) + 1,
-  }));
-};
-
 // BookingSidebarFilter component
-const BookingSidebarFilter = () => {
-  const [searchParams] = useSearchParams();
-
+const BookingSidebarFilter: React.FC = () => {
   return (
     <div className="p-4 bg-white rounded shadow sticky">
       <BudgetSlider />

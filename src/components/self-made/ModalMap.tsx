@@ -105,7 +105,7 @@ function ModalMap({ onClose }: ModalMapProps) {
           meals: meals ? meals : undefined,
           sortBy: sortBy,
         };
-        const response = await getHotels(filters);
+        const response:any = await getHotels(filters);
         console.log(response.data);
         setHotels(response.data);
 
