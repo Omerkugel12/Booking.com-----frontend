@@ -8,8 +8,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import AddReviewForm from "../self-made/DetailsPage/AddReviewForm"; // Assuming you have the review form component
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import AddReviewForm from "../self-made/DetailsPage/AddReviewForm";
 import { useState } from "react";
 
 interface ReservationDropdownProps {
@@ -17,8 +27,8 @@ interface ReservationDropdownProps {
   onBookAgain: () => void;
   onCancelBooking: () => void;
   onRemoveBooking: () => void;
-  hotel: any; // Assuming hotel information is passed down for the review form
-  setReviews: (reviews: any) => void; // Assuming this function updates the reviews
+  hotel: any;
+  setReviews: (reviews: any) => void;
 }
 
 const ReservationDropdown: React.FC<ReservationDropdownProps> = ({
@@ -30,55 +40,138 @@ const ReservationDropdown: React.FC<ReservationDropdownProps> = ({
   setReviews,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <span className="ml-2 cursor-pointer">
-          <EllipsisVertical />
-        </span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          {isCompleted ? (
-            <>
-              {/* Wrap 'Add A Review' with Dialog */}
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <DropdownMenuItem
-                    onSelect={(e) => {
-                      e.preventDefault(); // Prevent dropdown from closing
-                      setIsDialogOpen(true);
-                    }}
-                  >
-                    Add A Review
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <AddReviewForm
-                  hotel={hotel}
-                  setReviews={setReviews}
-                  setIsDialogOpen={setIsDialogOpen}
-                />
-              </Dialog>
-              <DropdownMenuItem onClick={onBookAgain}>
-                Book Again
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={onRemoveBooking}>
-                Remove Booking
-              </DropdownMenuItem>
-            </>
-          ) : (
-            <>
-              <DropdownMenuItem onClick={onCancelBooking}>
-                Cancel Booking
-              </DropdownMenuItem>
-            </>
-          )}
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <span className="ml-2 cursor-pointer">
+            <EllipsisVertical />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            {isCompleted ? (
+              <>
+                <DropdownMenuItem
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    setIsDialogOpen(true);
+                  }}
+                >
+                  Add A Review
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={(e) => {
+                    e.preventDefault(); // Prevent the dropdown from closing
+                    onBookAgain(); // Call the book again function
+                  }}
+                >
+                  Book Again
+                </DropdownMenuItem>
+                {/* Remove Booking with AlertDialog */}
+                <DropdownMenuItem
+                  onSelect={(e) => {
+                    e.preventDefault(); // Prevent the dropdown from closing
+                    setIsRemoveDialogOpen(true); // Open the Remove dialog
+                  }}
+                >
+                  Remove Booking
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <>
+                {/* Cancel Booking with AlertDialog */}
+                <DropdownMenuItem
+                  onSelect={(e) => {
+                    e.preventDefault(); // Prevent the dropdown from closing
+                    setIsCancelDialogOpen(true); // Open the Cancel dialog
+                  }}
+                >
+                  Cancel Booking
+                </DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* Dialog for Add Review */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <AddReviewForm
+            hotel={hotel}
+            setReviews={setReviews}
+            setIsDialogOpen={setIsDialogOpen}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Cancel Booking AlertDialog */}
+      <AlertDialog
+        open={isCancelDialogOpen}
+        onOpenChange={setIsCancelDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to cancel this booking?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will cancel your booking.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setIsCancelDialogOpen(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                onCancelBooking();
+                setIsCancelDialogOpen(false);
+              }}
+            >
+              Cancel Booking
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Remove Booking AlertDialog */}
+      <AlertDialog
+        open={isRemoveDialogOpen}
+        onOpenChange={setIsRemoveDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to remove this booking?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. The booking will be permanently
+              removed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setIsRemoveDialogOpen(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                onRemoveBooking();
+                setIsRemoveDialogOpen(false);
+              }}
+            >
+              Remove Booking
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
