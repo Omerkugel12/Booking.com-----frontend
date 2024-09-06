@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? process.env.VITE_API_URL
+      ? "https://bookingcom-backend-production.up.railway.app/api"
       : "//localhost:3000/api",
 });
 
