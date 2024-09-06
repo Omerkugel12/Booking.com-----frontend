@@ -59,6 +59,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   const handleFilterChange = (label: string, type?: string) => {
     const currentParams = new URLSearchParams(searchParams.toString());
 
+    // Handling filter logic based on type
     if (type === "meals") {
       const existingMeals = currentParams.get("meals");
       const newMeal = label;
@@ -101,6 +102,30 @@ const FilterSection: React.FC<FilterSectionProps> = ({
         }
       } else {
         currentParams.set("starRating", newRating);
+      }
+    } else if (type === "facilities") {
+      const existingFacilities = currentParams.get("facilities");
+      const newFacility = label;
+
+      if (existingFacilities) {
+        const facilitiesArray = existingFacilities.split(",");
+        if (facilitiesArray.includes(newFacility)) {
+          const updatedFacilities = facilitiesArray.filter(
+            (facility) => facility !== newFacility
+          );
+          if (updatedFacilities.length > 0) {
+            currentParams.set("facilities", updatedFacilities.join(","));
+          } else {
+            currentParams.delete("facilities");
+          }
+        } else {
+          currentParams.set(
+            "facilities",
+            [...facilitiesArray, newFacility].join(",")
+          );
+        }
+      } else {
+        currentParams.set("facilities", newFacility);
       }
     } else {
       const isActive = searchParams.get(label.replace(" ", "")) === "true";
@@ -147,6 +172,11 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                     .includes(item.label.replace(" stars", ""))
                 : type === "meals"
                 ? searchParams.get("meals")?.split(",").includes(item.label)
+                : type === "facilities"
+                ? searchParams
+                    .get("facilities")
+                    ?.split(",")
+                    .includes(item.label)
                 : searchParams.get(item.label.replace(" ", "")) === "true"
             }
           />
@@ -201,7 +231,7 @@ const CounterInput: React.FC<{ label: string }> = ({ label }) => {
 };
 
 // BookingSidebarFilter component
-const BookingSidebarFilter: React.FC = () => {
+function BookingSidebarFilter () {
   return (
     <div className="p-4 bg-white rounded shadow sticky">
       <BudgetSlider />
@@ -250,20 +280,7 @@ const BookingSidebarFilter: React.FC = () => {
           { label: "Good: 7+" },
           { label: "Pleasant: 6+" },
         ]}
-        showAll={10}
-      />
-
-      <FilterSection
-        title="Property type"
-        items={[
-          { label: "Hotels" },
-          { label: "Apartments" },
-          { label: "Resorts" },
-          { label: "Villas" },
-          { label: "Hostels" },
-          { label: "B&Bs" },
-        ]}
-        showAll={10}
+        type="guestRating"
       />
 
       <FilterSection
@@ -272,28 +289,14 @@ const BookingSidebarFilter: React.FC = () => {
           { label: "Free WiFi" },
           { label: "Swimming pool" },
           { label: "Parking" },
-          { label: "Airport shuttle" },
-          { label: "Fitness centre" },
-          { label: "Non-smoking rooms" },
+          { label: "Fitness center" },
         ]}
-        showAll={10}
-      />
-
-      <FilterSection
-        title="Neighbourhood"
-        items={[
-          { label: "City centre" },
-          { label: "Near the beach" },
-          { label: "Old Town" },
-          { label: "Near public transport" },
-          { label: "Shopping district" },
-        ]}
-        showAll={10}
+        type="facilities"
       />
 
       <CounterInput label="Adults" />
       <CounterInput label="Children" />
-      <CounterInput label="Rooms" />
+      <CounterInput label="Rooms"/>
     </div>
   );
 };
