@@ -5,7 +5,6 @@ import { useSearchParams } from "react-router-dom";
 const BudgetSlider = () => {
   const [minPrice, setMinPrice] = useState(30);
   const [maxPrice, setMaxPrice] = useState(250);
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSliderChange = (values: number[]) => {
