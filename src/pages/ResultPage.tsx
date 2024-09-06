@@ -9,7 +9,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getHotels } from "@/services/hotels.service";
 import ModalMap from "@/components/self-made/ModalMap";
 import NoItemsFound from "@/components/self-made/NoItemsFound";
-import { Loader } from "rsuite";
 import HotelResultsSkeleton from "@/components/self-made/ResultPageSkeleton";
 
 function ResultPage() {
@@ -83,7 +82,7 @@ function ResultPage() {
           meals: meals ? meals : undefined,
           sortBy: sortBy,
         };
-        const response = await getHotels(filters);
+        const response:any = await getHotels(filters);
         console.log(filters.priceMin);
         setHotels(response.data);
 

@@ -83,6 +83,7 @@ export interface HotelResult {
   totalPrice: number;
   latitude: number;
   longitude: number;
+  location?: number;
 }
 
 export interface HotelResult {

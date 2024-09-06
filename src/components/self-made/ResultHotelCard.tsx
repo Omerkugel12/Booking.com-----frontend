@@ -116,7 +116,9 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
                 </p>
               </div>
             </div>
-            {hotel.location.toFixed(1) > hotel.avgRating.toFixed(1) ? (
+
+            {hotel.location &&
+            hotel.location.toFixed(1) > hotel.avgRating.toFixed(1) ? (
               <p className=" text-end flex-nowrap w-fit text-sm text-green font-bold ">
                 Location {hotel.location.toFixed(1)}
               </p>
