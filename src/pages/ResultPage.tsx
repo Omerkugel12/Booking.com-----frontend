@@ -34,6 +34,7 @@ function ResultPage() {
   const starRating = searchParams.get("starRating");
   const meals = searchParams.get("meals");
   const sortBy = searchParams.get("sortBy");
+  const facilities = searchParams.get("facilities");
   console.log(freeCancelation);
   // State to store fetched hotels
   const [hotels, setHotels] = useState<HotelResult[]>([]);
@@ -80,6 +81,7 @@ function ResultPage() {
             : noPrepayment === "false",
           starsRating: starRating ? starRating : undefined,
           meals: meals ? meals : undefined,
+          facilities: facilities ? facilities : undefined,
           sortBy: sortBy,
         };
         const response:any = await getHotels(filters);
