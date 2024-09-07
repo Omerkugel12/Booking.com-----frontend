@@ -40,6 +40,7 @@ function ResultPage() {
   const [hotels, setHotels] = useState<HotelResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [totalCountHotels, settotalCountHotels] = useState<number>(0);
   const saveRecentSearch = (imageUrl: string) => {
     const recentSearch = {
       destination: destination || "",
@@ -84,9 +85,11 @@ function ResultPage() {
           facilities: facilities ? facilities : undefined,
           sortBy: sortBy,
         };
-        const response:any = await getHotels(filters);
+        const response: any = await getHotels(filters);
         console.log(filters.priceMin);
         setHotels(response.data);
+        settotalCountHotels(response.totalCount);
+        console.log(response);
 
         if (response.data.length > 0) {
           const firstImageUrl = response.data[0].image || "";
@@ -139,13 +142,13 @@ function ResultPage() {
           <div className="px-10">
             {loading && (
               <p className=" mt-20">
-                <HotelResultsSkeleton/>
+                <HotelResultsSkeleton />
               </p>
             )}
             <div className="flex flex-col gap-2 text-lg">
               <h2 className="font-bold text-xl pb-4">
-                {destination ? destination.toUpperCase() : ""}: {hotels.length}{" "}
-                properties found
+                {destination ? destination.toUpperCase() : ""}:{" "}
+                {totalCountHotels} properties found
               </h2>
 
               {/*  <p className="text-sm">

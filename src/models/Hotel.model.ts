@@ -66,7 +66,7 @@ export interface HotelDetails {
 // Model for the results view of a hotel
 export interface HotelResult {
   address: string;
-  reviews: [HotelResult];
+  reviews: number;
   id: number;
   name: string;
   city: string;

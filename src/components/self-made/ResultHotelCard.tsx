@@ -23,7 +23,7 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
       location: hotel.city,
       rating: hotel.avgRating.toString(),
       reviewInfo: `${getScoreLetter(hotel.avgRating)} · ${
-        hotel.reviews.length
+        hotel.reviews
       } reviews`,
     };
 
@@ -55,23 +55,23 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
   };
 
   return (
-    <Card className="flex mt-2 w-full border border-gray-300 rounded-lg shadow-md">
+    <Card className="flex mt-2 w-[800px] border border-gray-300 rounded-lg shadow-md">
       <CardHeader
-        className="w-1/3"
+        // className="w-1/3"
         onClick={handleNavigation}
         style={{ cursor: "pointer" }}
       >
         <img
           src={hotel.image}
           alt={`Image of ${hotel.name}`}
-          className="w-full h-48 object-cover rounded-l-lg"
+          className="h-60 w-60 object-cover rounded-lg"
         />
       </CardHeader>
       <CardContent className="w-2/3 p-4">
         <div className="flex justify-between gap-8 mt-2">
           <div>
             <h1
-              className="text-xl font-bold text-blue-600 cursor-pointer hover:text-black"
+              className="text-xl font-bold text-[#006CE4] cursor-pointer pb-2 hover:text-black"
               onClick={handleNavigation}
             >
               {hotel.name}
@@ -102,14 +102,14 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
                     {getScoreLetter(hotel.avgRating)}
                   </p>
                   <p className="text-xs text-gray-500 w-full text-nowrap">
-                    {hotel?.reviews.length || 0} reviews
+                    {hotel.reviews} reviews
                   </p>
                 </div>
               </div>
 
               <div
                 id="acd"
-                className="flex justify-center w-10 h-8 bg-blue-900 rounded"
+                className="bg-blue_1 p-1 w-8 h-8 text-center rounded-tl-md rounded-tr-md rounded-br-md"
               >
                 <p className=" text-white text-[16px] font-bold">
                   {hotel.avgRating}
@@ -119,7 +119,7 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
 
             {hotel.location &&
             hotel.location.toFixed(1) > hotel.avgRating.toFixed(1) ? (
-              <p className=" text-end flex-nowrap w-fit text-sm text-green font-bold ">
+              <p className=" text-end flex-nowrap w-fit text-sm text-[#006CE4] font-bold">
                 Location {hotel.location.toFixed(1)}
               </p>
             ) : (
@@ -149,9 +149,9 @@ function ResultHotelCard({ hotel }: ResultHotelCardProps) {
           </div>
           <div className="flex items-end mt-4">
             <div className="text-right">
-              <p className="text-sm text-gray-500 line-through">
+              {/* <p className="text-sm text-gray-500 line-through">
                 ${hotel.price + 500} {/* Example of a discounted price */}
-              </p>
+              {/* </p>  */}
               <p className="text-xl font-bold text-gray-900">${hotel.price}</p>
               <p className="text-xs text-gray-500">Includes taxes and fees</p>
               <Button
