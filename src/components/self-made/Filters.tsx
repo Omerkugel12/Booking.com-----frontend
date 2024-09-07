@@ -231,7 +231,7 @@ const CounterInput: React.FC<{ label: string }> = ({ label }) => {
 };
 
 // BookingSidebarFilter component
-function BookingSidebarFilter () {
+function BookingSidebarFilter() {
   return (
     <div className="p-4 bg-white rounded shadow sticky">
       <BudgetSlider />
@@ -296,9 +296,9 @@ function BookingSidebarFilter () {
 
       <CounterInput label="Adults" />
       <CounterInput label="Children" />
-      <CounterInput label="Rooms"/>
+      <CounterInput label="Rooms" />
     </div>
   );
-};
+}
 
 export default BookingSidebarFilter;
