@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
     try {
       const response = await api.post("/auth/login", userData);
       setToken(response.data.token);
-      navigate("/");
+      navigate(-2);
     } catch (error) {
       console.error("Error logging in:", error);
     }
@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }: childrenPropsType) => {
       const response = await api.post("/auth/google", { credential });
       setToken(response.data.token);
       setLoggedInUser(response.data.user);
-      navigate("/");
+      navigate(-1);
     } catch (error: unknown) {
       console.error("Google login failed:", error);
     }
